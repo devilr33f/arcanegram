@@ -16,8 +16,7 @@ set "QT=6.8"
 set "NoDefaultCurrentDirectoryInExePath="
 if not defined TDESKTOP_API_ID set "TDESKTOP_API_ID=2040"
 if not defined TDESKTOP_API_HASH set "TDESKTOP_API_HASH=b18441a1ff607e10a989891a5462e627"
-set "EXTRA_FLAGS="
-if "%TDESKTOP_API_TEST%"=="1" set "EXTRA_FLAGS=-DTDESKTOP_API_TEST=ON"
+if "%TDESKTOP_API_TEST%"=="1" (set "EXTRA_FLAGS=-DTDESKTOP_API_TEST=ON") else (set "EXTRA_FLAGS=-DTDESKTOP_API_TEST=OFF")
 echo [arcanegram] platform=%Platform% config=%BUILD_CONFIG% api_id=%TDESKTOP_API_ID%
 cd /d "%~dp0worktree"
 
