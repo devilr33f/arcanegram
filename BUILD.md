@@ -38,7 +38,7 @@ cmd //c "prepare-deps.bat"           # Debug-only deps (default, faster)
 cmd //c "prepare-deps.bat both"      # Debug + Release deps
 ```
 
-Runs `Telegram/build/prepare/win.bat qt6 [skip-release] silent` under `vcvars64`. This compiles Qt, OpenSSL, FFmpeg, openal-soft, libavif, tg_owt, etc. into `worktree/Libraries/win64/`. Allow ~30–60 min for `both`. Skipped on subsequent builds unless you delete `Libraries/`. If you previously ran with `debug` and now need Release, delete `Libraries/win64/` and rerun with `both`.
+Runs `Telegram/build/prepare/win.bat qt6 [skip-release] silent` under `vcvars64`. This compiles Qt, OpenSSL, FFmpeg, openal-soft, libavif, tg_owt, etc. into `worktree/Libraries/win64/`. Allow ~30–60 min for `both`. Skipped on subsequent builds unless you delete `Libraries/`. If you previously ran with `debug` and now need Release, just rerun with `both` — the `skip-release` toggle changes each affected stage's cache key, so prepare.py marks them stale, self-deletes, and rebuilds (the `silent` arg auto-confirms).
 
 The script sources vcvars via `setup-vcvars.bat` (which uses `vswhere` to find your VS install) and sets `NoDefaultCurrentDirectoryInExePath=` because tdesktop's `prepare.py` invokes batch helpers without a `.\` prefix.
 
