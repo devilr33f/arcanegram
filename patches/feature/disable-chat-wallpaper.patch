@@ -1,0 +1,46 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Wed, 29 Apr 2026 04:27:10 +0600
+Subject: [PATCH] allow disabling per-peer chat wallpapers
+
+---
+ Telegram/SourceFiles/window/section_widget.cpp | 16 +++++++++++-----
+ 1 file changed, 11 insertions(+), 5 deletions(-)
+
+diff --git a/Telegram/SourceFiles/window/section_widget.cpp b/Telegram/SourceFiles/window/section_widget.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/window/section_widget.cpp
++++ b/Telegram/SourceFiles/window/section_widget.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "window/section_widget.h"
+ 
++#include "arcanegram/features/ag_chat_wallpaper.h"
+ #include "mainwidget.h"
+ #include "mainwindow.h"
+ #include "ui/ui_utility.h"
+@@ -53,11 +54,16 @@ struct ResolvedPaper {
+ 
+ [[nodiscard]] rpl::producer<const Data::WallPaper*> PeerWallPaperMapped(
+ 		not_null<PeerData*> peer) {
+-	return peer->session().changes().peerFlagsValue(
+-		peer,
+-		Data::PeerUpdate::Flag::ChatWallPaper
+-	) | rpl::map([=]() -> rpl::producer<const Data::WallPaper*> {
+-		return WallPaperResolved(&peer->owner(), peer->wallPaper());
++	return rpl::combine(
++		peer->session().changes().peerFlagsValue(
++			peer,
++			Data::PeerUpdate::Flag::ChatWallPaper),
++		Arcanegram::ChatWallpaper::DisabledValue()
++	) | rpl::map([=](const auto &, bool disabled)
++	-> rpl::producer<const Data::WallPaper*> {
++		return WallPaperResolved(
++			&peer->owner(),
++			disabled ? nullptr : peer->wallPaper());
+ 	}) | rpl::flatten_latest();
+ }
+ 
+-- 
+2.52.0.windows.1
+

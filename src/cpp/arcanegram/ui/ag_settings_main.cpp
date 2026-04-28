@@ -2,6 +2,7 @@
 
 #include "arcanegram/features/ag_forwarded_header.h"
 #include "arcanegram/features/ag_show_seconds.h"
+#include "arcanegram/features/ag_chat_wallpaper.h"
 #include "arcanegram/ui/ag_hidden_users_settings.h"
 #include "lang/lang_keys.h"
 #include "settings/sections/settings_main.h"
@@ -32,6 +33,7 @@ private:
 void BuildContent(SectionBuilder &builder) {
     Arcanegram::ForwardedHeader::Setup(builder);
     Arcanegram::Time::Setup(builder);
+    Arcanegram::ChatWallpaper::Setup(builder);
     Arcanegram::HiddenUsers::Setup(builder);
 }
 

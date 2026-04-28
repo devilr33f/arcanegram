@@ -32,6 +32,8 @@ PRIVATE
     features/ag_show_seconds.cpp
     features/ag_hidden_users.h
     features/ag_hidden_users.cpp
+    features/ag_chat_wallpaper.h
+    features/ag_chat_wallpaper.cpp
     ui/ag_settings_widgets.h
     ui/ag_settings_widgets.cpp
     ui/ag_settings_main.h

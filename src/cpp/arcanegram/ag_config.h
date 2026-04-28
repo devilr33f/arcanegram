@@ -49,4 +49,10 @@ inline auto Stored = Item<QString>("ag_hidden_users", QString());
 
 } // namespace HiddenUsers
 
+namespace ChatWallpaper {
+
+inline auto Disabled = BoolItem("ag_chat_wallpaper_disabled", false);
+
+} // namespace ChatWallpaper
+
 } // namespace Arcanegram::Config

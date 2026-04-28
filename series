@@ -15,4 +15,5 @@ feature/hidden-users-profile-menu.patch
 feature/hidden-users-element-hide.patch
 feature/hidden-users-reactions.patch
 feature/hidden-users-who-reacted.patch
+feature/disable-chat-wallpaper.patch
 misc/branding.patch
