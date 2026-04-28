@@ -1,6 +1,8 @@
 # Arcanegram
 
-Personal patchset for [Telegram Desktop](https://github.com/telegramdesktop/tdesktop). Open-source. Builds binaries. No support promise.
+Personal patchset for [Telegram Desktop](https://github.com/telegramdesktop/tdesktop).
+
+> **No support, no warranty, no promises.** Issues, questions, and feature requests will not be answered. Use at your own risk. See [LICENSE](LICENSE).
 
 Inspired by [inugram](https://github.com/teidesu/inugram) (Telegram Android patchset).
 
@@ -72,4 +74,4 @@ pnpm run export
 
 ## License
 
-MIT.
+[Unlicense](LICENSE) (public domain) with an explicit no-support clause. Do whatever you want with the code; expect nothing in return.

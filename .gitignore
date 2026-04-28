@@ -6,6 +6,7 @@ worktree/
 .claude/*
 !.claude/skills/
 docs/superpowers/
+.superpowers/
 Libraries/
 ThirdParty/
 win64/
