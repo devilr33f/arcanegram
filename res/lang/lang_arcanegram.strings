@@ -1,0 +1,14 @@
+"ag_settings_title" = "Arcanegram";
+"ag_forwarded_show_date_setting" = "Show original date in forwarded header";
+"ag_forwarded_show_date_info" = "Append the original send date to the 'Forwarded from' line.";
+"ag_forwarded_date_label" = "Date";
+"ag_show_seconds_setting" = "Show seconds in timestamps";
+"ag_show_seconds_info" = "Display HH:MM:SS instead of HH:MM in message timestamps and tooltips.";
+"ag_hidden_users_title" = "Hidden users";
+"ag_hidden_users_info" = "Messages from these users are hidden in every chat.";
+"ag_hidden_users_empty" = "No hidden users yet. Right-click any avatar to hide its messages.";
+"ag_hidden_users_menu_hide" = "Hide messages from this user";
+"ag_hidden_users_menu_unhide" = "Unhide messages";
+"ag_hidden_user_message" = "Message from hidden user";
+"ag_hidden_user_name" = "Hidden user";
+"ag_hidden_users_remove" = "Remove";

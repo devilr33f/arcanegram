@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Mon, 27 Apr 2026 20:20:33 +0600
+Subject: [PATCH] [PATCH] append lang_arcanegram.strings to lang codegen input
+
+---
+ Telegram/cmake/td_lang.cmake | 11 ++++++++++-
+ 1 file changed, 10 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/cmake/td_lang.cmake b/Telegram/cmake/td_lang.cmake
+index 0000000..0000000 100644
+--- a/Telegram/cmake/td_lang.cmake
++++ b/Telegram/cmake/td_lang.cmake
+@@ -10,7 +10,16 @@ add_library(tdesktop::td_lang ALIAS td_lang)
+ 
+ include(cmake/generate_lang.cmake)
+ 
+-generate_lang(td_lang ${res_loc}/langs/lang.strings)
++set(arcanegram_lang_combined ${CMAKE_CURRENT_BINARY_DIR}/lang_arcanegram_combined.strings)
++set_property(DIRECTORY APPEND PROPERTY CMAKE_CONFIGURE_DEPENDS
++    ${res_loc}/langs/lang.strings
++    ${res_loc}/langs/lang_arcanegram.strings
++)
++file(READ ${res_loc}/langs/lang.strings _arcanegram_stock_lang)
++file(READ ${res_loc}/langs/lang_arcanegram.strings _arcanegram_fork_lang)
++file(WRITE ${arcanegram_lang_combined} "${_arcanegram_stock_lang}\n${_arcanegram_fork_lang}\n")
++
++generate_lang(td_lang ${arcanegram_lang_combined})
+ 
+ target_precompile_headers(td_lang PRIVATE ${src_loc}/lang/lang_pch.h)
+ nice_target_sources(td_lang ${src_loc}
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Mon, 27 Apr 2026 20:17:11 +0600
+Subject: [PATCH] [PATCH] wire arcanegram static lib into CMake
+
+---
+ Telegram/CMakeLists.txt | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Telegram/CMakeLists.txt b/Telegram/CMakeLists.txt
+index 0000000..0000000 100644
+--- a/Telegram/CMakeLists.txt
++++ b/Telegram/CMakeLists.txt
+@@ -25,6 +25,7 @@ get_filename_component(src_loc SourceFiles REALPATH)
+ get_filename_component(res_loc Resources REALPATH)
+ 
+ include(cmake/telegram_options.cmake)
++add_subdirectory(SourceFiles/arcanegram)
+ include(cmake/lib_ffmpeg.cmake)
+ include(cmake/lib_stripe.cmake)
+ include(cmake/lib_tgcalls.cmake)
+@@ -55,6 +56,7 @@ set_target_properties(Telegram PROPERTIES AUTOMOC ON)
+ 
+ target_link_libraries(Telegram
+ PRIVATE
++    arcanegram
+     tdesktop::lib_tgcalls
+ 
+     # Order in this list defines the order of include paths in command line.
+-- 
+2.52.0.windows.1
+

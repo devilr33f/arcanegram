@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 03:01:57 +0600
+Subject: [PATCH] replace last-message preview text for hidden users in dialogs
+ list
+
+---
+ Telegram/SourceFiles/dialogs/ui/dialogs_message_view.cpp | 8 ++++++++
+ 1 file changed, 8 insertions(+)
+
+diff --git a/Telegram/SourceFiles/dialogs/ui/dialogs_message_view.cpp b/Telegram/SourceFiles/dialogs/ui/dialogs_message_view.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/dialogs/ui/dialogs_message_view.cpp
++++ b/Telegram/SourceFiles/dialogs/ui/dialogs_message_view.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "dialogs/ui/dialogs_message_view.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "history/history.h"
+ #include "history/history_item.h"
+ #include "history/view/history_view_element.h"
+@@ -184,6 +185,13 @@ void MessageView::prepare(
+ 	options.ignoreTopic = true;
+ 	options.spoilerLoginCode = true;
+ 	auto preview = item->toPreview(options);
++	if (Arcanegram::HiddenUsers::IsHiddenItem(item)) {
++		preview.text = TextWithEntities{ tr::ag_hidden_user_message(tr::now) };
++		preview.images.clear();
++		preview.icon = ItemPreview::Icon::None;
++		preview.arrowInTextPosition = 0;
++		preview.imagesInTextPosition = 0;
++	}
+ 	_leftIcon = (preview.icon == ItemPreview::Icon::ForwardedMessage)
+ 		? &st::dialogsMiniForward
+ 		: (preview.icon == ItemPreview::Icon::ReplyToStory)
+-- 
+2.52.0.windows.1
+

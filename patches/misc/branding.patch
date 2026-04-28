@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Mon, 27 Apr 2026 20:35:04 +0600
+Subject: [PATCH] arcanegram brand: title suffix and disable autoupdate
+
+---
+ Telegram/CMakeLists.txt                     | 2 ++
+ Telegram/SourceFiles/window/main_window.cpp | 4 ++--
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Telegram/CMakeLists.txt b/Telegram/CMakeLists.txt
+index 0000000..0000000 100644
+--- a/Telegram/CMakeLists.txt
++++ b/Telegram/CMakeLists.txt
+@@ -21,6 +21,8 @@ add_subdirectory(lib_webrtc)
+ add_subdirectory(lib_webview)
+ add_subdirectory(codegen)
+ 
++set(DESKTOP_APP_DISABLE_AUTOUPDATE ON CACHE BOOL "arcanegram: disable stock autoupdater" FORCE)
++
+ get_filename_component(src_loc SourceFiles REALPATH)
+ get_filename_component(res_loc Resources REALPATH)
+ 
+diff --git a/Telegram/SourceFiles/window/main_window.cpp b/Telegram/SourceFiles/window/main_window.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/window/main_window.cpp
++++ b/Telegram/SourceFiles/window/main_window.cpp
+@@ -847,7 +847,7 @@ void MainWindow::updateTitle() {
+ 		: Dialogs::Key();
+ 	const auto thread = key ? key.thread() : nullptr;
+ 	if (!thread) {
+-		setTitle((user.isEmpty() ? u"Telegram"_q : user) + added);
++		setTitle((user.isEmpty() ? u"Telegram"_q : user) + added + u" (Arcanegram)"_q);
+ 		return;
+ 	}
+ 	const auto history = thread->owningHistory();
+@@ -867,7 +867,7 @@ void MainWindow::updateTitle() {
+ 		: !added.isEmpty()
+ 		? u" \u2013"_q
+ 		: QString();
+-	setTitle(primary + middle + added);
++	setTitle(primary + middle + added + u" (Arcanegram)"_q);
+ }
+ 
+ QRect MainWindow::computeDesktopRect() const {
+-- 
+2.52.0.windows.1
+

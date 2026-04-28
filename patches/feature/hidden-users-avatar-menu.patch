@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 03:02:58 +0600
+Subject: [PATCH] add hide/unhide entry to chat history avatar context menu
+
+---
+ Telegram/SourceFiles/history/history_inner_widget.cpp | 9 +++++++++
+ 1 file changed, 9 insertions(+)
+
+diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/SourceFiles/history/history_inner_widget.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/history_inner_widget.cpp
++++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/history_inner_widget.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "api/api_polls.h"
+ #include "chat_helpers/stickers_emoji_pack.h"
+ #include "core/application.h"
+@@ -2605,6 +2606,14 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+ 				return moderateItem;
+ 			}(),
+ 			Ui::Menu::CreateAddActionCallback(_menu.get()));
++		if (const auto peer = session->data().peer(PeerId(linkUserpicPeerId));
++			peer->isUser()) {
++			Arcanegram::HiddenUsers::FillMenu(
++				[menu = _menu.get()](const QString &t, Fn<void()> cb) {
++					menu->addAction(t, std::move(cb));
++				},
++				peer->id);
++		}
+ 		if (_menu->empty()) {
+ 			_menu = nullptr;
+ 		} else {
+-- 
+2.52.0.windows.1
+

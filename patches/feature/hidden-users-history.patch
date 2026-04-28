@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 03:01:18 +0600
+Subject: [PATCH] skip messages from hidden users in chat history view
+
+---
+ .../SourceFiles/history/view/history_view_list_widget.cpp     | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp b/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_list_widget.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_list_widget.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "base/unixtime.h"
+ #include "base/qt/qt_key_modifiers.h"
+ #include "base/qt/qt_common_adapters.h"
+@@ -672,6 +673,9 @@ void ListWidget::refreshRows(const Data::MessagesSlice &old) {
+ 	auto nearestIndex = -1;
+ 	for (const auto &fullId : _slice.ids) {
+ 		if (const auto item = session().data().message(fullId)) {
++			if (Arcanegram::HiddenUsers::IsHiddenItem(item)) {
++				continue;
++			}
+ 			if (_slice.nearestToAround == fullId) {
+ 				nearestIndex = int(_items.size());
+ 			}
+-- 
+2.52.0.windows.1
+

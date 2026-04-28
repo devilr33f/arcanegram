@@ -1,0 +1,12 @@
+node_modules/
+worktree/
+.DS_Store
+*.log
+.pnpm-store/
+.claude/*
+!.claude/skills/
+docs/superpowers/
+Libraries/
+ThirdParty/
+win64/
+out/

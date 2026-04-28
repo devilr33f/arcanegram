@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Mon, 27 Apr 2026 20:21:07 +0600
+Subject: [PATCH] [PATCH] call Arcanegram::Hooks::init at application start
+
+---
+ Telegram/SourceFiles/core/application.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Telegram/SourceFiles/core/application.cpp b/Telegram/SourceFiles/core/application.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/core/application.cpp
++++ b/Telegram/SourceFiles/core/application.cpp
+@@ -27,6 +27,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "core/sandbox.h"
+ #include "core/local_url_handlers.h"
+ #include "core/launcher.h"
++#include "arcanegram/ag_hooks.h"
+ #include "core/proxy_rotation_manager.h"
+ #include "core/ui_integration.h"
+ #include "chat_helpers/emoji_keywords.h"
+@@ -267,6 +268,8 @@ void Application::run() {
+ 
+ 	startLocalStorage();
+ 
++	Arcanegram::Hooks::init();
++
+ 	style::SetCustomFont(settings().customFontFamily());
+ 	style::internal::StartFonts();
+ 
+-- 
+2.52.0.windows.1
+

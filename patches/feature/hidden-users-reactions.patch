@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 03:58:30 +0600
+Subject: [PATCH] filter reactions from hidden users (avatars + counts on
+ reaction chips)
+
+---
+ .../view/reactions/history_view_reactions.cpp | 28 +++++++++++++++++++
+ 1 file changed, 28 insertions(+)
+
+diff --git a/Telegram/SourceFiles/history/view/reactions/history_view_reactions.cpp b/Telegram/SourceFiles/history/view/reactions/history_view_reactions.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/reactions/history_view_reactions.cpp
++++ b/Telegram/SourceFiles/history/view/reactions/history_view_reactions.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/reactions/history_view_reactions.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "history/history_item.h"
+ #include "history/history.h"
+ #include "history/view/history_view_message.h"
+@@ -983,6 +984,33 @@ InlineListData InlineListDataFromMessage(not_null<Element*> view) {
+ 			}
+ 		}
+ 	}
++	{
++		auto removed = base::flat_map<ReactionId, int>();
++		for (auto &[id, peers] : result.recent) {
++			const auto before = int(peers.size());
++			peers.erase(
++				ranges::remove_if(peers, [](PeerData *p) {
++					return p && Arcanegram::HiddenUsers::IsHidden(p->id);
++				}),
++				peers.end());
++			const auto diff = before - int(peers.size());
++			if (diff > 0) {
++				removed[id] = diff;
++			}
++		}
++		if (!removed.empty()) {
++			for (auto i = result.reactions.begin(); i != result.reactions.end();) {
++				if (const auto it = removed.find(i->id); it != removed.end()) {
++					i->count -= it->second;
++				}
++				if (i->count <= 0 && !i->id.paid()) {
++					i = result.reactions.erase(i);
++				} else {
++					++i;
++				}
++			}
++		}
++	}
+ 	result.flags = (view->hasOutLayout() ? Flag::OutLayout : Flag())
+ 		| (view->embedReactionsInBubble() ? Flag::InBubble : Flag())
+ 		| (item->reactionsAreTags() ? Flag::Tags : Flag())
+-- 
+2.52.0.windows.1
+

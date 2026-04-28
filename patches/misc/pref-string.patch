@@ -1,0 +1,37 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 02:31:05 +0600
+Subject: [PATCH] add QString specialization for Settings::readPref/writePref
+
+---
+ Telegram/SourceFiles/core/core_settings.cpp | 14 ++++++++++++++
+ 1 file changed, 14 insertions(+)
+
+diff --git a/Telegram/SourceFiles/core/core_settings.cpp b/Telegram/SourceFiles/core/core_settings.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/core/core_settings.cpp
++++ b/Telegram/SourceFiles/core/core_settings.cpp
+@@ -1235,6 +1235,20 @@ void Settings::writePrefImpl<bool>(std::string_view key, bool value) {
+ 	writePrefGeneric(key, value ? "\x1"_q : QByteArray());
+ }
+ 
++template <>
++std::optional<QString> Settings::readPrefImpl<QString>(std::string_view key) {
++	const auto bytes = readPrefGeneric(key);
++	if (!bytes) {
++		return std::nullopt;
++	}
++	return QString::fromUtf8(*bytes);
++}
++
++template <>
++void Settings::writePrefImpl<QString>(std::string_view key, QString value) {
++	writePrefGeneric(key, value.toUtf8());
++}
++
+ QString Settings::getSoundPath(const QString &key) const {
+ 	auto it = _soundOverrides.find(key);
+ 	if (it != _soundOverrides.end()) {
+-- 
+2.52.0.windows.1
+

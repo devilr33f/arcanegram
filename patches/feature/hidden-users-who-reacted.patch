@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 04:01:05 +0600
+Subject: [PATCH] filter hidden users from the who-reacted popup
+
+---
+ Telegram/SourceFiles/api/api_who_reacted.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/api/api_who_reacted.cpp b/Telegram/SourceFiles/api/api_who_reacted.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/api/api_who_reacted.cpp
++++ b/Telegram/SourceFiles/api/api_who_reacted.cpp
+@@ -8,6 +8,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "api/api_who_reacted.h"
+ 
+ #include "api/api_global_privacy.h"
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "history/history_item.h"
+ #include "history/history.h"
+ #include "data/stickers/data_custom_emoji.h"
+@@ -441,7 +442,8 @@ bool UpdateUserpics(
+ 			.reaction = id.reaction,
+ 		};
+ 	}) | ranges::views::filter([](ResolvedPeer resolved) {
+-		return resolved.peer != nullptr;
++		return resolved.peer != nullptr
++			&& !Arcanegram::HiddenUsers::IsHidden(resolved.peer->id);
+ 	}) | ranges::to_vector;
+ 
+ 	const auto same = ranges::equal(
+-- 
+2.52.0.windows.1
+

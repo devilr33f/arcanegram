@@ -1,0 +1,32 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Mon, 27 Apr 2026 20:29:53 +0600
+Subject: [PATCH] [PATCH] show original date in forwarded message header
+
+---
+ Telegram/SourceFiles/history/history_item_components.cpp | 2 ++
+ 1 file changed, 2 insertions(+)
+
+diff --git a/Telegram/SourceFiles/history/history_item_components.cpp b/Telegram/SourceFiles/history/history_item_components.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/history_item_components.cpp
++++ b/Telegram/SourceFiles/history/history_item_components.cpp
+@@ -26,6 +26,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "history/history.h"
+ #include "history/history_item.h"
+ #include "history/history_item_helpers.h"
++#include "arcanegram/features/ag_forwarded_header.h"
+ #include "history/view/history_view_message.h" // FromNameFg.
+ #include "history/view/history_view_service_message.h"
+ #include "history/view/media/history_view_document.h"
+@@ -337,6 +338,7 @@ void HistoryMessageForwarded::create(
+ 				tr::marked);
+ 		}
+ 	}
++	Arcanegram::ForwardedHeader::Append(phrase, item, originalDate);
+ 	text.setMarkedText(st::fwdTextStyle, phrase, kMarkupTextOptions, context);
+ 
+ 	text.setLink(1, fromChannel
+-- 
+2.52.0.windows.1
+

@@ -1,0 +1,17 @@
+misc/build-support.patch
+misc/pref-string.patch
+hooks/hooks-init.patch
+misc/lang-keys.patch
+misc/settings-ui.patch
+feature/forwarded-header-date.patch
+feature/show-seconds.patch
+feature/hidden-users-history.patch
+feature/hidden-users-notifications.patch
+feature/hidden-users-dialog-preview.patch
+feature/hidden-users-reply-preview.patch
+feature/hidden-users-avatar-menu.patch
+feature/hidden-users-profile-menu.patch
+feature/hidden-users-element-hide.patch
+feature/hidden-users-reactions.patch
+feature/hidden-users-who-reacted.patch
+misc/branding.patch

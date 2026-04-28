@@ -1,0 +1,54 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@shino.boo>
+Date: Tue, 28 Apr 2026 03:02:27 +0600
+Subject: [PATCH] replace reply quote and sender name when target message is
+ from a hidden user
+
+---
+ Telegram/SourceFiles/history/view/history_view_reply.cpp | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/history_view_reply.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_reply.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_reply.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "core/click_handler_types.h"
+ #include "core/ui_integration.h"
+ #include "data/stickers/data_custom_emoji.h"
+@@ -402,7 +403,7 @@ void Reply::update(
+ 		.session = &view->history()->session(),
+ 		.repaint = repaint,
+ 	}));
+-	const auto text = (!_displaying && data->unavailable())
++	auto text = (!_displaying && data->unavailable())
+ 		? TextWithEntities()
+ 		: task
+ 		? Ui::Text::Colorized(task->completionDate
+@@ -437,6 +438,9 @@ void Reply::update(
+ 			.ignoreTopic = true,
+ 		}).text
+ 		: TextWithEntities();
++	if (message && Arcanegram::HiddenUsers::IsHiddenItem(message)) {
++		text = TextWithEntities{ tr::ag_hidden_user_message(tr::now) };
++	}
+ 	_text.setMarkedText(
+ 		st::defaultTextStyle,
+ 		text,
+@@ -661,6 +665,9 @@ void Reply::updateName(
+ 		.session = &history->session(),
+ 		.customEmojiLoopLimit = 1,
+ 	});
++	if (message && Arcanegram::HiddenUsers::IsHiddenItem(message)) {
++		nameFull = TextWithEntities{ tr::ag_hidden_user_name(tr::now) };
++	}
+ 	_name.setMarkedText(
+ 		st::fwdTextStyle,
+ 		nameFull,
+-- 
+2.52.0.windows.1
+
