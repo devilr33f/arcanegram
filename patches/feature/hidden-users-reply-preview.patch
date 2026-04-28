@@ -5,8 +5,8 @@ Subject: [PATCH] replace reply quote and sender name when target message is
  from a hidden user
 
 ---
- Telegram/SourceFiles/history/view/history_view_reply.cpp | 9 ++++++++-
- 1 file changed, 8 insertions(+), 1 deletion(-)
+ .../history/view/history_view_reply.cpp       | 50 +++++++++++++++----
+ 1 file changed, 39 insertions(+), 11 deletions(-)
 
 diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
 index 0000000..0000000 100644
@@ -20,7 +20,50 @@ index 0000000..0000000 100644
  #include "core/click_handler_types.h"
  #include "core/ui_integration.h"
  #include "data/stickers/data_custom_emoji.h"
-@@ -402,7 +403,7 @@ void Reply::update(
+@@ -365,14 +366,18 @@ void Reply::update(
+ 			_externalSender = view->history()->owner().peer(id);
+ 		}
+ 	}
+-	_colorPeer = message
++	const auto hiddenUserMessage = message
++		&& Arcanegram::HiddenUsers::IsHiddenItem(message);
++	_colorPeer = hiddenUserMessage
++		? nullptr
++		: message
+ 		? message->contentColorsFrom()
+ 		: story
+ 		? story->peer().get()
+ 		: _externalSender
+ 		? _externalSender
+ 		: nullptr;
+-	_hiddenSenderColorIndexPlusOne = (!_colorPeer && message)
++	_hiddenSenderColorIndexPlusOne = (!_colorPeer && message && !hiddenUserMessage)
+ 		? (message->originalHiddenSenderInfo()->colorIndex + 1)
+ 		: 0;
+ 	const auto pollMediaPtr = pollAnswer
+@@ -380,13 +385,14 @@ void Reply::update(
+ 		: (messagePoll && fields.pollOption.isEmpty())
+ 		? &messagePoll->attachedMedia
+ 		: nullptr;
+-	const auto hasPreview = (story && story->hasReplyPreview())
+-		|| (message
+-			&& message->media()
+-			&& message->media()->hasReplyPreview())
+-		|| (externalMedia && externalMedia->hasReplyPreview())
+-		|| (pollMediaPtr
+-			&& (pollMediaPtr->photo || pollMediaPtr->document));
++	const auto hasPreview = !hiddenUserMessage
++		&& ((story && story->hasReplyPreview())
++			|| (message
++				&& message->media()
++				&& message->media()->hasReplyPreview())
++			|| (externalMedia && externalMedia->hasReplyPreview())
++			|| (pollMediaPtr
++				&& (pollMediaPtr->photo || pollMediaPtr->document)));
+ 	_hasPreview = hasPreview ? 1 : 0;
+ 	_displaying = data->displaying() ? 1 : 0;
+ 	_multiline = data->multiline() ? 1 : 0;
+@@ -402,7 +408,7 @@ void Reply::update(
  		.session = &view->history()->session(),
  		.repaint = repaint,
  	}));
@@ -29,17 +72,49 @@ index 0000000..0000000 100644
  		? TextWithEntities()
  		: task
  		? Ui::Text::Colorized(task->completionDate
-@@ -437,6 +438,9 @@ void Reply::update(
+@@ -437,6 +443,9 @@ void Reply::update(
  			.ignoreTopic = true,
  		}).text
  		: TextWithEntities();
-+	if (message && Arcanegram::HiddenUsers::IsHiddenItem(message)) {
++	if (hiddenUserMessage) {
 +		text = TextWithEntities{ tr::ag_hidden_user_message(tr::now) };
 +	}
  	_text.setMarkedText(
  		st::defaultTextStyle,
  		text,
-@@ -661,6 +665,9 @@ void Reply::updateName(
+@@ -447,7 +456,9 @@ void Reply::update(
+ 
+ 	if (_displaying) {
+ 		setLinkFrom(view, data);
+-		const auto media = message ? message->media() : nullptr;
++		const auto media = (message && !hiddenUserMessage)
++			? message->media()
++			: nullptr;
+ 		if (!media || !media->hasReplyPreview() || !media->hasSpoiler()) {
+ 			_spoiler = nullptr;
+ 		} else if (!_spoiler) {
+@@ -521,6 +532,10 @@ void Reply::setLinkFrom(
+ 		}
+ 	};
+ 	const auto message = data->resolvedMessage.get();
++	if (message && Arcanegram::HiddenUsers::IsHiddenItem(message)) {
++		_link = nullptr;
++		return;
++	}
+ 	const auto story = data->resolvedStory.get();
+ 	_link = isAdminLogEntry
+ 		? std::make_shared<LambdaClickHandler>(externalLink)
+@@ -539,6 +554,9 @@ PeerData *Reply::sender(
+ 		not_null<const Element*> view,
+ 		not_null<HistoryMessageReply*> data) const {
+ 	const auto message = data->resolvedMessage.get();
++	if (message && Arcanegram::HiddenUsers::IsHiddenItem(message)) {
++		return nullptr;
++	}
+ 	if (const auto story = data->resolvedStory.get()) {
+ 		return story->peer();
+ 	} else if (!message) {
+@@ -661,6 +679,9 @@ void Reply::updateName(
  		.session = &history->session(),
  		.customEmojiLoopLimit = 1,
  	});
@@ -49,6 +124,20 @@ index 0000000..0000000 100644
  	_name.setMarkedText(
  		st::fwdTextStyle,
  		nameFull,
+@@ -1112,6 +1133,13 @@ TextWithEntities Reply::ComposePreviewName(
+ 		not_null<History*> history,
+ 		not_null<HistoryItem*> to,
+ 		const FullReplyTo &replyTo) {
++	if (Arcanegram::HiddenUsers::IsHiddenItem(to)) {
++		return tr::lng_preview_reply_to(
++			tr::now,
++			lt_name,
++			TextWithEntities{ tr::ag_hidden_user_name(tr::now) },
++			tr::marked);
++	}
+ 	const auto sender = [&] {
+ 		if (const auto from = to->displayFrom()) {
+ 			return not_null(from);
 -- 
 2.52.0.windows.1
 

@@ -24,6 +24,8 @@ PRIVATE
     ag_hooks.cpp
     ag_config.h
     ag_config.cpp
+    ag_refresh.h
+    ag_refresh.cpp
     features/ag_forwarded_header.h
     features/ag_forwarded_header.cpp
     features/ag_show_seconds.h

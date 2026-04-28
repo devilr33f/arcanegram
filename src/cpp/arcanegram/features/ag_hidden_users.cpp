@@ -1,9 +1,13 @@
 #include "arcanegram/features/ag_hidden_users.h"
 
 #include "arcanegram/ag_config.h"
+#include "arcanegram/ag_refresh.h"
 #include "data/data_peer.h"
+#include "data/data_session.h"
+#include "history/history.h"
 #include "history/history_item.h"
 #include "lang/lang_keys.h"
+#include "main/main_session.h"
 
 #include <QtCore/QString>
 #include <QtCore/QStringList>
@@ -55,6 +59,25 @@ void Save() {
 	Config::HiddenUsers::Stored.setValue(Serialize(Set()));
 }
 
+void RefreshAll(PeerId changed) {
+	ForEachLoadedItem([changed](not_null<HistoryItem*> item) {
+		auto &owner = item->history()->owner();
+		const auto from = item->from();
+		if (from && from->id == changed) {
+			owner.requestItemViewRefresh(item);
+			return;
+		}
+		const auto reply = item->replyToFullId();
+		if (!reply) {
+			return;
+		}
+		const auto target = owner.message(reply);
+		if (target && target->from()->id == changed) {
+			owner.requestItemViewRefresh(item);
+		}
+	});
+}
+
 } // namespace
 
 void Init() {
@@ -80,6 +103,7 @@ bool IsHiddenItem(not_null<const HistoryItem*> item) {
 void Hide(PeerId id) {
 	if (Set().emplace(id).second) {
 		Save();
+		RefreshAll(id);
 		Stream().fire_copy(id);
 	}
 }
@@ -87,6 +111,7 @@ void Hide(PeerId id) {
 void Unhide(PeerId id) {
 	if (Set().remove(id)) {
 		Save();
+		RefreshAll(id);
 		Stream().fire_copy(id);
 	}
 }

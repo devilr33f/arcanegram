@@ -91,6 +91,14 @@ Built up from prior sessions. Use as a starting point — verify line numbers ha
 | Per-feature init | `src/cpp/arcanegram/ag_hooks.cpp` | `init()` |
 | SectionBuilder API | `Telegram/SourceFiles/settings/settings_builder.h` | `container()` returns `Ui::VerticalLayout *`; no `addWrap()` |
 | `Ui::SettingsButton` constructor | `Telegram/lib_ui/ui/widgets/buttons.h` | `(QWidget *parent, rpl::producer<QString> &&text, const style::SettingsButton & = st::defaultSettingsButton)` |
+| Earliest message ingest (nullable return) | `data/data_session.cpp` | `Session::addNewMessage(MTPMessage)` (~3099) and `(MsgId, MTPMessage, ...)` (~3106) — returns `HistoryItem*`, already short-circuits empty/no-peer; safe drop point |
+| History-side ingest (NOT droppable) | `history/history.cpp` | `History::addNewMessage` (~555) returns `not_null<HistoryItem*>`; cannot drop here, must filter at Session layer or skip downstream side effects |
+| Post-create routing (blocks vs lastMessage) | `history/history.cpp` | `History::addNewItem` (~728) — calls `setLastMessage`/`addNewToBack`/`newItemAdded`; hook here to suppress dialog row + unread without losing the item |
+| Unread count bump + notif schedule | `history/history.cpp` | `History::newItemAdded` (~1544) — bumps `setUnreadCount(unreadCount()+1)` at lines ~1569/1586; early-return here to keep the item but freeze unread counter |
+| Dialog row anchor (`_lastMessage`) | `history/history.cpp` | `History::setLastMessage` (~2854) — stamps the message that drives the dialogs row preview |
+| Dialog row preview computation | `history/history.cpp` | `History::computeChatListMessageFromLast` (~2917) — currently only walks past migration messages; extend to walk past hidden-user messages too |
+| Typing indicator ("X is typing...") | `data/data_send_action.cpp` | `SendActionManager::registerFor` (~47) and painter clear at `History::newItemAdded` (~1549) |
+| @mention autocomplete | `chat_helpers/field_autocomplete.cpp` | `updateFiltered` populates `mrows` from participants/admins |
 
 ## Self-update rule
 

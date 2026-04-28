@@ -1,13 +1,11 @@
 #include "arcanegram/features/ag_show_seconds.h"
 
 #include "arcanegram/ag_config.h"
+#include "arcanegram/ag_refresh.h"
 #include "arcanegram/ui/ag_settings_widgets.h"
-#include "core/application.h"
 #include "lang/lang_keys.h"
-#include "window/window_controller.h"
 
 #include <QtCore/QLocale>
-#include <QtWidgets/QWidget>
 
 namespace Arcanegram::Time {
 namespace {
@@ -25,14 +23,6 @@ QString WithSecondsFormat() {
     }
     base.insert(pos + 2, u":ss"_q);
     return base;
-}
-
-void RepaintActiveWindow() {
-    if (const auto window = Core::App().activeWindow()) {
-        if (const auto widget = window->widget()) {
-            widget->update();
-        }
-    }
 }
 
 } // namespace
@@ -57,7 +47,7 @@ void Setup(::Settings::Builder::SectionBuilder &builder) {
 void Init() {
     Config::ShowSeconds::Enabled.changes(
     ) | rpl::on_next([](bool) {
-        RepaintActiveWindow();
+        RefreshAllItems();
     }, Lifetime());
 }
 
