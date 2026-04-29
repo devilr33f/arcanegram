@@ -55,4 +55,16 @@ inline auto Disabled = BoolItem("ag_chat_wallpaper_disabled", false);
 
 } // namespace ChatWallpaper
 
+namespace Sync {
+
+inline auto Enabled = BoolItem("ag_sync_enabled", false);
+inline auto Endpoint = Item<QString>(
+    "ag_sync_endpoint",
+    QString::fromUtf8("https://arcanesync.example.com"));
+inline auto Bot = Item<QString>(
+    "ag_sync_bot",
+    QString::fromUtf8("arcanesync_bot"));
+
+} // namespace Sync
+
 } // namespace Arcanegram::Config
