@@ -74,22 +74,21 @@ struct InitDataFetcher::Private {
     }
 
     void openWebView(const MTPInputUser &botInput) {
-        using Flag = MTPmessages_RequestSimpleWebView::Flag;
-        api->request(MTPmessages_RequestSimpleWebView(
-            MTP_flags(Flag::f_url),
+        api->request(MTPmessages_RequestMainWebView(
+            MTP_flags(0),
+            MTP_inputPeerSelf(),
             botInput,
-            MTP_bytes((Config::Sync::Endpoint.value() + u"/miniapp"_q).toUtf8()),
             MTPstring(),
             MTPDataJSON(),
             MTP_string("tdesktop")
         )).done([this](const MTPWebViewResult &result) {
             const auto &data = result.data();
             const auto urlStr = qs(data.vurl());
-            LOG(("Sync: simpleWebView url=%1").arg(urlStr));
+            LOG(("Sync: mainWebView url=%1").arg(urlStr));
             const auto raw = ParseFragment(urlStr);
             if (raw.isEmpty()) {
-                LOG(("Sync: empty initData fragment — bot needs Mini App configured (BotFather → /mybots → Bot Settings → Configure Mini App)"));
-                failAll(u"empty initdata — configure mini app in botfather"_q);
+                LOG(("Sync: empty initData fragment — bot needs Main Mini App registered (BotFather → /newapp)"));
+                failAll(u"empty initdata — register main mini app via botfather /newapp"_q);
                 return;
             }
             cached.raw = raw;
