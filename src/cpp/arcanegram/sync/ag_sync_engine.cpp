@@ -283,14 +283,14 @@ void Engine::resetCloud() {
 void Init() {
     g_engine = std::make_unique<Engine>();
     Core::App().domain().activeSessionValue(
-    ) | rpl::start_with_next([](Main::Session *session) {
+    ) | rpl::on_next([](Main::Session *session) {
         if (g_engine) g_engine->setSession(session);
     }, SessionLifetime());
     // pull from cloud on first toggle-on; pulled values win for keys present in
     // cloud, local values are preserved for keys absent in cloud and ride on
     // the next flush.
     Config::Sync::Enabled.changes(
-    ) | rpl::filter([](bool on) { return on; }) | rpl::start_with_next([] {
+    ) | rpl::filter([](bool on) { return on; }) | rpl::on_next([](bool) {
         if (g_engine) g_engine->forcePull();
     }, SessionLifetime());
 }

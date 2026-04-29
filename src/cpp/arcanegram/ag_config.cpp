@@ -25,8 +25,8 @@ template <typename T>
 void Item<T>::setValue(T v) {
     Core::App().settings().writePref<T>(_key, v);
     Core::App().saveSettingsDelayed();
-    if (!Sync::IsApplyingFromCloud()) {
-        if (auto *engine = Sync::Engine::Instance()) {
+    if (!::Arcanegram::Sync::IsApplyingFromCloud()) {
+        if (auto *engine = ::Arcanegram::Sync::Engine::Instance()) {
             engine->enqueue(
                 QString::fromUtf8(_key.data(), int(_key.size())),
                 QJsonValue::fromVariant(QVariant::fromValue(v)));

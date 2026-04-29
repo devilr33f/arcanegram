@@ -64,7 +64,7 @@ struct InitDataFetcher::Private {
                     failAll(u"bot-not-user"_q);
                     return;
                 }
-                openWebView(user->inputUser);
+                openWebView(user->inputUser());
             });
         }).fail([this](const MTP::Error &err) {
             failAll(u"resolve-failed: %1"_q.arg(err.type()));

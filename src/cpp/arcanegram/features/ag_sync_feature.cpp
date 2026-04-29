@@ -49,7 +49,7 @@ void Setup(::Settings::Builder::SectionBuilder &builder) {
         rpl::single(u"endpoint"_q),
         Config::Sync::Endpoint);
 
-    auto statusText = [] -> rpl::producer<QString> {
+    auto statusText = []() -> rpl::producer<QString> {
         if (auto *e = Sync::Engine::Instance()) {
             return e->status() | rpl::map(&FormatStatus);
         }

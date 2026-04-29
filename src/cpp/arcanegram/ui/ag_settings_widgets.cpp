@@ -55,7 +55,7 @@ void AddTextRow(
             item.value()),
         st::settingsButtonNoIcon.padding);
     field->changes(
-    ) | rpl::start_with_next([field, &item] {
+    ) | rpl::on_next([field, &item](auto) {
         const auto v = field->getLastText().trimmed();
         if (v != item.value()) {
             item.setValue(v);
