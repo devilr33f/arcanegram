@@ -24,10 +24,12 @@ QString FormatStatus(const Sync::StatusInfo &info) {
             : u"ready"_q;
     case Sync::Status::Syncing:
         return u"syncing…"_q;
-    case Sync::Status::Offline:
-        return info.pendingCount
+    case Sync::Status::Offline: {
+        const auto base = info.pendingCount
             ? u"offline · %1 pending"_q.arg(info.pendingCount)
-            : (info.message.isEmpty() ? u"offline"_q : info.message);
+            : u"offline"_q;
+        return info.message.isEmpty() ? base : (base + u" · "_q + info.message);
+    }
     case Sync::Status::Conflict:
         return u"resolving conflict…"_q;
     }

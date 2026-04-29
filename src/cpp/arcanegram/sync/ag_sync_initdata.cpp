@@ -9,6 +9,8 @@
 #include "main/main_session.h"
 #include "mtproto/sender.h"
 
+#include "base/debug_log.h"
+
 #include <QtCore/QDateTime>
 #include <QtCore/QUrl>
 #include <QtCore/QUrlQuery>
@@ -82,9 +84,12 @@ struct InitDataFetcher::Private {
             MTP_string("tdesktop")
         )).done([this](const MTPWebViewResult &result) {
             const auto &data = result.data();
-            const auto raw = ParseFragment(qs(data.vurl()));
+            const auto urlStr = qs(data.vurl());
+            LOG(("Sync: simpleWebView url=%1").arg(urlStr));
+            const auto raw = ParseFragment(urlStr);
             if (raw.isEmpty()) {
-                failAll(u"empty-init-data"_q);
+                LOG(("Sync: empty initData fragment — bot needs Mini App configured (BotFather → /mybots → Bot Settings → Configure Mini App)"));
+                failAll(u"empty initdata — configure mini app in botfather"_q);
                 return;
             }
             cached.raw = raw;
@@ -98,6 +103,7 @@ struct InitDataFetcher::Private {
     }
 
     void failAll(const QString &msg) {
+        LOG(("Sync: initData failed: %1").arg(msg));
         inflight = false;
         auto pending = std::exchange(waiters, {});
         for (auto &[_, fail] : pending) if (fail) fail(msg);
