@@ -40,6 +40,18 @@ PRIVATE
     ui/ag_settings_main.cpp
     ui/ag_hidden_users_settings.h
     ui/ag_hidden_users_settings.cpp
+    features/ag_sync_feature.h
+    features/ag_sync_feature.cpp
+    sync/ag_sync_initdata.h
+    sync/ag_sync_initdata.cpp
+    sync/ag_sync_client.h
+    sync/ag_sync_client.cpp
+    sync/ag_sync_state.h
+    sync/ag_sync_state.cpp
+    sync/ag_sync_keys.h
+    sync/ag_sync_keys.cpp
+    sync/ag_sync_engine.h
+    sync/ag_sync_engine.cpp
 )
 
 target_include_directories(arcanegram PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
@@ -54,6 +66,7 @@ PRIVATE
     desktop-app::lib_base
     desktop-app::lib_rpl
     desktop-app::lib_storage
+    Qt::Network
 )
 
 # config.h #errors without these; they're only set on the Telegram target by stock.
