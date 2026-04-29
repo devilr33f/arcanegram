@@ -10,6 +10,7 @@ class SectionBuilder;
 namespace Arcanegram {
 namespace Config {
 class BoolItem;
+template <typename T> class Item;
 } // namespace Config
 
 namespace Settings {
@@ -21,6 +22,15 @@ void AddBoolRow(
     rpl::producer<QString> info,
     Config::BoolItem &item,
     bool needsRestart = false);
+
+void AddTextRow(
+    ::Settings::Builder::SectionBuilder &builder,
+    rpl::producer<QString> placeholder,
+    Config::Item<QString> &item);
+
+void AddStatusRow(
+    ::Settings::Builder::SectionBuilder &builder,
+    rpl::producer<QString> text);
 
 } // namespace Settings
 } // namespace Arcanegram

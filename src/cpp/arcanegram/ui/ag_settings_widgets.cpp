@@ -3,9 +3,13 @@
 #include "arcanegram/ag_config.h"
 #include "lang/lang_keys.h"
 #include "settings/settings_builder.h"
+#include "styles/style_layers.h"
 #include "styles/style_settings.h"
 #include "ui/toast/toast.h"
 #include "ui/widgets/buttons.h"
+#include "ui/widgets/fields/input_field.h"
+#include "ui/widgets/labels.h"
+#include "ui/wrap/vertical_layout.h"
 
 namespace Arcanegram::Settings {
 
@@ -36,6 +40,39 @@ void AddBoolRow(
     if (info) {
         builder.addDividerText(std::move(info));
     }
+}
+
+void AddTextRow(
+        ::Settings::Builder::SectionBuilder &builder,
+        rpl::producer<QString> placeholder,
+        Config::Item<QString> &item) {
+    const auto container = builder.container();
+    const auto field = container->add(
+        object_ptr<Ui::InputField>(
+            container,
+            st::defaultInputField,
+            std::move(placeholder),
+            item.value()),
+        st::settingsButtonNoIcon.padding);
+    field->changes(
+    ) | rpl::start_with_next([field, &item] {
+        const auto v = field->getLastText().trimmed();
+        if (v != item.value()) {
+            item.setValue(v);
+        }
+    }, field->lifetime());
+}
+
+void AddStatusRow(
+        ::Settings::Builder::SectionBuilder &builder,
+        rpl::producer<QString> text) {
+    const auto container = builder.container();
+    container->add(
+        object_ptr<Ui::FlatLabel>(
+            container,
+            std::move(text),
+            st::boxLabel),
+        st::settingsButtonNoIcon.padding);
 }
 
 } // namespace Arcanegram::Settings
