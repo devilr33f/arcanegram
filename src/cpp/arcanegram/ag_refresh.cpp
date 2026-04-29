@@ -52,6 +52,20 @@ void ForEachLoadedItem(Fn<void(not_null<HistoryItem*>)> action) {
 	});
 }
 
+void ForEachLoadedHistoryFor(
+		PeerId id,
+		Fn<void(not_null<History*>)> action) {
+	for (const auto &entry : Core::App().domain().accounts()) {
+		const auto session = entry.account->maybeSession();
+		if (!session) {
+			continue;
+		}
+		if (const auto h = session->data().historyLoaded(id)) {
+			action(h);
+		}
+	}
+}
+
 void RefreshAllItems() {
 	ForEachLoadedHistory([](not_null<History*> h) {
 		auto &owner = h->owner();

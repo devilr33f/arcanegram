@@ -60,6 +60,9 @@ void Save() {
 }
 
 void RefreshAll(PeerId changed) {
+	ForEachLoadedHistoryFor(changed, [](not_null<History*> history) {
+		history->updateChatListExistence();
+	});
 	ForEachLoadedItem([changed](not_null<HistoryItem*> item) {
 		auto &owner = item->history()->owner();
 		const auto from = item->from();
