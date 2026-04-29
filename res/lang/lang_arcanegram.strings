@@ -14,3 +14,5 @@
 "ag_hidden_user_message" = "Message from hidden user";
 "ag_hidden_user_name" = "Hidden user";
 "ag_hidden_users_remove" = "Remove";
+"ag_peer_id_copy_botapi" = "Copy ID (Bot API)";
+"ag_peer_id_copy_mtproto" = "Copy ID (MTProto)";

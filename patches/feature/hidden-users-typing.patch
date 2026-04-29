@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Wed, 29 Apr 2026 14:05:56 +0600
+Subject: [PATCH] skip typing indicator from hidden users
+
+---
+ Telegram/SourceFiles/data/data_send_action.cpp | 4 ++++
+ 1 file changed, 4 insertions(+)
+
+diff --git a/Telegram/SourceFiles/data/data_send_action.cpp b/Telegram/SourceFiles/data/data_send_action.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_send_action.cpp
++++ b/Telegram/SourceFiles/data/data_send_action.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "data/data_send_action.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "data/data_user.h"
+ #include "history/history.h"
+ #include "history/view/history_view_send_action.h"
+@@ -53,6 +54,9 @@ void SendActionManager::registerFor(
+ 	if (history->peer->isSelf()) {
+ 		return;
+ 	}
++	if (Arcanegram::HiddenUsers::IsHidden(user->id)) {
++		return;
++	}
+ 	const auto sendAction = lookupPainter(history, rootId);
+ 	if (!sendAction) {
+ 		return;
+-- 
+2.52.0.windows.1
+

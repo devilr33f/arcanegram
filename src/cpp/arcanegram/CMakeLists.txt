@@ -34,6 +34,8 @@ PRIVATE
     features/ag_hidden_users.cpp
     features/ag_chat_wallpaper.h
     features/ag_chat_wallpaper.cpp
+    features/ag_peer_ids.h
+    features/ag_peer_ids.cpp
     ui/ag_settings_widgets.h
     ui/ag_settings_widgets.cpp
     ui/ag_settings_main.h
