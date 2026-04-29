@@ -23,6 +23,9 @@ When you encounter a new symptom and resolve it, **append a new row** to the rel
 | `_addAction` overload mismatch in `Window::Filler::*` (window_peer_menu.cpp) | `PeerMenuCallback::operator()` requires `(text, cb, const style::icon*)` — three args, not two | Pass `nullptr` as the icon argument. |
 | `Ui::VerticalLayout::add: no matching overloaded function found` | Likely passing `style::margins` by name when the API wants a different type, or wrong overload | Check `wrap/vertical_layout.h` — overloads are `(object_ptr, style::align)` and `(object_ptr, const style::margins &, style::align)`. |
 | libyuv duplicate symbols (LNK2005, ~50 symbols like `ScalePlane`, `CopyPlane`) | libavif and tg_owt both bundle libyuv with `/Zi` debug info | See `BUILD.md` "Known issues" — `-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=` (empty) in `build-telegram.bat` suppresses /Zi entirely, dodging the duplicate. `misc/build-support.patch` also strips libyuv from libavif structurally. |
+| `'UserData::inputUser': non-standard syntax; use '&' to create a pointer to member` (C3867) | `inputUser` on `UserData` is a member function, not a field | Call it: `user->inputUser()`, not `user->inputUser`. |
+| `C2039 'X' is not a member of 'Arcanegram::Config::Sync'` when the symbol lives in `Arcanegram::Sync` (sibling namespace) | From inside `namespace Arcanegram::Config`, unqualified `Sync::` resolves to the nested `Config::Sync` first, shadowing `Arcanegram::Sync` | Fully qualify: `::Arcanegram::Sync::X`. |
+| `lambda declarator without a parameter list requires at least '/std:c++23preview'` (C5279) | C++23-only abbreviated lambda syntax: `[] -> Type { ... }` | Write the parameter list explicitly: `[]() -> Type { ... }`. |
 
 ## Runtime / behavior bugs
 
