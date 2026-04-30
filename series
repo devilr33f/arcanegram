@@ -21,4 +21,5 @@ feature/disable-chat-wallpaper.patch
 misc/copy-id-url-handler.patch
 feature/peer-id-bot-api-format.patch
 feature/fast-messages-shortcuts.patch
+feature/fast-messages-hook.patch
 misc/branding.patch
