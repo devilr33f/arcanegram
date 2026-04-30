@@ -5,8 +5,8 @@ Subject: [PATCH] replace reply quote and sender name when target message is
  from a hidden user
 
 ---
- .../history/view/history_view_reply.cpp       | 50 +++++++++++++++----
- 1 file changed, 39 insertions(+), 11 deletions(-)
+ .../history/view/history_view_reply.cpp       | 54 +++++++++++++++----
+ 1 file changed, 43 insertions(+), 11 deletions(-)
 
 diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
 index 0000000..0000000 100644
@@ -114,7 +114,18 @@ index 0000000..0000000 100644
  	if (const auto story = data->resolvedStory.get()) {
  		return story->peer();
  	} else if (!message) {
-@@ -661,6 +679,9 @@ void Reply::updateName(
+@@ -560,6 +578,10 @@ QString Reply::senderName(
+ 		not_null<const Element*> view,
+ 		not_null<HistoryMessageReply*> data,
+ 		bool shorten) const {
++	if (const auto message = data->resolvedMessage.get()
++		; message && Arcanegram::HiddenUsers::IsHiddenItem(message)) {
++		return tr::ag_hidden_user_name(tr::now);
++	}
+ 	if (const auto peer = sender(view, data)) {
+ 		return senderName(peer, shorten);
+ 	} else if (!data->resolvedMessage) {
+@@ -661,6 +683,9 @@ void Reply::updateName(
  		.session = &history->session(),
  		.customEmojiLoopLimit = 1,
  	});
@@ -124,7 +135,7 @@ index 0000000..0000000 100644
  	_name.setMarkedText(
  		st::fwdTextStyle,
  		nameFull,
-@@ -1112,6 +1133,13 @@ TextWithEntities Reply::ComposePreviewName(
+@@ -1112,6 +1137,13 @@ TextWithEntities Reply::ComposePreviewName(
  		not_null<History*> history,
  		not_null<HistoryItem*> to,
  		const FullReplyTo &replyTo) {
