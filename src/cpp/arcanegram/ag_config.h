@@ -1,5 +1,7 @@
 #pragma once
 
+#include "base/assertion.h"
+
 #include <string_view>
 #include <QtCore/QString>
 #include <rpl/event_stream.h>
@@ -66,5 +68,38 @@ inline auto Bot = Item<QString>(
     QString::fromUtf8("arcanesync_bot"));
 
 } // namespace Sync
+
+namespace FastMessages {
+
+constexpr int kSlotCount = 10;
+
+inline auto Slot1 = Item<QString>("ag_fast_message_text_1", QString());
+inline auto Slot2 = Item<QString>("ag_fast_message_text_2", QString());
+inline auto Slot3 = Item<QString>("ag_fast_message_text_3", QString());
+inline auto Slot4 = Item<QString>("ag_fast_message_text_4", QString());
+inline auto Slot5 = Item<QString>("ag_fast_message_text_5", QString());
+inline auto Slot6 = Item<QString>("ag_fast_message_text_6", QString());
+inline auto Slot7 = Item<QString>("ag_fast_message_text_7", QString());
+inline auto Slot8 = Item<QString>("ag_fast_message_text_8", QString());
+inline auto Slot9 = Item<QString>("ag_fast_message_text_9", QString());
+inline auto Slot10 = Item<QString>("ag_fast_message_text_10", QString());
+
+[[nodiscard]] inline Item<QString> &Slot(int index) {
+    switch (index) {
+    case 0: return Slot1;
+    case 1: return Slot2;
+    case 2: return Slot3;
+    case 3: return Slot4;
+    case 4: return Slot5;
+    case 5: return Slot6;
+    case 6: return Slot7;
+    case 7: return Slot8;
+    case 8: return Slot9;
+    case 9: return Slot10;
+    }
+    Unexpected("FastMessages::Slot index out of range");
+}
+
+} // namespace FastMessages
 
 } // namespace Arcanegram::Config
