@@ -7,14 +7,40 @@
 #include "history/history.h"
 #include "lang/lang_keys.h"
 #include "main/main_session.h"
-#include "styles/style_layers.h"
 #include "styles/style_settings.h"
-#include "ui/widgets/fields/input_field.h"
-#include "ui/widgets/labels.h"
 #include "ui/vertical_list.h"
+#include "ui/widgets/fields/input_field.h"
 #include "ui/wrap/vertical_layout.h"
 
 namespace Arcanegram::FastMessages {
+namespace {
+
+void AddSlotField(
+        not_null<Ui::VerticalLayout*> container,
+        int index) {
+    auto &item = Config::FastMessages::Slot(index);
+    Ui::AddSubsectionTitle(
+        container,
+        tr::ag_fast_messages_slot(
+            lt_index,
+            rpl::single(QString::number(index + 1))));
+    const auto field = container->add(
+        object_ptr<Ui::InputField>(
+            container,
+            st::settingsBio,
+            tr::ag_fast_messages_placeholder(),
+            item.value()),
+        st::settingsBioMargins);
+    field->changes(
+    ) | rpl::on_next([field, &item](auto) {
+        const auto v = field->getLastText();
+        if (v != item.value()) {
+            item.setValue(v);
+        }
+    }, field->lifetime());
+}
+
+} // namespace
 
 void Init() {
 }
@@ -42,33 +68,11 @@ bool Send(
 void Setup(::Settings::Builder::SectionBuilder &builder) {
     const auto container = builder.container();
     Ui::AddSubsectionTitle(container, tr::ag_fast_messages_title());
-    AddSkip(container);
-    container->add(
-        object_ptr<Ui::FlatLabel>(
-            container,
-            tr::ag_fast_messages_info(),
-            st::boxLabel),
-        st::settingsButtonNoIcon.padding);
-
     for (auto i = 0; i != Config::FastMessages::kSlotCount; ++i) {
-        auto &item = Config::FastMessages::Slot(i);
-        const auto field = container->add(
-            object_ptr<Ui::InputField>(
-                container,
-                st::defaultInputField,
-                tr::ag_fast_messages_placeholder(
-                    lt_index,
-                    rpl::single(QString::number(i + 1))),
-                item.value()),
-            st::settingsButtonNoIcon.padding);
-        field->changes(
-        ) | rpl::on_next([field, &item](auto) {
-            const auto v = field->getLastText();
-            if (v != item.value()) {
-                item.setValue(v);
-            }
-        }, field->lifetime());
+        AddSlotField(container, i);
     }
+    Ui::AddSkip(container);
+    Ui::AddDividerText(container, tr::ag_fast_messages_info());
 }
 
 } // namespace Arcanegram::FastMessages

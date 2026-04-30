@@ -18,5 +18,5 @@
 "ag_peer_id_copy_mtproto" = "Copy ID (MTProto)";
 "ag_fast_messages_title" = "Fast messages";
 "ag_fast_messages_info" = "Type a message per slot. Bind keys in Settings → Chat Settings → Keyboard Shortcuts.";
-"ag_fast_messages_slot" = "Fast message {index}";
-"ag_fast_messages_placeholder" = "Slot {index} text (e.g. /dban begging)";
+"ag_fast_messages_slot" = "Slot {index}";
+"ag_fast_messages_placeholder" = "Message text (e.g. /dban begging)";
