@@ -7,6 +7,7 @@
 #include "history/history.h"
 #include "lang/lang_keys.h"
 #include "main/main_session.h"
+#include "styles/style_layers.h"
 #include "styles/style_settings.h"
 #include "ui/widgets/fields/input_field.h"
 #include "ui/widgets/labels.h"
