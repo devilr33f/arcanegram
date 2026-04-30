@@ -2,18 +2,26 @@
 
 #include "apiwrap.h"
 #include "arcanegram/ag_config.h"
+#include "arcanegram/ui/ag_settings_main.h"
 #include "data/data_peer.h"
 #include "data/data_session.h"
 #include "history/history.h"
 #include "lang/lang_keys.h"
 #include "main/main_session.h"
+#include "settings/settings_builder.h"
+#include "settings/settings_common_session.h"
+#include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
 #include "ui/vertical_list.h"
 #include "ui/widgets/fields/input_field.h"
 #include "ui/wrap/vertical_layout.h"
+#include "window/window_session_controller.h"
 
 namespace Arcanegram::FastMessages {
 namespace {
+
+using namespace ::Settings;
+using namespace ::Settings::Builder;
 
 void AddSlotField(
         not_null<Ui::VerticalLayout*> container,
@@ -38,6 +46,51 @@ void AddSlotField(
             item.setValue(v);
         }
     }, field->lifetime());
+}
+
+class Page : public Section<Page> {
+public:
+    Page(QWidget *parent, not_null<Window::SessionController*> controller);
+
+    [[nodiscard]] rpl::producer<QString> title() override {
+        return tr::ag_fast_messages_title();
+    }
+
+private:
+    void setupContent();
+};
+
+void BuildPage(SectionBuilder &builder) {
+    const auto container = builder.container();
+    for (auto i = 0; i != Config::FastMessages::kSlotCount; ++i) {
+        AddSlotField(container, i);
+    }
+    Ui::AddSkip(container);
+    Ui::AddDividerText(container, tr::ag_fast_messages_info());
+}
+
+const auto kPageMeta = BuildHelper({
+    .id = Page::Id(),
+    .parentId = Arcanegram::Settings::Id(),
+    .title = &tr::ag_fast_messages_title,
+    .icon = &st::menuIconReply,
+}, [](SectionBuilder &builder) {
+    BuildPage(builder);
+});
+
+const SectionBuildMethod kPageSection = kPageMeta.build;
+
+Page::Page(
+    QWidget *parent,
+    not_null<Window::SessionController*> controller)
+: Section(parent, controller) {
+    setupContent();
+}
+
+void Page::setupContent() {
+    const auto content = Ui::CreateChild<Ui::VerticalLayout>(this);
+    build(content, kPageSection);
+    Ui::ResizeFitChild(this, content);
 }
 
 } // namespace
@@ -66,13 +119,11 @@ bool Send(
 }
 
 void Setup(::Settings::Builder::SectionBuilder &builder) {
-    const auto container = builder.container();
-    Ui::AddSubsectionTitle(container, tr::ag_fast_messages_title());
-    for (auto i = 0; i != Config::FastMessages::kSlotCount; ++i) {
-        AddSlotField(container, i);
-    }
-    Ui::AddSkip(container);
-    Ui::AddDividerText(container, tr::ag_fast_messages_info());
+    builder.addSectionButton({
+        .title = tr::ag_fast_messages_title(),
+        .targetSection = Page::Id(),
+        .icon = { &st::menuIconReply },
+    });
 }
 
 } // namespace Arcanegram::FastMessages
