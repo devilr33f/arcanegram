@@ -3,6 +3,7 @@
 #include "arcanegram/features/ag_forwarded_header.h"
 #include "arcanegram/features/ag_show_seconds.h"
 #include "arcanegram/features/ag_chat_wallpaper.h"
+#include "arcanegram/features/ag_fast_messages.h"
 #include "arcanegram/features/ag_sync_feature.h"
 #include "arcanegram/ui/ag_hidden_users_settings.h"
 #include "lang/lang_keys.h"
@@ -37,6 +38,7 @@ void BuildContent(SectionBuilder &builder) {
     Arcanegram::ChatWallpaper::Setup(builder);
     Arcanegram::HiddenUsers::Setup(builder);
     Arcanegram::CloudSync::Setup(builder);
+    Arcanegram::FastMessages::Setup(builder);
 }
 
 const auto kMeta = BuildHelper({
