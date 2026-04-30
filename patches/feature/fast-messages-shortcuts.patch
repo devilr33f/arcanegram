@@ -1,0 +1,129 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 03:25:39 +0600
+Subject: [PATCH] expose 10 fast-message commands in keybind editor
+
+---
+ Telegram/Resources/langs/lang.strings         |  1 +
+ Telegram/SourceFiles/core/shortcuts.cpp       | 20 ++++++++++++++++
+ Telegram/SourceFiles/core/shortcuts.h         | 24 +++++++++++++++++++
+ .../settings/sections/settings_shortcuts.cpp  | 11 +++++++++
+ 4 files changed, 56 insertions(+)
+
+diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/lang.strings
+index 0000000..0000000 100644
+--- a/Telegram/Resources/langs/lang.strings
++++ b/Telegram/Resources/langs/lang.strings
+@@ -743,6 +743,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ "lng_shortcuts_record_voice_message" = "Record Voice Message";
+ "lng_shortcuts_record_round_message" = "Record Round Message";
+ "lng_shortcuts_admin_log" = "Group/Channel Recent Actions";
++"lng_shortcuts_fast_message" = "Fast message {index}";
+ 
+ "lng_attach" = "Add attachment";
+ "lng_attach_replace" = "Replace attachment";
+diff --git a/Telegram/SourceFiles/core/shortcuts.cpp b/Telegram/SourceFiles/core/shortcuts.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/core/shortcuts.cpp
++++ b/Telegram/SourceFiles/core/shortcuts.cpp
+@@ -137,6 +137,16 @@ const auto CommandByName = base::flat_map<QString, Command>{
+ 	{ u"archive_chat"_q                  , Command::ArchiveChat },
+ 	{ u"record_round"_q                  , Command::RecordRound },
+ 	{ u"show_admin_log"_q                , Command::ShowAdminLog },
++	{ u"fast_message_1"_q                , Command::FastMessage1 },
++	{ u"fast_message_2"_q                , Command::FastMessage2 },
++	{ u"fast_message_3"_q                , Command::FastMessage3 },
++	{ u"fast_message_4"_q                , Command::FastMessage4 },
++	{ u"fast_message_5"_q                , Command::FastMessage5 },
++	{ u"fast_message_6"_q                , Command::FastMessage6 },
++	{ u"fast_message_7"_q                , Command::FastMessage7 },
++	{ u"fast_message_8"_q                , Command::FastMessage8 },
++	{ u"fast_message_9"_q                , Command::FastMessage9 },
++	{ u"fast_message_10"_q               , Command::FastMessage10 },
+ 	//
+ };
+ 
+@@ -159,6 +169,16 @@ const base::flat_map<Command, QString> &CommandNames() {
+ 	Command::ShowScheduled,
+ 	Command::ArchiveChat,
+ 	Command::RecordRound,
++	Command::FastMessage1,
++	Command::FastMessage2,
++	Command::FastMessage3,
++	Command::FastMessage4,
++	Command::FastMessage5,
++	Command::FastMessage6,
++	Command::FastMessage7,
++	Command::FastMessage8,
++	Command::FastMessage9,
++	Command::FastMessage10,
+ };
+ 
+ class Manager {
+diff --git a/Telegram/SourceFiles/core/shortcuts.h b/Telegram/SourceFiles/core/shortcuts.h
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/core/shortcuts.h
++++ b/Telegram/SourceFiles/core/shortcuts.h
+@@ -87,6 +87,17 @@ enum class Command {
+ 	SupportScrollToCurrent,
+ 	SupportHistoryBack,
+ 	SupportHistoryForward,
++
++	FastMessage1,
++	FastMessage2,
++	FastMessage3,
++	FastMessage4,
++	FastMessage5,
++	FastMessage6,
++	FastMessage7,
++	FastMessage8,
++	FastMessage9,
++	FastMessage10,
+ };
+ 
+ [[maybe_unused]] constexpr auto kShowFolder = {
+@@ -109,6 +120,19 @@ enum class Command {
+ 	Command::ShowAccount6,
+ };
+ 
++[[maybe_unused]] constexpr auto kFastMessage = {
++	Command::FastMessage1,
++	Command::FastMessage2,
++	Command::FastMessage3,
++	Command::FastMessage4,
++	Command::FastMessage5,
++	Command::FastMessage6,
++	Command::FastMessage7,
++	Command::FastMessage8,
++	Command::FastMessage9,
++	Command::FastMessage10,
++};
++
+ [[nodiscard]] FnMut<bool()> RequestHandler(Command command);
+ 
+ class Request {
+diff --git a/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp b/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp
++++ b/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp
+@@ -123,6 +123,17 @@ struct Labeled {
+ 		{ C::MediaStop, tr::lng_shortcuts_media_stop() },
+ 		{ C::MediaPrevious, tr::lng_shortcuts_media_previous() },
+ 		{ C::MediaNext, tr::lng_shortcuts_media_next() },
++		separator,
++		{ C::FastMessage1, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(1))) },
++		{ C::FastMessage2, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(2))) },
++		{ C::FastMessage3, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(3))) },
++		{ C::FastMessage4, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(4))) },
++		{ C::FastMessage5, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(5))) },
++		{ C::FastMessage6, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(6))) },
++		{ C::FastMessage7, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(7))) },
++		{ C::FastMessage8, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(8))) },
++		{ C::FastMessage9, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(9))) },
++		{ C::FastMessage10, tr::lng_shortcuts_fast_message(lt_index, rpl::single(QString::number(10))) },
+ 	};
+ }
+ 
+-- 
+2.52.0.windows.1
+

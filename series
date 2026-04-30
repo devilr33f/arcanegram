@@ -20,4 +20,5 @@ feature/hidden-users-typing.patch
 feature/disable-chat-wallpaper.patch
 misc/copy-id-url-handler.patch
 feature/peer-id-bot-api-format.patch
+feature/fast-messages-shortcuts.patch
 misc/branding.patch
