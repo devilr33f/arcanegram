@@ -18,7 +18,7 @@ void Init();
 [[nodiscard]] QString GeneratedName(PeerId id);
 [[nodiscard]] QString GeneratedShortName(PeerId id);
 
-[[nodiscard]] uint8 ForcedColorIndex();
+[[nodiscard]] uint8 ForcedColorIndex(PeerId id);
 
 [[nodiscard]] rpl::producer<bool> Changes();
 

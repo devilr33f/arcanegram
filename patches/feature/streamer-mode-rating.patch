@@ -1,0 +1,46 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 17:22:26 +0600
+Subject: [PATCH] streamer mode: hide profile rating
+
+---
+ Telegram/SourceFiles/data/data_peer_values.cpp | 16 ++++++++++++----
+ 1 file changed, 12 insertions(+), 4 deletions(-)
+
+diff --git a/Telegram/SourceFiles/data/data_peer_values.cpp b/Telegram/SourceFiles/data/data_peer_values.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer_values.cpp
++++ b/Telegram/SourceFiles/data/data_peer_values.cpp
+@@ -20,6 +20,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "ui/image/image_prepare.h"
+ #include "base/unixtime.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
++
+ namespace Data {
+ namespace {
+ 
+@@ -524,10 +526,16 @@ bool ChannelHasSubscriptionUntilDate(ChannelData *channel) {
+ rpl::producer<Data::StarsRating> StarsRatingValue(
+ 		not_null<PeerData*> peer) {
+ 	if (const auto user = peer->asUser()) {
+-		return user->session().changes().peerFlagsValue(
+-			user,
+-			Data::PeerUpdate::Flag::StarsRating
+-		) | rpl::map([=] {
++		return rpl::combine(
++			user->session().changes().peerFlagsValue(
++				user,
++				Data::PeerUpdate::Flag::StarsRating),
++			rpl::single(Arcanegram::Streamer::IsActive())
++				| rpl::then(Arcanegram::Streamer::Changes())
++		) | rpl::map([=](const auto &, bool streamer) {
++			if (streamer) {
++				return Data::StarsRating();
++			}
+ 			auto result = user->starsRating();
+ 			if (!user->isSelf() && result.level < 0) {
+ 				result.stars = 0;
+-- 
+2.52.0.windows.1
+

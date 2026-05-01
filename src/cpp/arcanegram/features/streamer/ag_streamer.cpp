@@ -140,8 +140,13 @@ QString GeneratedShortName(PeerId id) {
 	return Capitalize(kAdjectives[(a ^ b) % kAdjectives.size()]);
 }
 
-uint8 ForcedColorIndex() {
-	return 5;
+uint8 ForcedColorIndex(PeerId id) {
+	const auto mix = Seed() ^ quint64(id.value);
+	const auto a = mix * 0x9E3779B97F4A7C15ull;
+	const auto b = (mix >> 17) * 0xBF58476D1CE4E5B9ull;
+	// mod 7: standard non-premium palette has 7 hues; extended indices fall
+	// back to standard for free accounts, so 0..6 is uniformly available.
+	return uint8((a ^ b) % 7);
 }
 
 rpl::producer<bool> Changes() {
