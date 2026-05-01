@@ -1,0 +1,100 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:08:54 +0600
+Subject: [PATCH] streamer mode: hide profile phone/username/bio/common-chats
+
+---
+ .../info/profile/info_profile_values.cpp      | 56 +++++++++++--------
+ 1 file changed, 34 insertions(+), 22 deletions(-)
+
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
+@@ -45,11 +45,14 @@ namespace {
+ using UpdateFlag = Data::PeerUpdate::Flag;
+ 
+ auto PlainAboutValue(not_null<PeerData*> peer) {
+-	return peer->session().changes().peerFlagsValue(
+-		peer,
+-		UpdateFlag::About
+-	) | rpl::map([=] {
+-		return peer->about();
++	return rpl::combine(
++		peer->session().changes().peerFlagsValue(
++			peer,
++			UpdateFlag::About),
++		rpl::single(Arcanegram::Streamer::IsActive())
++			| rpl::then(Arcanegram::Streamer::Changes())
++	) | rpl::map([=](const auto &, bool streamer) {
++		return streamer ? QString() : peer->about();
+ 	});
+ }
+ 
+@@ -126,13 +129,16 @@ rpl::producer<int32> ColorIdValue(not_null<Data::ForumTopic*> topic) {
+ }
+ 
+ rpl::producer<TextWithEntities> PhoneValue(not_null<UserData*> user) {
+-	return rpl::merge(
+-		Countries::Instance().updated(),
+-		user->session().changes().peerFlagsValue(
+-			user,
+-			UpdateFlag::PhoneNumber) | rpl::to_empty
+-	) | rpl::map([=] {
+-		return tr::marked(Ui::FormatPhone(user->phone()));
++	return rpl::combine(
++		rpl::merge(
++			Countries::Instance().updated(),
++			user->session().changes().peerFlagsValue(
++				user,
++				UpdateFlag::PhoneNumber) | rpl::to_empty),
++		rpl::single(Arcanegram::Streamer::IsActive())
++			| rpl::then(Arcanegram::Streamer::Changes())
++	) | rpl::map([=](const auto &, bool streamer) {
++		return tr::marked(Ui::FormatPhone(streamer ? QString() : user->phone()));
+ 	});
+ }
+ 
+@@ -161,11 +167,14 @@ rpl::producer<TextWithEntities> PhoneOrHiddenValue(not_null<UserData*> user) {
+ rpl::producer<TextWithEntities> UsernameValue(
+ 		not_null<PeerData*> peer,
+ 		bool primary) {
+-	return (primary
+-		? PlainPrimaryUsernameValue(peer)
+-		: (PlainUsernameValue(peer) | rpl::type_erased)
+-	) | rpl::map([](QString &&username) {
+-		return username.isEmpty()
++	return rpl::combine(
++		(primary
++			? PlainPrimaryUsernameValue(peer)
++			: (PlainUsernameValue(peer) | rpl::type_erased)),
++		rpl::single(Arcanegram::Streamer::IsActive())
++			| rpl::then(Arcanegram::Streamer::Changes())
++	) | rpl::map([](const QString &username, bool streamer) {
++		return (streamer || username.isEmpty())
+ 			? tr::marked()
+ 			: tr::marked('@' + username);
+ 	});
+@@ -600,11 +609,14 @@ rpl::producer<int> SharedMediaCountValue(
+ }
+ 
+ rpl::producer<int> CommonGroupsCountValue(not_null<UserData*> user) {
+-	return user->session().changes().peerFlagsValue(
+-		user,
+-		UpdateFlag::CommonChats
+-	) | rpl::map([=] {
+-		return user->commonChatsCount();
++	return rpl::combine(
++		user->session().changes().peerFlagsValue(
++			user,
++			UpdateFlag::CommonChats),
++		rpl::single(Arcanegram::Streamer::IsActive())
++			| rpl::then(Arcanegram::Streamer::Changes())
++	) | rpl::map([=](const auto &, bool streamer) {
++		return streamer ? 0 : user->commonChatsCount();
+ 	});
+ }
+ 
+-- 
+2.52.0.windows.1
+

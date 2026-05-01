@@ -1,0 +1,59 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:03:37 +0600
+Subject: [PATCH] streamer mode: hide verified/scam/premium badges
+
+---
+ Telegram/SourceFiles/info/profile/info_profile_badge.cpp  | 5 +++++
+ Telegram/SourceFiles/info/profile/info_profile_values.cpp | 5 +++++
+ 2 files changed, 10 insertions(+)
+
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_badge.cpp b/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
+@@ -22,6 +22,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "main/main_session.h"
+ #include "styles/style_info.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
++
+ namespace Info::Profile {
+ namespace {
+ 
+@@ -306,6 +308,9 @@ rpl::producer<Badge::Content> VerifiedContentForPeer(
+ 
+ rpl::producer<Badge::Content> BotVerifyBadgeForPeer(
+ 		not_null<PeerData*> peer) {
++	if (Arcanegram::Streamer::ShouldAnonymize(peer)) {
++		return rpl::single(Badge::Content{ BadgeType::None });
++	}
+ 	return peer->session().changes().peerFlagsValue(
+ 		peer,
+ 		Data::PeerUpdate::Flag::VerifyInfo
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
+@@ -36,6 +36,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "boxes/peers/edit_peer_permissions_box.h"
+ #include "base/unixtime.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
++
+ namespace Info {
+ namespace Profile {
+ namespace {
+@@ -706,6 +708,9 @@ rpl::producer<BadgeType> BadgeValueFromFlags(Peer peer) {
+ }
+ 
+ rpl::producer<BadgeType> BadgeValue(not_null<PeerData*> peer) {
++	if (Arcanegram::Streamer::ShouldAnonymize(peer)) {
++		return rpl::single(BadgeType::None);
++	}
+ 	if (const auto user = peer->asUser()) {
+ 		return BadgeValueFromFlags<UserDataFlag>(user);
+ 	} else if (const auto channel = peer->asChannel()) {
+-- 
+2.52.0.windows.1
+

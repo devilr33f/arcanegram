@@ -1,0 +1,70 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:03:10 +0600
+Subject: [PATCH] streamer mode: strip name color and decoration
+
+---
+ Telegram/SourceFiles/data/data_peer.cpp | 16 ++++++++++++++++
+ Telegram/SourceFiles/data/data_peer.h   |  4 +---
+ 2 files changed, 17 insertions(+), 3 deletions(-)
+
+diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer.cpp
++++ b/Telegram/SourceFiles/data/data_peer.cpp
+@@ -1440,7 +1440,17 @@ bool PeerData::clearColorIndex() {
+ 	return true;
+ }
+ 
++uint8 PeerData::colorIndex() const {
++	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++		return Arcanegram::Streamer::ForcedColorIndex();
++	}
++	return _colorIndex;
++}
++
+ DocumentId PeerData::backgroundEmojiId() const {
++	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++		return DocumentId(0);
++	}
+ 	return _backgroundEmojiId;
+ }
+ 
+@@ -1501,6 +1511,9 @@ bool PeerData::clearColorProfileIndex() {
+ }
+ 
+ DocumentId PeerData::profileBackgroundEmojiId() const {
++	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++		return DocumentId(0);
++	}
+ 	return _profileBackgroundEmojiId;
+ }
+ 
+@@ -1526,6 +1539,9 @@ void PeerData::setEmojiStatus(EmojiStatusId emojiStatusId, TimeId until) {
+ }
+ 
+ EmojiStatusId PeerData::emojiStatusId() const {
++	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++		return EmojiStatusId();
++	}
+ 	return _emojiStatusId;
+ }
+ 
+diff --git a/Telegram/SourceFiles/data/data_peer.h b/Telegram/SourceFiles/data/data_peer.h
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer.h
++++ b/Telegram/SourceFiles/data/data_peer.h
+@@ -215,9 +215,7 @@ public:
+ 	[[nodiscard]] Main::Session &session() const;
+ 	[[nodiscard]] Main::Account &account() const;
+ 
+-	[[nodiscard]] uint8 colorIndex() const {
+-		return _colorIndex;
+-	}
++	[[nodiscard]] uint8 colorIndex() const;
+ 	[[nodiscard]] auto colorCollectible() const
+ 	-> const std::shared_ptr<Ui::ColorCollectible> & {
+ 		return _colorCollectible;
+-- 
+2.52.0.windows.1
+

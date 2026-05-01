@@ -1,0 +1,35 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 15:58:05 +0600
+Subject: [PATCH] streamer mode: skip photo carousel in profile preview
+
+---
+ Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp b/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
++++ b/Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "boxes/peers/prepare_short_info_box.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
+ #include "base/unixtime.h"
+ #include "boxes/peers/peer_short_info_box.h"
+ #include "core/application.h"
+@@ -323,7 +324,9 @@ void ValidatePhotoId(
+ bool ProcessCurrent(
+ 		not_null<PeerData*> peer,
+ 		not_null<UserpicState*> state) {
+-	const auto userpicPhotoId = peer->userpicPhotoId();
++	const auto userpicPhotoId = Arcanegram::Streamer::ShouldAnonymize(peer)
++		? PhotoId{}
++		: peer->userpicPhotoId();
+ 	const auto userpicPhoto = (userpicPhotoId
+ 		&& (userpicPhotoId != PeerData::kUnknownPhotoId)
+ 		&& (state->userpicPhotoId != userpicPhotoId))
+-- 
+2.52.0.windows.1
+

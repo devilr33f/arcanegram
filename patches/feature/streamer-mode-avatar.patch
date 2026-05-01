@@ -1,0 +1,48 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 15:57:28 +0600
+Subject: [PATCH] streamer mode: force empty userpic in PeerData::paintUserpic
+
+---
+ Telegram/SourceFiles/data/data_peer.cpp | 4 +++-
+ Telegram/SourceFiles/data/data_peer.h   | 2 +-
+ 2 files changed, 4 insertions(+), 2 deletions(-)
+
+diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer.cpp
++++ b/Telegram/SourceFiles/data/data_peer.cpp
+@@ -462,7 +462,9 @@ void PeerData::paintUserpic(
+ 		return;
+ 	}
+ 	const auto size = context.size;
+-	const auto cloud = userpicCloudImage(view);
++	const auto cloud = Arcanegram::Streamer::ShouldAnonymize(this)
++		? nullptr
++		: userpicCloudImage(view);
+ 	const auto ratio = style::DevicePixelRatio();
+ 	if (context.shape == Ui::PeerUserpicShape::Auto) {
+ 		context.shape = (isForum() && !isBot())
+diff --git a/Telegram/SourceFiles/data/data_peer.h b/Telegram/SourceFiles/data/data_peer.h
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer.h
++++ b/Telegram/SourceFiles/data/data_peer.h
+@@ -458,6 +458,7 @@ public:
+ 	}
+ 
+ 	[[nodiscard]] QImage *userpicCloudImage(Ui::PeerUserpicView &view) const;
++	void invalidateEmptyUserpic();
+ 
+ 	[[nodiscard]] bool canPinMessages() const;
+ 	[[nodiscard]] bool canEditMessagesIndefinitely() const;
+@@ -596,7 +597,6 @@ protected:
+ 		const QString &newUsername);
+ 	void updateUserpic(PhotoId photoId, MTP::DcId dcId, bool hasVideo);
+ 	void clearUserpic();
+-	void invalidateEmptyUserpic();
+ 	void checkTrustedPayForMessage();
+ 
+ private:
+-- 
+2.52.0.windows.1
+

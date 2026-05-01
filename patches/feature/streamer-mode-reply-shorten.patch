@@ -1,0 +1,39 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 15:50:34 +0600
+Subject: [PATCH] streamer mode: pseudonym in shortened reply sender name
+
+---
+ Telegram/SourceFiles/history/view/history_view_reply.cpp | 9 ++++++++-
+ 1 file changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/history/view/history_view_reply.cpp b/Telegram/SourceFiles/history/view/history_view_reply.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/history_view_reply.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_reply.cpp
+@@ -8,6 +8,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "history/view/history_view_reply.h"
+ 
+ #include "arcanegram/features/ag_hidden_users.h"
++#include "arcanegram/features/streamer/ag_streamer.h"
+ #include "core/click_handler_types.h"
+ #include "core/ui_integration.h"
+ #include "data/stickers/data_custom_emoji.h"
+@@ -602,7 +603,13 @@ QString Reply::senderName(
+ 		not_null<PeerData*> peer,
+ 		bool shorten) const {
+ 	const auto user = shorten ? peer->asUser() : nullptr;
+-	return user ? user->firstName : peer->name();
++	if (user) {
++		const auto firstName = Arcanegram::Streamer::ShouldAnonymize(peer)
++			? Arcanegram::Streamer::GeneratedShortName(peer->id)
++			: user->firstName;
++		return firstName;
++	}
++	return peer->name();
+ }
+ 
+ bool Reply::isNameUpdated(
+-- 
+2.52.0.windows.1
+

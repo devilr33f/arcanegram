@@ -23,4 +23,17 @@ feature/peer-id-bot-api-format.patch
 feature/fast-messages-shortcuts.patch
 feature/fast-messages-hook.patch
 misc/app-icon.patch
+feature/streamer-mode-name.patch
+feature/streamer-mode-typing.patch
+feature/streamer-mode-reply-shorten.patch
+feature/streamer-mode-avatar.patch
+feature/streamer-mode-call-avatar.patch
+feature/streamer-mode-short-info-box.patch
+feature/streamer-mode-style.patch
+feature/streamer-mode-badge.patch
+feature/streamer-mode-profile-identity.patch
+feature/streamer-mode-profile-actions.patch
+feature/streamer-mode-online.patch
+feature/streamer-mode-autocomplete.patch
+feature/streamer-mode-search.patch
 misc/branding.patch

@@ -1,0 +1,87 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 15:50:04 +0600
+Subject: [PATCH] streamer mode: pseudonym in typing indicator
+
+---
+ .../history/view/history_view_send_action.cpp | 22 +++++++++++++------
+ 1 file changed, 15 insertions(+), 7 deletions(-)
+
+diff --git a/Telegram/SourceFiles/history/view/history_view_send_action.cpp b/Telegram/SourceFiles/history/view/history_view_send_action.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/history_view_send_action.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_send_action.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_send_action.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
+ #include "data/data_user.h"
+ #include "data/data_send_action.h"
+ #include "data/data_forum_topic.h"
+@@ -38,6 +39,13 @@ constexpr auto kStatusShowClientsideChooseSticker = 6 * crl::time(1000);
+ constexpr auto kStatusShowClientsidePlayGame = 10 * crl::time(1000);
+ constexpr auto kStatusShowClientsideSpeaking = 6 * crl::time(1000);
+ 
++[[nodiscard]] QString DisplayFirstName(not_null<UserData*> user) {
++	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
++		return Arcanegram::Streamer::GeneratedShortName(user->id);
++	}
++	return user->firstName;
++}
++
+ } // namespace
+ 
+ SendActionPainter::SendActionPainter(
+@@ -243,16 +251,16 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
+ 			newTypingString = tr::lng_users_typing(
+ 				tr::now,
+ 				lt_user,
+-				begin(_typing)->first->firstName,
++				DisplayFirstName(begin(_typing)->first),
+ 				lt_second_user,
+-				(end(_typing) - 1)->first->firstName);
++				DisplayFirstName((end(_typing) - 1)->first));
+ 		} else if (typingCount) {
+ 			newTypingString = _history->peer->isUser()
+ 				? tr::lng_typing(tr::now)
+ 				: tr::lng_user_typing(
+ 					tr::now,
+ 					lt_user,
+-					begin(_typing)->first->firstName);
++					DisplayFirstName(begin(_typing)->first));
+ 		} else if (!_sendActions.empty()) {
+ 			// Handles all actions except game playing.
+ 			using Type = Api::SendProgressType;
+@@ -299,7 +307,7 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
+ 				const auto isNamed = !_history->peer->isUser();
+ 				newTypingString = sendActionString(
+ 					action.type,
+-					isNamed ? user->firstName : QString());
++					isNamed ? DisplayFirstName(user) : QString());
+ 				if (!newTypingString.isEmpty()) {
+ 					_sendActionAnimation.start(action.type);
+ 
+@@ -345,16 +353,16 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
+ 					newTypingString = tr::lng_users_playing_game(
+ 						tr::now,
+ 						lt_user,
+-						begin(_sendActions)->first->firstName,
++						DisplayFirstName(begin(_sendActions)->first),
+ 						lt_second_user,
+-						(end(_sendActions) - 1)->first->firstName);
++						DisplayFirstName((end(_sendActions) - 1)->first));
+ 				} else {
+ 					newTypingString = _history->peer->isUser()
+ 						? tr::lng_playing_game(tr::now)
+ 						: tr::lng_user_playing_game(
+ 							tr::now,
+ 							lt_user,
+-							begin(_sendActions)->first->firstName);
++							DisplayFirstName(begin(_sendActions)->first));
+ 				}
+ 				_sendActionAnimation.start(Type::PlayGame);
+ 			}
+-- 
+2.52.0.windows.1
+

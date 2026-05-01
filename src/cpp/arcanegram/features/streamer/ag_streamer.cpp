@@ -5,9 +5,11 @@
 #include "arcanegram/ag_refresh.h"
 #include "arcanegram/ui/ag_settings_main.h"
 #include "arcanegram/ui/ag_settings_widgets.h"
+#include "data/data_changes.h"
 #include "data/data_peer.h"
 #include "data/data_user.h"
 #include "lang/lang_keys.h"
+#include "main/main_session.h"
 #include "settings/settings_builder.h"
 #include "settings/settings_common_session.h"
 #include "styles/style_menu_icons.h"
@@ -45,21 +47,38 @@ QString Capitalize(std::string_view sv) {
 	return s;
 }
 
+void RefreshAll() {
+	using Flag = Data::PeerUpdate::Flag;
+	const auto flags = Flag::Name
+		| Flag::Username
+		| Flag::Usernames
+		| Flag::Photo
+		| Flag::About
+		| Flag::Color
+		| Flag::EmojiStatus;
+	ForEachLoadedPeer([&](not_null<PeerData*> peer) {
+		// drop empty-userpic cache pinned to first-seen name initials.
+		peer->invalidateEmptyUserpic();
+		peer->session().changes().peerUpdated(peer, flags);
+	});
+	RefreshAllItems();
+}
+
 } // namespace
 
 void Init() {
 	Seed() = QRandomGenerator::global()->generate64();
 
 	Config::StreamerMode::Enabled.changes(
-	) | rpl::start_with_next([](bool active) {
+	) | rpl::on_next([](bool active) {
 		Stream().fire_copy(active);
-		RefreshAllItems();
+		RefreshAll();
 	}, Lifetime());
 
 	Config::StreamerMode::AnonymizeBots.changes(
-	) | rpl::start_with_next([](bool) {
+	) | rpl::on_next([](bool) {
 		if (IsActive()) {
-			RefreshAllItems();
+			RefreshAll();
 		}
 	}, Lifetime());
 }

@@ -66,6 +66,25 @@ void ForEachLoadedHistoryFor(
 	}
 }
 
+void ForEachLoadedPeer(Fn<void(not_null<PeerData*>)> action) {
+	for (const auto &entry : Core::App().domain().accounts()) {
+		const auto session = entry.account->maybeSession();
+		if (!session) {
+			continue;
+		}
+		auto &owner = session->data();
+		owner.enumerateUsers([&](not_null<UserData*> p) {
+			action(p);
+		});
+		owner.enumerateGroups([&](not_null<PeerData*> p) {
+			action(p);
+		});
+		owner.enumerateBroadcasts([&](not_null<ChannelData*> p) {
+			action(p);
+		});
+	}
+}
+
 void RefreshAllItems() {
 	ForEachLoadedHistory([](not_null<History*> h) {
 		auto &owner = h->owner();

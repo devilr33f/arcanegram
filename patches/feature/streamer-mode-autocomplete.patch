@@ -1,0 +1,34 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:16:09 +0600
+Subject: [PATCH] streamer mode: hide username in mention autocomplete
+
+---
+ Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp | 5 +++++
+ 1 file changed, 5 insertions(+)
+
+diff --git a/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp b/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp
++++ b/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp
+@@ -52,12 +52,17 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "styles/style_chat_helpers.h"
+ #include "styles/style_menu_icons.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
++
+ #include <QtWidgets/QApplication>
+ 
+ namespace ChatHelpers {
+ namespace {
+ 
+ [[nodiscard]] QString PrimaryUsername(not_null<UserData*> user) {
++	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
++		return QString();
++	}
+ 	const auto &usernames = user->usernames();
+ 	return usernames.empty() ? user->username() : usernames.front();
+ }
+-- 
+2.52.0.windows.1
+

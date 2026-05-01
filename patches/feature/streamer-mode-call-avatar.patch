@@ -1,0 +1,50 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 15:57:40 +0600
+Subject: [PATCH] streamer mode: empty userpic in fullscreen call
+
+---
+ Telegram/SourceFiles/calls/calls_userpic.cpp | 13 +++++++++----
+ 1 file changed, 9 insertions(+), 4 deletions(-)
+
+diff --git a/Telegram/SourceFiles/calls/calls_userpic.cpp b/Telegram/SourceFiles/calls/calls_userpic.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/calls/calls_userpic.cpp
++++ b/Telegram/SourceFiles/calls/calls_userpic.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "calls/calls_userpic.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
+ #include "data/data_peer.h"
+ #include "main/main_session.h"
+ #include "data/data_changes.h"
+@@ -130,9 +131,10 @@ int Userpic::size() const {
+ void Userpic::processPhoto() {
+ 	_userpic = _peer->createUserpicView();
+ 	_peer->loadUserpic();
+-	const auto photo = _peer->userpicPhotoId()
+-		? _peer->owner().photo(_peer->userpicPhotoId()).get()
+-		: nullptr;
++	const auto photo = (Arcanegram::Streamer::ShouldAnonymize(_peer)
++			|| !_peer->userpicPhotoId())
++		? nullptr
++		: _peer->owner().photo(_peer->userpicPhotoId()).get();
+ 	if (isGoodPhoto(photo)) {
+ 		_photo = photo->createMediaView();
+ 		_photo->wanted(Data::PhotoSize::Thumbnail, _peer->userpicPhotoOrigin());
+@@ -159,7 +161,10 @@ void Userpic::refreshPhoto() {
+ 		_userPhotoFull = true;
+ 		createCache(_photo->image(Data::PhotoSize::Thumbnail));
+ 	} else if (_userPhoto.isNull()) {
+-		if (const auto cloud = _peer->userpicCloudImage(_userpic)) {
++		const auto cloud = Arcanegram::Streamer::ShouldAnonymize(_peer)
++			? nullptr
++			: _peer->userpicCloudImage(_userpic);
++		if (cloud) {
+ 			auto image = Image(base::duplicate(*cloud));
+ 			createCache(&image);
+ 		} else {
+-- 
+2.52.0.windows.1
+

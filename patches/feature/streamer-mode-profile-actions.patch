@@ -1,0 +1,75 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:10:29 +0600
+Subject: [PATCH] streamer mode: hide peer id, birthday, username link
+
+---
+ .../info/profile/info_profile_actions.cpp     | 21 +++++++++++++------
+ 1 file changed, 15 insertions(+), 6 deletions(-)
+
+diff --git a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
++++ b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
+@@ -8,6 +8,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "info/profile/info_profile_actions.h"
+ 
+ #include "arcanegram/features/ag_peer_ids.h"
++#include "arcanegram/features/streamer/ag_streamer.h"
+ #include "api/api_blocked_peers.h"
+ #include "api/api_chat_participants.h"
+ #include "api/api_credits.h"
+@@ -173,6 +174,9 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+ 		const QString &addToLink) {
+ 	const auto weak = base::make_weak(controller);
+ 	return [=](QString link) {
++		if (Arcanegram::Streamer::ShouldAnonymize(peer)) {
++			return;
++		}
+ 		if (link.startsWith(u"internal:"_q)) {
+ 			Core::App().openInternalUrl(link,
+ 				QVariant::fromValue(ClickHandlerContext{
+@@ -213,7 +217,8 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+ 	return AboutValue(
+ 		peer
+ 	) | rpl::map([=](TextWithEntities &&value) {
+-		if (ShowPeerIdBelowAbout.value()) {
++		const auto anonymize = Arcanegram::Streamer::ShouldAnonymize(peer);
++		if (ShowPeerIdBelowAbout.value() && !anonymize) {
+ 			using namespace Ui::Text;
+ 			if (!value.empty()) {
+ 				value.append("\n\n");
+@@ -226,11 +231,11 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+ 				"internal:~peer_id~:copy:" + botApi
+ 					+ ":mtproto:" + mtproto));
+ 		}
+-		if (ShowChannelJoinedBelowAbout.value()) {
++		if (ShowChannelJoinedBelowAbout.value() && !anonymize) {
+ 			if (const auto channel = peer->asChannel()) {
+ 				if (!channel->amCreator() && channel->inviteDate) {
+ 					if (!value.empty()) {
+-						if (ShowPeerIdBelowAbout.value()) {
++						if (ShowPeerIdBelowAbout.value() && !anonymize) {
+ 							value.append("\n");
+ 						} else {
+ 							value.append("\n\n");
+@@ -898,9 +903,13 @@ void DeleteContactNote(
+ 	const auto layout = outer->entity();
+ 	layout->setAttribute(Qt::WA_TransparentForMouseEvents);
+ 
+-	auto birthday = BirthdayValue(
+-		user
+-	) | rpl::start_spawning(result->lifetime());
++	auto birthday = rpl::combine(
++		BirthdayValue(user),
++		rpl::single(Arcanegram::Streamer::IsActive())
++			| rpl::then(Arcanegram::Streamer::Changes())
++	) | rpl::map([](Data::Birthday value, bool streamer) {
++		return streamer ? Data::Birthday() : value;
++	}) | rpl::start_spawning(result->lifetime());
+ 
+ 	auto label = BirthdayLabelText(rpl::duplicate(birthday));
+ 	auto text = BirthdayValueText(
+-- 
+2.52.0.windows.1
+

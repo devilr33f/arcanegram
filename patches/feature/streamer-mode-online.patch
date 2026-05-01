@@ -1,0 +1,55 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:11:38 +0600
+Subject: [PATCH] streamer mode: generic last-seen text
+
+---
+ Telegram/SourceFiles/data/data_peer_values.cpp | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
+
+diff --git a/Telegram/SourceFiles/data/data_peer_values.cpp b/Telegram/SourceFiles/data/data_peer_values.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer_values.cpp
++++ b/Telegram/SourceFiles/data/data_peer_values.cpp
+@@ -20,6 +20,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ #include "ui/image/image_prepare.h"
+ #include "base/unixtime.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
++
+ namespace Data {
+ namespace {
+ 
+@@ -472,6 +474,9 @@ QString OnlineText(Data::LastseenStatus status, TimeId now) {
+ }
+ 
+ QString OnlineText(not_null<UserData*> user, TimeId now) {
++	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
++		return tr::lng_status_recently(tr::now);
++	}
+ 	if (const auto special = OnlineTextSpecial(user)) {
+ 		return *special;
+ 	}
+@@ -479,6 +484,9 @@ QString OnlineText(not_null<UserData*> user, TimeId now) {
+ }
+ 
+ QString OnlineTextFull(not_null<UserData*> user, TimeId now) {
++	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
++		return tr::lng_status_recently(tr::now);
++	}
+ 	if (const auto special = OnlineTextSpecial(user)) {
+ 		return *special;
+ 	} else if (const auto common = OnlineTextCommon(user->lastseen(), now)) {
+@@ -501,6 +509,9 @@ QString OnlineTextFull(not_null<UserData*> user, TimeId now) {
+ }
+ 
+ bool OnlineTextActive(not_null<UserData*> user, TimeId now) {
++	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
++		return false;
++	}
+ 	return !user->isServiceUser()
+ 		&& !user->isBot()
+ 		&& user->lastseen().isOnline(now);
+-- 
+2.52.0.windows.1
+
