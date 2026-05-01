@@ -5,6 +5,7 @@
 #include "arcanegram/features/ag_forwarded_header.h"
 #include "arcanegram/features/ag_show_seconds.h"
 #include "arcanegram/features/ag_sync_feature.h"
+#include "arcanegram/features/streamer/ag_streamer.h"
 #include "arcanegram/ui/ag_hidden_users_settings.h"
 #include "lang/lang_keys.h"
 #include "settings/sections/settings_main.h"
@@ -82,6 +83,7 @@ void BuildContent(SectionBuilder &builder) {
         .icon = { &st::menuIconPalette },
     });
     Arcanegram::HiddenUsers::Setup(builder);
+    Arcanegram::Streamer::Setup(builder);
     Arcanegram::FastMessages::Setup(builder);
     Arcanegram::CloudSync::Setup(builder);
 }

@@ -56,6 +56,9 @@ PRIVATE
     sync/ag_sync_keys.cpp
     sync/ag_sync_engine.h
     sync/ag_sync_engine.cpp
+    features/streamer/ag_streamer.cpp
+    features/streamer/ag_streamer.h
+    features/streamer/streamer_names.h
 )
 
 target_include_directories(arcanegram PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)

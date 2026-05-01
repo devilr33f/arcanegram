@@ -32,3 +32,10 @@
 "ag_sync_status_offline" = "Offline";
 "ag_sync_status_offline_pending" = "Offline · {n} pending";
 "ag_sync_status_conflict" = "Resolving conflict…";
+"ag_streamer_title" = "Streamer Mode";
+"ag_streamer_subtitle" = "Hide names, avatars and identifiers when screen-sharing.";
+"ag_streamer_enabled" = "Anonymize other users";
+"ag_streamer_enabled_about" = "Replaces every other user's name with a generated pseudonym, removes their avatar, color and badges, and hides phone, username, ID, bio, birthday and last-seen.";
+"ag_streamer_anonymize_bots" = "Anonymize bots";
+"ag_streamer_anonymize_bots_about" = "Bots are exposed by default since they are usually intentional. Enable to also pseudonymize them.";
+"ag_streamer_preview" = "Sample: {name}";

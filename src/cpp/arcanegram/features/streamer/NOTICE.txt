@@ -1,0 +1,6 @@
+Adjective and surname lists vendored from the Moby project
+(github.com/moby/moby), file pkg/namesgenerator/names-generator.go.
+
+Copyright 2013-2025 Docker, Inc. and contributors.
+Licensed under the Apache License, Version 2.0.
+http://www.apache.org/licenses/LICENSE-2.0
