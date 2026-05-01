@@ -1,3 +1,22 @@
 using "ui/widgets/widgets.style";
 
 menuIconArcanegramSettings: icon {{ "arcanegram/settings/arcanegram_settings", menuIconColor }};
+
+agFastMessageField: InputField(defaultInputField) {
+	textBg: transparent;
+	textMargins: margins(2px, 8px, 2px, 12px);
+
+	placeholderFg: placeholderFg;
+	placeholderFgActive: placeholderFgActive;
+	placeholderFgError: placeholderFgActive;
+	placeholderMargins: margins(0px, 0px, 0px, 0px);
+	placeholderScale: 0.;
+	placeholderFont: normalFont;
+
+	border: 0px;
+	borderActive: 0px;
+
+	heightMin: 40px;
+
+	style: defaultTextStyle;
+}

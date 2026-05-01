@@ -10,6 +10,7 @@
 #include "main/main_session.h"
 #include "settings/settings_builder.h"
 #include "settings/settings_common_session.h"
+#include "styles/style_arcanegram.h"
 #include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
 #include "ui/vertical_list.h"
@@ -35,7 +36,7 @@ void AddSlotField(
     const auto field = container->add(
         object_ptr<Ui::InputField>(
             container,
-            st::settingsBio,
+            st::agFastMessageField,
             tr::ag_fast_messages_placeholder(),
             item.value()),
         st::settingsBioMargins);

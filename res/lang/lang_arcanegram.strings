@@ -19,4 +19,16 @@
 "ag_fast_messages_title" = "Fast messages";
 "ag_fast_messages_info" = "Type a message per slot. Bind keys in Settings → Chat Settings → Keyboard Shortcuts.";
 "ag_fast_messages_slot" = "Slot {index}";
-"ag_fast_messages_placeholder" = "Message text (e.g. /dban begging)";
+"ag_fast_messages_placeholder" = "Message text";
+"ag_settings_appearance" = "Chat appearance";
+"ag_settings_sync_title" = "Cloud sync";
+"ag_sync_enabled_setting" = "Enable cloud sync";
+"ag_sync_enabled_info" = "Sync arcanegram-only settings between your devices via the arcanesync backend.";
+"ag_sync_endpoint_placeholder" = "Endpoint URL";
+"ag_sync_status_disabled" = "Disabled";
+"ag_sync_status_ready" = "Ready";
+"ag_sync_status_synced" = "Synced";
+"ag_sync_status_syncing" = "Syncing…";
+"ag_sync_status_offline" = "Offline";
+"ag_sync_status_offline_pending" = "Offline · {n} pending";
+"ag_sync_status_conflict" = "Resolving conflict…";
