@@ -1,0 +1,29 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 17:13:09 +0600
+Subject: [PATCH] streamer mode: force empty userpic in
+ PeerData::GenerateUserpicImage
+
+---
+ Telegram/SourceFiles/data/data_peer.cpp | 5 ++++-
+ 1 file changed, 4 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer.cpp
++++ b/Telegram/SourceFiles/data/data_peer.cpp
+@@ -518,7 +518,10 @@ QImage PeerData::GenerateUserpicImage(
+ 		Ui::PeerUserpicView &view,
+ 		int size,
+ 		std::optional<int> radius) {
+-	if (const auto userpic = peer->userpicCloudImage(view)) {
++	const auto userpic = Arcanegram::Streamer::ShouldAnonymize(peer)
++		? nullptr
++		: peer->userpicCloudImage(view);
++	if (userpic) {
+ 		auto image = userpic->scaled(
+ 			{ size, size },
+ 			Qt::IgnoreAspectRatio,
+-- 
+2.52.0.windows.1
+

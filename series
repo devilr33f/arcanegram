@@ -36,4 +36,6 @@ feature/streamer-mode-profile-actions.patch
 feature/streamer-mode-autocomplete.patch
 feature/streamer-mode-search.patch
 feature/streamer-mode-forum-topic.patch
+feature/streamer-mode-rank.patch
+feature/streamer-mode-seen-avatars.patch
 misc/branding.patch
