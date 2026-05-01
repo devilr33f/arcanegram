@@ -27,7 +27,7 @@ diff --git a/Telegram/SourceFiles/data/data_peer.h b/Telegram/SourceFiles/data/d
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/data/data_peer.h
 +++ b/Telegram/SourceFiles/data/data_peer.h
-@@ -458,6 +458,7 @@ public:
+@@ -459,6 +459,7 @@ public:
  	}
  
  	[[nodiscard]] QImage *userpicCloudImage(Ui::PeerUserpicView &view) const;
@@ -35,7 +35,7 @@ index 0000000..0000000 100644
  
  	[[nodiscard]] bool canPinMessages() const;
  	[[nodiscard]] bool canEditMessagesIndefinitely() const;
-@@ -596,7 +597,6 @@ protected:
+@@ -597,7 +598,6 @@ protected:
  		const QString &newUsername);
  	void updateUserpic(PhotoId photoId, MTP::DcId dcId, bool hasVideo);
  	void clearUserpic();

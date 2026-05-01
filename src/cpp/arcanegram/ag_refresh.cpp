@@ -3,6 +3,8 @@
 #include "core/application.h"
 #include "data/data_channel.h"
 #include "data/data_chat.h"
+#include "data/data_forum.h"
+#include "data/data_forum_topic.h"
 #include "data/data_peer.h"
 #include "data/data_session.h"
 #include "data/data_user.h"
@@ -14,7 +16,6 @@
 #include "main/main_session.h"
 
 namespace Arcanegram {
-namespace {
 
 void ForEachLoadedHistory(Fn<void(not_null<History*>)> action) {
 	for (const auto &entry : Core::App().domain().accounts()) {
@@ -40,7 +41,32 @@ void ForEachLoadedHistory(Fn<void(not_null<History*>)> action) {
 	}
 }
 
-} // namespace
+void ForEachLoadedTopic(Fn<void(not_null<Data::ForumTopic*>)> action) {
+	for (const auto &entry : Core::App().domain().accounts()) {
+		const auto session = entry.account->maybeSession();
+		if (!session) {
+			continue;
+		}
+		auto &owner = session->data();
+		owner.enumerateBroadcasts([&](not_null<ChannelData*> p) {
+			if (const auto forum = p->forum()) {
+				forum->enumerateTopics([&](not_null<Data::ForumTopic*> t) {
+					action(t);
+				});
+			}
+		});
+		owner.enumerateGroups([&](not_null<PeerData*> p) {
+			if (const auto channel = p->asChannel()) {
+				if (const auto forum = channel->forum()) {
+					forum->enumerateTopics(
+						[&](not_null<Data::ForumTopic*> t) {
+							action(t);
+						});
+				}
+			}
+		});
+	}
+}
 
 void ForEachLoadedItem(Fn<void(not_null<HistoryItem*>)> action) {
 	ForEachLoadedHistory([&](not_null<History*> h) {

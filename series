@@ -33,7 +33,7 @@ feature/streamer-mode-style.patch
 feature/streamer-mode-badge.patch
 feature/streamer-mode-profile-identity.patch
 feature/streamer-mode-profile-actions.patch
-feature/streamer-mode-online.patch
 feature/streamer-mode-autocomplete.patch
 feature/streamer-mode-search.patch
+feature/streamer-mode-forum-topic.patch
 misc/branding.patch

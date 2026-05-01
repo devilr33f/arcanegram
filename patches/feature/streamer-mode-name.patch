@@ -4,8 +4,9 @@ Date: Fri, 1 May 2026 15:49:36 +0600
 Subject: [PATCH] streamer mode: pseudonym in PeerData::name accessors
 
 ---
- Telegram/SourceFiles/data/data_peer.cpp | 16 ++++++++++++++++
- 1 file changed, 16 insertions(+)
+ Telegram/SourceFiles/data/data_peer.cpp | 20 ++++++++++++++++++++
+ Telegram/SourceFiles/data/data_peer.h   |  1 +
+ 2 files changed, 21 insertions(+)
 
 diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data/data_peer.cpp
 index 0000000..0000000 100644
@@ -31,9 +32,14 @@ index 0000000..0000000 100644
  	if (const auto to = migrateTo()) {
  		return to->topBarNameText();
  	} else if (const auto user = asUser()) {
-@@ -1328,6 +1334,11 @@ int PeerData::nameVersion() const {
+@@ -1327,7 +1333,16 @@ int PeerData::nameVersion() const {
+ 	return _nameVersion;
  }
  
++void PeerData::noteNameUpdated() {
++	++_nameVersion;
++}
++
  const QString &PeerData::name() const {
 +	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
 +		static thread_local QString cached;
@@ -43,7 +49,7 @@ index 0000000..0000000 100644
  	if (const auto to = migrateTo()) {
  		return to->name();
  	} else if (const auto broadcast = monoforumBroadcast()) {
-@@ -1337,6 +1348,11 @@ const QString &PeerData::name() const {
+@@ -1337,6 +1352,11 @@ const QString &PeerData::name() const {
  }
  
  const QString &PeerData::shortName() const {
@@ -55,6 +61,18 @@ index 0000000..0000000 100644
  	if (const auto user = asUser()) {
  		return user->firstName.isEmpty() ? user->lastName : user->firstName;
  	} else if (const auto to = migrateTo()) {
+diff --git a/Telegram/SourceFiles/data/data_peer.h b/Telegram/SourceFiles/data/data_peer.h
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_peer.h
++++ b/Telegram/SourceFiles/data/data_peer.h
+@@ -365,6 +365,7 @@ public:
+ 	}
+ 
+ 	[[nodiscard]] int nameVersion() const;
++	void noteNameUpdated();
+ 	[[nodiscard]] const QString &name() const;
+ 	[[nodiscard]] const QString &shortName() const;
+ 	[[nodiscard]] const QString &topBarNameText() const;
 -- 
 2.52.0.windows.1
 

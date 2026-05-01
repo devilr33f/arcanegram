@@ -12,7 +12,7 @@ diff --git a/Telegram/SourceFiles/data/data_peer.cpp b/Telegram/SourceFiles/data
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/data/data_peer.cpp
 +++ b/Telegram/SourceFiles/data/data_peer.cpp
-@@ -1440,7 +1440,17 @@ bool PeerData::clearColorIndex() {
+@@ -1444,7 +1444,17 @@ bool PeerData::clearColorIndex() {
  	return true;
  }
  
@@ -30,7 +30,7 @@ index 0000000..0000000 100644
  	return _backgroundEmojiId;
  }
  
-@@ -1501,6 +1511,9 @@ bool PeerData::clearColorProfileIndex() {
+@@ -1505,6 +1515,9 @@ bool PeerData::clearColorProfileIndex() {
  }
  
  DocumentId PeerData::profileBackgroundEmojiId() const {
@@ -40,7 +40,7 @@ index 0000000..0000000 100644
  	return _profileBackgroundEmojiId;
  }
  
-@@ -1526,6 +1539,9 @@ void PeerData::setEmojiStatus(EmojiStatusId emojiStatusId, TimeId until) {
+@@ -1530,6 +1543,9 @@ void PeerData::setEmojiStatus(EmojiStatusId emojiStatusId, TimeId until) {
  }
  
  EmojiStatusId PeerData::emojiStatusId() const {

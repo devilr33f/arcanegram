@@ -6,8 +6,11 @@
 #include "arcanegram/ui/ag_settings_main.h"
 #include "arcanegram/ui/ag_settings_widgets.h"
 #include "data/data_changes.h"
+#include "data/data_forum_topic.h"
 #include "data/data_peer.h"
 #include "data/data_user.h"
+#include "history/history.h"
+#include "history/history_item.h"
 #include "lang/lang_keys.h"
 #include "main/main_session.h"
 #include "settings/settings_builder.h"
@@ -57,9 +60,27 @@ void RefreshAll() {
 		| Flag::Color
 		| Flag::EmojiStatus;
 	ForEachLoadedPeer([&](not_null<PeerData*> peer) {
-		// drop empty-userpic cache pinned to first-seen name initials.
 		peer->invalidateEmptyUserpic();
+		// bump _nameVersion so dialog row name cache rebuilds.
+		peer->noteNameUpdated();
 		peer->session().changes().peerUpdated(peer, flags);
+	});
+	ForEachLoadedTopic([&](not_null<Data::ForumTopic*> topic) {
+		topic->invalidateTitleWithIcon();
+		topic->session().changes().topicUpdated(
+			topic,
+			Data::TopicUpdate::Flag::Title);
+		if (const auto last = topic->chatListMessage()) {
+			last->invalidateChatListEntry();
+		}
+		topic->updateChatListEntry();
+	});
+	ForEachLoadedHistory([&](not_null<History*> h) {
+		// drop sender prefix cache in dialog list message preview.
+		if (const auto last = h->chatListMessage()) {
+			last->invalidateChatListEntry();
+		}
+		h->updateChatListEntry();
 	});
 	RefreshAllItems();
 }

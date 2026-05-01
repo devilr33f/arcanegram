@@ -1,0 +1,58 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 1 May 2026 16:53:21 +0600
+Subject: [PATCH] streamer mode: anonymize forum topic title
+
+---
+ Telegram/SourceFiles/data/data_forum_topic.cpp | 7 +++++++
+ Telegram/SourceFiles/data/data_forum_topic.h   | 2 +-
+ 2 files changed, 8 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/data/data_forum_topic.cpp b/Telegram/SourceFiles/data/data_forum_topic.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_forum_topic.cpp
++++ b/Telegram/SourceFiles/data/data_forum_topic.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "data/data_forum_topic.h"
+ 
++#include "arcanegram/features/streamer/ag_streamer.h"
+ #include "data/data_channel.h"
+ #include "data/data_changes.h"
+ #include "data/data_forum.h"
+@@ -958,6 +959,12 @@ bool ForumTopic::chatListMessageKnown() const {
+ }
+ 
+ const QString &ForumTopic::chatListName() const {
++	if (channel() && Arcanegram::Streamer::ShouldAnonymize(channel())) {
++		static thread_local QString cached;
++		const auto seed = channel()->id.value ^ quint64(rootId().bare);
++		cached = Arcanegram::Streamer::GeneratedShortName(PeerId(seed));
++		return cached;
++	}
+ 	return _title;
+ }
+ 
+diff --git a/Telegram/SourceFiles/data/data_forum_topic.h b/Telegram/SourceFiles/data/data_forum_topic.h
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/data/data_forum_topic.h
++++ b/Telegram/SourceFiles/data/data_forum_topic.h
+@@ -153,6 +153,7 @@ public:
+ 	[[nodiscard]] TextWithEntities titleWithIcon() const;
+ 	[[nodiscard]] TextWithEntities titleWithIconOrLogo() const;
+ 	[[nodiscard]] int titleVersion() const;
++	void invalidateTitleWithIcon();
+ 	void applyTitle(const QString &title);
+ 	[[nodiscard]] DocumentId iconId() const;
+ 	void applyIconId(DocumentId iconId);
+@@ -206,7 +207,6 @@ private:
+ 	void validateGeneralIcon(const Dialogs::Ui::PaintContext &context) const;
+ 	void applyTopicTopMessage(MsgId topMessageId);
+ 	void growLastKnownServerMessageId(MsgId id);
+-	void invalidateTitleWithIcon();
+ 
+ 	void setLastMessage(HistoryItem *item);
+ 	void setLastServerMessage(HistoryItem *item);
+-- 
+2.52.0.windows.1
+
