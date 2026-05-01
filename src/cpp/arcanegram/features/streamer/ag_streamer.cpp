@@ -138,8 +138,8 @@ void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 			tr::ag_streamer_preview(
 				lt_name,
 				rpl::single(GeneratedName(PeerId(1234567890ULL)))),
-			st::boxLabel),
-		st::settingsButtonNoIcon.padding);
+			st::boxDividerLabel),
+		st::defaultBoxDividerLabelPadding);
 
 	Ui::AddDividerText(container, tr::ag_streamer_subtitle());
 }
