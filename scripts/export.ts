@@ -56,7 +56,14 @@ async function exportPatchFile(repoDir: string, patchName: string) {
 
   step(`exporting ${patchName} -> ${relative(rootDir, targetFile)}`)
   const patch = await git`git format-patch --stdout --zero-commit -1 ${commitId}`
-  const stable = patch.stdout.replace(/^index [0-9a-f]+\.\.[0-9a-f]+( \d+)?$/gm, 'index 0000000..0000000$1')
+  // zero index hashes for stable diffs, but skip binary file blocks — `git apply`
+  // needs real source-blob hashes to locate the blob being patched.
+  const stable = patch.stdout
+    .split(/(?=^diff --git )/m)
+    .map(block => block.includes('GIT binary patch')
+      ? block
+      : block.replace(/^index [0-9a-f]+\.\.[0-9a-f]+( \d+)?$/gm, 'index 0000000..0000000$1'))
+    .join('')
   await fs.writeFile(targetFile, stable)
 
   return parsed

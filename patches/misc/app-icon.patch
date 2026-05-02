@@ -10,7 +10,7 @@ Subject: [PATCH] arcanegram brand: replace app/tray icon assets
  3 files changed, 0 insertions(+), 0 deletions(-)
 
 diff --git a/Telegram/Resources/art/icon256.ico b/Telegram/Resources/art/icon256.ico
-index 0000000..0000000 100644
+index 8c71faaf6d5e98adf4db7fc154edc17c63409754..0798899bf630b313bf74cb3086904400f836013b 100644
 GIT binary patch
 literal 41701
 zcmagFbx>6A`#!#OcZalecQ;5%N+Z3}-5mmpv@}RacS?8H5&{y^AzjkV_xOJO{`}2+
@@ -1316,7 +1316,7 @@ z!M?Pe=cyV9!Tz*<wa6|SP(Q&FRNjjI(f{j0he*MY4>V3eay&==1KjgKT59^LUzP3O
 F{SW3lrcD3<
 
 diff --git a/Telegram/Resources/art/logo_256.png b/Telegram/Resources/art/logo_256.png
-index 0000000..0000000 100644
+index 8c4abee16dec0836f615df7266b234bc7a0ec033..8e0aa05ccf6b4f49f802da6bb1c478021f56a753 100644
 GIT binary patch
 literal 17515
 zcmXV1WmFqo*A4Doyhw`|ic^ZaLxJM%?!}9{yF;<!uEpJpI}~?!f(4SidA{}i$ePSr
@@ -2053,7 +2053,7 @@ z-(Jx!We%mv2(JKQ0BeJ1{hmeCf*=TjAP9mW2!bF8f*=TjAP9mW2!bF8f*=Ux&cDdD
 V(tm=AFHHad002ovPDHLkV1gqWoMHd~
 
 diff --git a/Telegram/Resources/art/logo_256_no_margin.png b/Telegram/Resources/art/logo_256_no_margin.png
-index 0000000..0000000 100644
+index 00acff3dd5f8cc71caec7c97f031898efd2d502c..0ba1e55cd120c219a01f208edaff457c79f2a95e 100644
 GIT binary patch
 literal 15051
 zcmbVTg;yJ26W!qMZo!Hbin}`$THFdn3KWOp9)eSfwzw2`Zz=AyKymlt?(QL9e*eOk
