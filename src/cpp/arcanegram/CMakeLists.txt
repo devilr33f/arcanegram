@@ -22,6 +22,8 @@ PRIVATE
 
     ag_hooks.h
     ag_hooks.cpp
+    ag_lang.h
+    ag_lang.cpp
     ag_config.h
     ag_config.cpp
     ag_refresh.h

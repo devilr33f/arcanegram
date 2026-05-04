@@ -3,17 +3,20 @@
 #include "apiwrap.h"
 #include "arcanegram/ag_config.h"
 #include "arcanegram/ui/ag_settings_main.h"
+#include "base/invoke_queued.h"
 #include "data/data_peer.h"
 #include "data/data_session.h"
 #include "history/history.h"
 #include "lang/lang_keys.h"
 #include "main/main_session.h"
 #include "settings/settings_builder.h"
+#include "settings/settings_common.h"
 #include "settings/settings_common_session.h"
 #include "styles/style_arcanegram.h"
 #include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
 #include "ui/vertical_list.h"
+#include "ui/widgets/buttons.h"
 #include "ui/widgets/fields/input_field.h"
 #include "ui/wrap/vertical_layout.h"
 #include "window/window_session_controller.h"
@@ -24,29 +27,42 @@ namespace {
 using namespace ::Settings;
 using namespace ::Settings::Builder;
 
-void AddSlotField(
-        not_null<Ui::VerticalLayout*> container,
-        int index) {
-    auto &item = Config::FastMessages::Slot(index);
-    Ui::AddSubsectionTitle(
-        container,
-        tr::ag_fast_messages_slot(
-            lt_index,
-            rpl::single(QString::number(index + 1))));
-    const auto field = container->add(
-        object_ptr<Ui::InputField>(
-            container,
-            st::agFastMessageField,
-            tr::ag_fast_messages_placeholder(),
-            item.value()),
-        st::settingsBioMargins);
-    field->changes(
-    ) | rpl::on_next([field, &item](auto) {
-        const auto v = field->getLastText();
-        if (v != item.value()) {
-            item.setValue(v);
-        }
-    }, field->lifetime());
+void FillSlots(not_null<Ui::VerticalLayout*> wrap, not_null<Ui::VerticalLayout*> outer) {
+    const auto count = Config::FastMessages::Count();
+    for (auto i = 0; i < count; ++i) {
+        auto &item = Config::FastMessages::Slot(i);
+        Ui::AddSubsectionTitle(
+            wrap,
+            tr::ag_fast_messages_slot(
+                lt_index,
+                rpl::single(QString::number(i + 1))));
+        const auto field = wrap->add(
+            object_ptr<Ui::InputField>(
+                wrap,
+                st::agFastMessageField,
+                tr::ag_fast_messages_placeholder(),
+                item.value()),
+            st::settingsBioMargins);
+        field->changes(
+        ) | rpl::on_next([field, &item](auto) {
+            const auto v = field->getLastText();
+            if (v != item.value()) {
+                item.setValue(v);
+            }
+        }, field->lifetime());
+        const auto idx = i;
+        ::Settings::AddButtonWithIcon(
+            wrap,
+            tr::ag_fast_messages_remove(),
+            st::settingsButton,
+            { &st::menuIconDelete }
+        )->setClickedCallback([outer, idx] {
+            Config::FastMessages::RemoveSlot(idx);
+            outer->resizeToWidth(outer->width());
+        });
+        Ui::AddSkip(wrap);
+        Ui::AddDivider(wrap);
+    }
 }
 
 class Page : public Section<Page> {
@@ -62,12 +78,38 @@ private:
 };
 
 void BuildPage(SectionBuilder &builder) {
-    const auto container = builder.container();
-    for (auto i = 0; i != Config::FastMessages::kSlotCount; ++i) {
-        AddSlotField(container, i);
-    }
-    Ui::AddSkip(container);
-    Ui::AddDividerText(container, tr::ag_fast_messages_info());
+    const auto outer = builder.container();
+
+    const auto slotWrap = outer->add(object_ptr<Ui::VerticalLayout>(outer));
+    FillSlots(slotWrap, outer);
+
+    Config::FastMessages::CountStr.changes(
+    ) | rpl::on_next([outer, slotWrap](auto) {
+        InvokeQueued(slotWrap, [outer, slotWrap] {
+            while (slotWrap->count()) {
+                delete slotWrap->widgetAt(0);
+            }
+            FillSlots(slotWrap, outer);
+            slotWrap->resizeToWidth(slotWrap->width());
+        });
+    }, slotWrap->lifetime());
+
+    Ui::AddSkip(outer);
+    ::Settings::AddButtonWithIcon(
+        outer,
+        tr::ag_fast_messages_add(),
+        st::settingsButton,
+        { &st::menuIconAdd }
+    )->setClickedCallback([outer] {
+        const auto count = Config::FastMessages::Count();
+        if (count >= Config::FastMessages::kSlotCount) {
+            return;
+        }
+        Config::FastMessages::SetCount(count + 1);
+    });
+
+    Ui::AddSkip(outer);
+    Ui::AddDividerText(outer, tr::ag_fast_messages_info());
 }
 
 const auto kPageMeta = BuildHelper({
@@ -103,7 +145,7 @@ bool Send(
         not_null<PeerData*> peer,
         FullReplyTo replyTo,
         int slot) {
-    if (slot < 0 || slot >= Config::FastMessages::kSlotCount) {
+    if (slot < 0 || slot >= Config::FastMessages::Count()) {
         return false;
     }
     const auto text = Config::FastMessages::Slot(slot).value().trimmed();
