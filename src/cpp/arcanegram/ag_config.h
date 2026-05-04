@@ -80,6 +80,16 @@ namespace FastMessages {
 
 constexpr int kSlotCount = 10;
 
+inline auto CountStr = Item<QString>("ag_fast_messages_count", u"1"_q);
+
+[[nodiscard]] inline int Count() {
+    const auto v = CountStr.value().toInt();
+    return (v >= 1 && v <= kSlotCount) ? v : 1;
+}
+inline void SetCount(int n) {
+    CountStr.setValue(QString::number(n));
+}
+
 inline auto Slot1 = Item<QString>("ag_fast_message_text_1", QString());
 inline auto Slot2 = Item<QString>("ag_fast_message_text_2", QString());
 inline auto Slot3 = Item<QString>("ag_fast_message_text_3", QString());
@@ -105,6 +115,15 @@ inline auto Slot10 = Item<QString>("ag_fast_message_text_10", QString());
     case 9: return Slot10;
     }
     Unexpected("FastMessages::Slot index out of range");
+}
+
+inline void RemoveSlot(int index) {
+    const auto count = Count();
+    for (auto i = index; i < count - 1; ++i) {
+        Slot(i).setValue(Slot(i + 1).value());
+    }
+    Slot(count - 1).setValue(QString());
+    SetCount(count - 1);
 }
 
 } // namespace FastMessages

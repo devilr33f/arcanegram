@@ -1,5 +1,6 @@
 #include "ag_hooks.h"
 
+#include "arcanegram/ag_lang.h"
 #include "arcanegram/features/ag_forwarded_header.h"
 #include "arcanegram/features/ag_show_seconds.h"
 #include "arcanegram/features/ag_hidden_users.h"
@@ -11,6 +12,7 @@
 namespace Arcanegram::Hooks {
 
 void init() {
+    Arcanegram::Lang::Init();
     Arcanegram::ForwardedHeader::Init();
     Arcanegram::Time::Init();
     Arcanegram::HiddenUsers::Init();
