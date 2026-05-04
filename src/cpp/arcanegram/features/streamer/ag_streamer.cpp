@@ -18,7 +18,6 @@
 #include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
 #include "ui/vertical_list.h"
-#include "ui/widgets/labels.h"
 #include "ui/wrap/vertical_layout.h"
 #include "window/window_session_controller.h"
 
@@ -173,18 +172,11 @@ void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 		tr::ag_streamer_anonymize_bots_about(),
 		Config::StreamerMode::AnonymizeBots);
 
-	Ui::AddSkip(container);
-	Ui::AddDivider(container);
-	Ui::AddSkip(container);
-
-	container->add(
-		object_ptr<Ui::FlatLabel>(
-			container,
-			tr::ag_streamer_preview(
-				lt_name,
-				rpl::single(GeneratedName(PeerId(1234567890ULL)))),
-			st::boxDividerLabel),
-		st::defaultBoxDividerLabelPadding);
+	Ui::AddDividerText(
+		container,
+		tr::ag_streamer_preview(
+			lt_name,
+			rpl::single(GeneratedName(PeerId(1234567890ULL)))));
 
 	Ui::AddDividerText(container, tr::ag_streamer_subtitle());
 }

@@ -38,5 +38,6 @@ feature/streamer-mode-search.patch
 feature/streamer-mode-forum-topic.patch
 feature/streamer-mode-rank.patch
 feature/streamer-mode-seen-avatars.patch
+misc/lang-ag-load-content.patch
 feature/streamer-mode-rating.patch
 misc/branding.patch

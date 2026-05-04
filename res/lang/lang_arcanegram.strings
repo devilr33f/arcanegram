@@ -20,6 +20,8 @@
 "ag_fast_messages_info" = "Type a message per slot. Bind keys in Settings → Chat Settings → Keyboard Shortcuts.";
 "ag_fast_messages_slot" = "Slot {index}";
 "ag_fast_messages_placeholder" = "Message text";
+"ag_fast_messages_add" = "Add slot";
+"ag_fast_messages_remove" = "Remove slot";
 "ag_settings_appearance" = "Chat appearance";
 "ag_settings_sync_title" = "Cloud sync";
 "ag_sync_enabled_setting" = "Enable cloud sync";

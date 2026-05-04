@@ -1,5 +1,7 @@
 node_modules/
 worktree/
+issues/
+MEMORY.md
 .DS_Store
 *.log
 .pnpm-store/
