@@ -75,6 +75,7 @@ PRIVATE
     desktop-app::lib_base
     desktop-app::lib_rpl
     desktop-app::lib_storage
+    desktop-app::lib_spellcheck
     Qt::Network
 )
 

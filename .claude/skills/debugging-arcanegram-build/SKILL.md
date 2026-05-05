@@ -54,6 +54,12 @@ When you encounter a new symptom and resolve it, **append a new row** to the rel
 | `stg refresh` captured the wrong patch | Make sure the right patch is on top first (`stg top` to verify, `stg float <name>` to bring one up, then `stg refresh`). |
 | Adding a new patch and old patches show as modified after `pnpm run export` | Whitespace / commit-hash drift from re-export. Don't stage them unless you actually changed the patch content — they'll re-export consistently next time. |
 
+## CMake / include-path errors
+
+| Symptom | Cause | Fix |
+|---|---|---|
+| `C1083: Cannot open include file: 'spellcheck/spellcheck_types.h'` when including `history/history_item_components.h` from a fork TU | `lib_spellcheck` is linked into the stock `Telegram` target but not into the `arcanegram` static library target | Add `desktop-app::lib_spellcheck` to `target_link_libraries(arcanegram PRIVATE ...)` in `src/cpp/arcanegram/CMakeLists.txt`, then run `./build-telegram.bat configure` to regenerate the vcxproj before rebuilding. |
+
 ## Build invocation
 
 If `build-telegram.bat` fails with `'build-telegram.bat' is not recognized`, you're running it through `cmd //c` from Git Bash — cwd inheritance breaks. Run it directly:
