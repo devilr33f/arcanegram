@@ -6,6 +6,7 @@
 #include "data/data_session.h"
 #include "history/history.h"
 #include "history/history_item.h"
+#include "history/history_item_components.h"
 #include "lang/lang_keys.h"
 #include "main/main_session.h"
 
@@ -70,6 +71,19 @@ void RefreshAll(PeerId changed) {
 			owner.requestItemViewRefresh(item);
 			return;
 		}
+		const auto originalSender = item->originalSender();
+		if (originalSender && originalSender->id == changed) {
+			owner.requestItemViewRefresh(item);
+			return;
+		}
+		const auto hiddenInfo = item->originalHiddenSenderInfo();
+		if (hiddenInfo && !hiddenInfo->name.isEmpty()) {
+			const auto changedPeer = owner.peerLoaded(changed);
+			if (changedPeer && changedPeer->name() == hiddenInfo->name) {
+				owner.requestItemViewRefresh(item);
+				return;
+			}
+		}
 		const auto reply = item->replyToFullId();
 		if (!reply) {
 			return;
@@ -97,10 +111,24 @@ bool IsHidden(PeerId id) {
 
 bool IsHiddenItem(not_null<const HistoryItem*> item) {
 	const auto from = item->from();
-	if (!from || !from->isUser()) {
-		return false;
+	if (from && from->isUser() && IsHidden(from->id)) {
+		return true;
 	}
-	return IsHidden(from->id);
+	const auto originalSender = item->originalSender();
+	if (originalSender && originalSender->isUser() && IsHidden(originalSender->id)) {
+		return true;
+	}
+	const auto hiddenInfo = item->originalHiddenSenderInfo();
+	if (hiddenInfo && !hiddenInfo->name.isEmpty()) {
+		auto &owner = item->history()->owner();
+		for (const auto &id : Set()) {
+			const auto peer = owner.peerLoaded(id);
+			if (peer && peer->name() == hiddenInfo->name) {
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 void Hide(PeerId id) {

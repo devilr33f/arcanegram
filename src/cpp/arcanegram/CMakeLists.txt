@@ -58,9 +58,13 @@ PRIVATE
     sync/ag_sync_keys.cpp
     sync/ag_sync_engine.h
     sync/ag_sync_engine.cpp
-    features/streamer/ag_streamer.cpp
-    features/streamer/ag_streamer.h
-    features/streamer/streamer_names.h
+    features/ag_quick_access.h
+    features/ag_quick_access.cpp
+    features/screenshot/ag_screenshot.cpp
+    features/screenshot/ag_screenshot.h
+    features/screenshot/screenshot_names.h
+    features/streamer_mode/ag_streamer_mode.h
+    features/streamer_mode/ag_streamer_mode.cpp
 )
 
 target_include_directories(arcanegram PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
@@ -75,6 +79,7 @@ PRIVATE
     desktop-app::lib_base
     desktop-app::lib_rpl
     desktop-app::lib_storage
+    desktop-app::lib_spellcheck
     Qt::Network
 )
 

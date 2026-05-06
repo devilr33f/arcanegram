@@ -8,7 +8,7 @@ class PeerData;
 
 namespace Settings::Builder { class SectionBuilder; }
 
-namespace Arcanegram::Streamer {
+namespace Arcanegram::Screenshot {
 
 void Init();
 
@@ -24,4 +24,4 @@ void Init();
 
 void Setup(::Settings::Builder::SectionBuilder &builder);
 
-} // namespace Arcanegram::Streamer
+} // namespace Arcanegram::Screenshot
