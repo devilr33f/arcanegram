@@ -1,7 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:08:54 +0600
-Subject: [PATCH] streamer mode: hide profile phone/username/bio/common-chats
+Subject: [PATCH] [PATCH] streamer mode: hide profile
+ phone/username/bio/common-chats
 
 ---
  .../info/profile/info_profile_values.cpp      | 56 +++++++++++--------
@@ -24,8 +25,8 @@ index 0000000..0000000 100644
 +		peer->session().changes().peerFlagsValue(
 +			peer,
 +			UpdateFlag::About),
-+		rpl::single(Arcanegram::Streamer::IsActive())
-+			| rpl::then(Arcanegram::Streamer::Changes())
++		rpl::single(Arcanegram::Screenshot::IsActive())
++			| rpl::then(Arcanegram::Screenshot::Changes())
 +	) | rpl::map([=](const auto &, bool streamer) {
 +		return streamer ? QString() : peer->about();
  	});
@@ -48,8 +49,8 @@ index 0000000..0000000 100644
 +			user->session().changes().peerFlagsValue(
 +				user,
 +				UpdateFlag::PhoneNumber) | rpl::to_empty),
-+		rpl::single(Arcanegram::Streamer::IsActive())
-+			| rpl::then(Arcanegram::Streamer::Changes())
++		rpl::single(Arcanegram::Screenshot::IsActive())
++			| rpl::then(Arcanegram::Screenshot::Changes())
 +	) | rpl::map([=](const auto &, bool streamer) {
 +		return tr::marked(Ui::FormatPhone(streamer ? QString() : user->phone()));
  	});
@@ -68,8 +69,8 @@ index 0000000..0000000 100644
 +		(primary
 +			? PlainPrimaryUsernameValue(peer)
 +			: (PlainUsernameValue(peer) | rpl::type_erased)),
-+		rpl::single(Arcanegram::Streamer::IsActive())
-+			| rpl::then(Arcanegram::Streamer::Changes())
++		rpl::single(Arcanegram::Screenshot::IsActive())
++			| rpl::then(Arcanegram::Screenshot::Changes())
 +	) | rpl::map([](const QString &username, bool streamer) {
 +		return (streamer || username.isEmpty())
  			? tr::marked()
@@ -88,8 +89,8 @@ index 0000000..0000000 100644
 +		user->session().changes().peerFlagsValue(
 +			user,
 +			UpdateFlag::CommonChats),
-+		rpl::single(Arcanegram::Streamer::IsActive())
-+			| rpl::then(Arcanegram::Streamer::Changes())
++		rpl::single(Arcanegram::Screenshot::IsActive())
++			| rpl::then(Arcanegram::Screenshot::Changes())
 +	) | rpl::map([=](const auto &, bool streamer) {
 +		return streamer ? 0 : user->commonChatsCount();
  	});

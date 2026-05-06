@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:50:04 +0600
-Subject: [PATCH] streamer mode: pseudonym in typing indicator
+Subject: [PATCH] [PATCH] streamer mode: pseudonym in typing indicator
 
 ---
  .../history/view/history_view_send_action.cpp | 22 +++++++++++++------
@@ -15,7 +15,7 @@ index 0000000..0000000 100644
  */
  #include "history/view/history_view_send_action.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "data/data_user.h"
  #include "data/data_send_action.h"
  #include "data/data_forum_topic.h"
@@ -24,8 +24,8 @@ index 0000000..0000000 100644
  constexpr auto kStatusShowClientsideSpeaking = 6 * crl::time(1000);
  
 +[[nodiscard]] QString DisplayFirstName(not_null<UserData*> user) {
-+	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
-+		return Arcanegram::Streamer::GeneratedShortName(user->id);
++	if (Arcanegram::Screenshot::ShouldAnonymize(user)) {
++		return Arcanegram::Screenshot::GeneratedShortName(user->id);
 +	}
 +	return user->firstName;
 +}

@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:03:10 +0600
-Subject: [PATCH] streamer mode: strip name color and decoration
+Subject: [PATCH] [PATCH] streamer mode: strip name color and decoration
 
 ---
  Telegram/SourceFiles/data/data_peer.cpp | 16 ++++++++++++++++
@@ -17,14 +17,14 @@ index 0000000..0000000 100644
  }
  
 +uint8 PeerData::colorIndex() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
-+		return Arcanegram::Streamer::ForcedColorIndex(id);
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
++		return Arcanegram::Screenshot::ForcedColorIndex(id);
 +	}
 +	return _colorIndex;
 +}
 +
  DocumentId PeerData::backgroundEmojiId() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
 +		return DocumentId(0);
 +	}
  	return _backgroundEmojiId;
@@ -34,7 +34,7 @@ index 0000000..0000000 100644
  }
  
  DocumentId PeerData::profileBackgroundEmojiId() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
 +		return DocumentId(0);
 +	}
  	return _profileBackgroundEmojiId;
@@ -44,7 +44,7 @@ index 0000000..0000000 100644
  }
  
  EmojiStatusId PeerData::emojiStatusId() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
 +		return EmojiStatusId();
 +	}
  	return _emojiStatusId;

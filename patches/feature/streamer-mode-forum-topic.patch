@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:53:21 +0600
-Subject: [PATCH] streamer mode: anonymize forum topic title
+Subject: [PATCH] [PATCH] streamer mode: anonymize forum topic title
 
 ---
  Telegram/SourceFiles/data/data_forum_topic.cpp | 7 +++++++
@@ -16,7 +16,7 @@ index 0000000..0000000 100644
  */
  #include "data/data_forum_topic.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "data/data_channel.h"
  #include "data/data_changes.h"
  #include "data/data_forum.h"
@@ -24,10 +24,10 @@ index 0000000..0000000 100644
  }
  
  const QString &ForumTopic::chatListName() const {
-+	if (channel() && Arcanegram::Streamer::ShouldAnonymize(channel())) {
++	if (channel() && Arcanegram::Screenshot::ShouldAnonymize(channel())) {
 +		static thread_local QString cached;
 +		const auto seed = channel()->id.value ^ quint64(rootId().bare);
-+		cached = Arcanegram::Streamer::GeneratedShortName(PeerId(seed));
++		cached = Arcanegram::Screenshot::GeneratedShortName(PeerId(seed));
 +		return cached;
 +	}
  	return _title;

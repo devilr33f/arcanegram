@@ -1,7 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:50:34 +0600
-Subject: [PATCH] streamer mode: pseudonym in shortened reply sender name
+Subject: [PATCH] [PATCH] streamer mode: pseudonym in shortened reply sender
+ name
 
 ---
  Telegram/SourceFiles/history/view/history_view_reply.cpp | 9 ++++++++-
@@ -15,7 +16,7 @@ index 0000000..0000000 100644
  #include "history/view/history_view_reply.h"
  
  #include "arcanegram/features/ag_hidden_users.h"
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "core/click_handler_types.h"
  #include "core/ui_integration.h"
  #include "data/stickers/data_custom_emoji.h"
@@ -25,8 +26,8 @@ index 0000000..0000000 100644
  	const auto user = shorten ? peer->asUser() : nullptr;
 -	return user ? user->firstName : peer->name();
 +	if (user) {
-+		const auto firstName = Arcanegram::Streamer::ShouldAnonymize(peer)
-+			? Arcanegram::Streamer::GeneratedShortName(peer->id)
++		const auto firstName = Arcanegram::Screenshot::ShouldAnonymize(peer)
++			? Arcanegram::Screenshot::GeneratedShortName(peer->id)
 +			: user->firstName;
 +		return firstName;
 +	}

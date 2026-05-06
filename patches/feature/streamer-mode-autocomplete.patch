@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:16:09 +0600
-Subject: [PATCH] streamer mode: hide username in mention autocomplete
+Subject: [PATCH] [PATCH] streamer mode: hide username in mention autocomplete
 
 ---
  Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp | 5 +++++
@@ -15,7 +15,7 @@ index 0000000..0000000 100644
  #include "styles/style_chat_helpers.h"
  #include "styles/style_menu_icons.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
 +
  #include <QtWidgets/QApplication>
  
@@ -23,7 +23,7 @@ index 0000000..0000000 100644
  namespace {
  
  [[nodiscard]] QString PrimaryUsername(not_null<UserData*> user) {
-+	if (Arcanegram::Streamer::ShouldAnonymize(user)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(user)) {
 +		return QString();
 +	}
  	const auto &usernames = user->usernames();

@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:58:05 +0600
-Subject: [PATCH] streamer mode: skip photo carousel in profile preview
+Subject: [PATCH] [PATCH] streamer mode: skip photo carousel in profile preview
 
 ---
  Telegram/SourceFiles/boxes/peers/prepare_short_info_box.cpp | 5 ++++-
@@ -15,7 +15,7 @@ index 0000000..0000000 100644
  */
  #include "boxes/peers/prepare_short_info_box.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "base/unixtime.h"
  #include "boxes/peers/peer_short_info_box.h"
  #include "core/application.h"
@@ -24,7 +24,7 @@ index 0000000..0000000 100644
  		not_null<PeerData*> peer,
  		not_null<UserpicState*> state) {
 -	const auto userpicPhotoId = peer->userpicPhotoId();
-+	const auto userpicPhotoId = Arcanegram::Streamer::ShouldAnonymize(peer)
++	const auto userpicPhotoId = Arcanegram::Screenshot::ShouldAnonymize(peer)
 +		? PhotoId{}
 +		: peer->userpicPhotoId();
  	const auto userpicPhoto = (userpicPhotoId

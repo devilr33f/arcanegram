@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:57:40 +0600
-Subject: [PATCH] streamer mode: empty userpic in fullscreen call
+Subject: [PATCH] [PATCH] streamer mode: empty userpic in fullscreen call
 
 ---
  Telegram/SourceFiles/calls/calls_userpic.cpp | 13 +++++++++----
@@ -15,7 +15,7 @@ index 0000000..0000000 100644
  */
  #include "calls/calls_userpic.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "data/data_peer.h"
  #include "main/main_session.h"
  #include "data/data_changes.h"
@@ -26,7 +26,7 @@ index 0000000..0000000 100644
 -	const auto photo = _peer->userpicPhotoId()
 -		? _peer->owner().photo(_peer->userpicPhotoId()).get()
 -		: nullptr;
-+	const auto photo = (Arcanegram::Streamer::ShouldAnonymize(_peer)
++	const auto photo = (Arcanegram::Screenshot::ShouldAnonymize(_peer)
 +			|| !_peer->userpicPhotoId())
 +		? nullptr
 +		: _peer->owner().photo(_peer->userpicPhotoId()).get();
@@ -38,7 +38,7 @@ index 0000000..0000000 100644
  		createCache(_photo->image(Data::PhotoSize::Thumbnail));
  	} else if (_userPhoto.isNull()) {
 -		if (const auto cloud = _peer->userpicCloudImage(_userpic)) {
-+		const auto cloud = Arcanegram::Streamer::ShouldAnonymize(_peer)
++		const auto cloud = Arcanegram::Screenshot::ShouldAnonymize(_peer)
 +			? nullptr
 +			: _peer->userpicCloudImage(_userpic);
 +		if (cloud) {

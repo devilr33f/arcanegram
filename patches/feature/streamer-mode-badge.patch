@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:03:37 +0600
-Subject: [PATCH] streamer mode: hide verified/scam/premium badges
+Subject: [PATCH] [PATCH] streamer mode: hide verified/scam/premium badges
 
 ---
  Telegram/SourceFiles/info/profile/info_profile_badge.cpp  | 5 +++++
@@ -16,7 +16,7 @@ index 0000000..0000000 100644
  #include "main/main_session.h"
  #include "styles/style_info.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
 +
  namespace Info::Profile {
  namespace {
@@ -25,7 +25,7 @@ index 0000000..0000000 100644
  
  rpl::producer<Badge::Content> BotVerifyBadgeForPeer(
  		not_null<PeerData*> peer) {
-+	if (Arcanegram::Streamer::ShouldAnonymize(peer)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(peer)) {
 +		return rpl::single(Badge::Content{ BadgeType::None });
 +	}
  	return peer->session().changes().peerFlagsValue(
@@ -39,7 +39,7 @@ index 0000000..0000000 100644
  #include "boxes/peers/edit_peer_permissions_box.h"
  #include "base/unixtime.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
 +
  namespace Info {
  namespace Profile {
@@ -48,7 +48,7 @@ index 0000000..0000000 100644
  }
  
  rpl::producer<BadgeType> BadgeValue(not_null<PeerData*> peer) {
-+	if (Arcanegram::Streamer::ShouldAnonymize(peer)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(peer)) {
 +		return rpl::single(BadgeType::None);
 +	}
  	if (const auto user = peer->asUser()) {

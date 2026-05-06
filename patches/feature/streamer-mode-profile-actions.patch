@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:10:29 +0600
-Subject: [PATCH] streamer mode: hide peer id, birthday, username link
+Subject: [PATCH] [PATCH] streamer mode: hide peer id, birthday, username link
 
 ---
  .../info/profile/info_profile_actions.cpp     | 21 +++++++++++++------
@@ -15,7 +15,7 @@ index 0000000..0000000 100644
  #include "info/profile/info_profile_actions.h"
  
  #include "arcanegram/features/ag_peer_ids.h"
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "api/api_blocked_peers.h"
  #include "api/api_chat_participants.h"
  #include "api/api_credits.h"
@@ -23,7 +23,7 @@ index 0000000..0000000 100644
  		const QString &addToLink) {
  	const auto weak = base::make_weak(controller);
  	return [=](QString link) {
-+		if (Arcanegram::Streamer::ShouldAnonymize(peer)) {
++		if (Arcanegram::Screenshot::ShouldAnonymize(peer)) {
 +			return;
 +		}
  		if (link.startsWith(u"internal:"_q)) {
@@ -34,7 +34,7 @@ index 0000000..0000000 100644
  		peer
  	) | rpl::map([=](TextWithEntities &&value) {
 -		if (ShowPeerIdBelowAbout.value()) {
-+		const auto anonymize = Arcanegram::Streamer::ShouldAnonymize(peer);
++		const auto anonymize = Arcanegram::Screenshot::ShouldAnonymize(peer);
 +		if (ShowPeerIdBelowAbout.value() && !anonymize) {
  			using namespace Ui::Text;
  			if (!value.empty()) {
@@ -62,8 +62,8 @@ index 0000000..0000000 100644
 -	) | rpl::start_spawning(result->lifetime());
 +	auto birthday = rpl::combine(
 +		BirthdayValue(user),
-+		rpl::single(Arcanegram::Streamer::IsActive())
-+			| rpl::then(Arcanegram::Streamer::Changes())
++		rpl::single(Arcanegram::Screenshot::IsActive())
++			| rpl::then(Arcanegram::Screenshot::Changes())
 +	) | rpl::map([](Data::Birthday value, bool streamer) {
 +		return streamer ? Data::Birthday() : value;
 +	}) | rpl::start_spawning(result->lifetime());

@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:49:36 +0600
-Subject: [PATCH] streamer mode: pseudonym in PeerData::name accessors
+Subject: [PATCH] [PATCH] streamer mode: pseudonym in PeerData::name accessors
 
 ---
  Telegram/SourceFiles/data/data_peer.cpp | 20 ++++++++++++++++++++
@@ -16,7 +16,7 @@ index 0000000..0000000 100644
  */
  #include "data/data_peer.h"
  
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "api/api_sensitive_content.h"
  #include "data/data_user.h"
  #include "data/data_chat.h"
@@ -24,9 +24,9 @@ index 0000000..0000000 100644
  }
  
  const QString &PeerData::topBarNameText() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
 +		static thread_local QString cached;
-+		cached = Arcanegram::Streamer::GeneratedName(id);
++		cached = Arcanegram::Screenshot::GeneratedName(id);
 +		return cached;
 +	}
  	if (const auto to = migrateTo()) {
@@ -41,9 +41,9 @@ index 0000000..0000000 100644
 +}
 +
  const QString &PeerData::name() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
 +		static thread_local QString cached;
-+		cached = Arcanegram::Streamer::GeneratedName(id);
++		cached = Arcanegram::Screenshot::GeneratedName(id);
 +		return cached;
 +	}
  	if (const auto to = migrateTo()) {
@@ -53,9 +53,9 @@ index 0000000..0000000 100644
  }
  
  const QString &PeerData::shortName() const {
-+	if (Arcanegram::Streamer::ShouldAnonymize(this)) {
++	if (Arcanegram::Screenshot::ShouldAnonymize(this)) {
 +		static thread_local QString cached;
-+		cached = Arcanegram::Streamer::GeneratedShortName(id);
++		cached = Arcanegram::Screenshot::GeneratedShortName(id);
 +		return cached;
 +	}
  	if (const auto user = asUser()) {

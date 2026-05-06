@@ -1,9 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 17:13:09 +0600
-Subject: [PATCH] streamer mode: force empty userpic in
- PeerData::GenerateUserpicImage
+Subject: [PATCH] [PATCH] streamer mode: force empty userpic in
 
+PeerData::GenerateUserpicImage
 ---
  Telegram/SourceFiles/data/data_peer.cpp | 5 ++++-
  1 file changed, 4 insertions(+), 1 deletion(-)
@@ -17,7 +17,7 @@ index 0000000..0000000 100644
  		int size,
  		std::optional<int> radius) {
 -	if (const auto userpic = peer->userpicCloudImage(view)) {
-+	const auto userpic = Arcanegram::Streamer::ShouldAnonymize(peer)
++	const auto userpic = Arcanegram::Screenshot::ShouldAnonymize(peer)
 +		? nullptr
 +		: peer->userpicCloudImage(view);
 +	if (userpic) {

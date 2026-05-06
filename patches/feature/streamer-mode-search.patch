@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:16:33 +0600
-Subject: [PATCH] streamer mode: hide username in dialogs search rows
+Subject: [PATCH] [PATCH] streamer mode: hide username in dialogs search rows
 
 ---
  .../dialogs/dialogs_inner_widget.cpp           | 18 ++++++++++++------
@@ -16,7 +16,7 @@ index 0000000..0000000 100644
  #include "window/window_controller.h"
  #include "window/window_session_controller.h"
 +
-+#include "arcanegram/features/streamer/ag_streamer.h"
++#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "window/window_peer_menu.h"
  #include "ui/chat/chats_filter_tag.h"
  #include "ui/effects/ripple_animation.h"
@@ -25,7 +25,7 @@ index 0000000..0000000 100644
  	QRect tr(context.st->textLeft, context.st->textTop, namewidth, st::dialogsTextFont->height);
  	p.setFont(st::dialogsTextFont);
 -	QString username = peer->username();
-+	QString username = Arcanegram::Streamer::ShouldAnonymize(peer)
++	QString username = Arcanegram::Screenshot::ShouldAnonymize(peer)
 +		? QString()
 +		: peer->username();
  	if (!context.active && username.startsWith(_peerSearchQuery, Qt::CaseInsensitive)) {
@@ -40,7 +40,7 @@ index 0000000..0000000 100644
 -		mimeData->setData(
 -			u"application/x-telegram-input-field"_q,
 -			('@' + u).toUtf8());
-+	if (!Arcanegram::Streamer::ShouldAnonymize(history->peer)) {
++	if (!Arcanegram::Screenshot::ShouldAnonymize(history->peer)) {
 +		if (const auto u = history->peer->username(); !u.isEmpty()) {
 +			mimeData->setText(history->peer->session().createInternalLinkFull(u));
 +			mimeData->setData(
