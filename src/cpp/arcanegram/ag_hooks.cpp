@@ -7,6 +7,7 @@
 #include "arcanegram/features/ag_chat_wallpaper.h"
 #include "arcanegram/features/ag_fast_messages.h"
 #include "arcanegram/features/screenshot/ag_screenshot.h"
+#include "arcanegram/features/streamer_mode/ag_streamer_mode.h"
 #include "arcanegram/sync/ag_sync_engine.h"
 
 namespace Arcanegram::Hooks {
@@ -20,6 +21,7 @@ void init() {
     Arcanegram::Sync::Init();
     Arcanegram::FastMessages::Init();
     Arcanegram::Screenshot::Init();
+    Arcanegram::StreamerMode::Init();
 }
 
 } // namespace Arcanegram::Hooks

@@ -7,6 +7,7 @@
 #include "arcanegram/features/ag_sync_feature.h"
 #include "arcanegram/features/ag_quick_access.h"
 #include "arcanegram/features/screenshot/ag_screenshot.h"
+#include "arcanegram/features/streamer_mode/ag_streamer_mode.h"
 #include "arcanegram/ui/ag_hidden_users_settings.h"
 #include "lang/lang_keys.h"
 #include "settings/sections/settings_main.h"
@@ -85,6 +86,7 @@ void BuildContent(SectionBuilder &builder) {
     });
     Arcanegram::HiddenUsers::Setup(builder);
     Arcanegram::Screenshot::Setup(builder);
+    Arcanegram::StreamerMode::Setup(builder);
     Arcanegram::FastMessages::Setup(builder);
     Arcanegram::CloudSync::Setup(builder);
     Arcanegram::QuickAccess::Setup(builder);

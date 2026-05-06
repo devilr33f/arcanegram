@@ -1,4 +1,4 @@
-#include "arcanegram/features/ag_quick_access.h"
+#include "arcanegram/features/streamer_mode/ag_streamer_mode.h"
 
 #include "arcanegram/ag_config.h"
 #include "arcanegram/ui/ag_settings_main.h"
@@ -12,25 +12,19 @@
 #include "ui/wrap/vertical_layout.h"
 #include "window/window_session_controller.h"
 
-namespace Arcanegram::QuickAccess {
+namespace Arcanegram::StreamerMode {
 namespace {
 
 void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 	const auto container = builder.container();
+	Ui::AddSubsectionTitle(container, tr::ag_streamer_mode_title());
 
-	Ui::AddSubsectionTitle(container, tr::ag_quick_access_sidebar());
 	Arcanegram::Settings::AddBoolRow(
 		builder,
-		u"arcanegram/quick_access/sidebar_screenshot"_q,
-		tr::ag_quick_access_screenshot_mode(),
-		tr::ag_quick_access_sidebar_screenshot_info(),
-		Config::QuickAccess::SidebarScreenshot);
-	Arcanegram::Settings::AddBoolRow(
-		builder,
-		u"arcanegram/quick_access/sidebar_streamer_mode"_q,
-		tr::ag_quick_access_streamer_mode(),
-		tr::ag_quick_access_sidebar_streamer_mode_info(),
-		Config::QuickAccess::SidebarStreamerMode);
+		u"arcanegram/streamer_mode/enabled"_q,
+		tr::ag_streamer_mode_enabled(),
+		tr::ag_streamer_mode_about(),
+		Config::StreamerMode::Enabled);
 }
 
 class Page : public ::Settings::Section<Page> {
@@ -38,7 +32,7 @@ public:
 	Page(QWidget *parent, not_null<Window::SessionController*> controller);
 
 	[[nodiscard]] rpl::producer<QString> title() override {
-		return tr::ag_quick_access_title();
+		return tr::ag_streamer_mode_title();
 	}
 
 private:
@@ -48,8 +42,8 @@ private:
 const auto kPageMeta = ::Settings::Builder::BuildHelper({
 	.id = Page::Id(),
 	.parentId = Arcanegram::Settings::Id(),
-	.title = &tr::ag_quick_access_title,
-	.icon = &st::menuIconShowInFolder,
+	.title = &tr::ag_streamer_mode_title,
+	.icon = &st::menuIconStealth,
 }, [](::Settings::Builder::SectionBuilder &builder) {
 	BuildPage(builder);
 });
@@ -71,12 +65,15 @@ void Page::setupContent() {
 
 } // namespace
 
+void Init() {
+}
+
 void Setup(::Settings::Builder::SectionBuilder &builder) {
 	builder.addSectionButton({
-		.title = tr::ag_quick_access_title(),
+		.title = tr::ag_streamer_mode_title(),
 		.targetSection = Page::Id(),
-		.icon = { &st::menuIconShowInFolder },
+		.icon = { &st::menuIconStealth },
 	});
 }
 
-} // namespace Arcanegram::QuickAccess
+} // namespace Arcanegram::StreamerMode

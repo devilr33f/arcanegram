@@ -63,6 +63,8 @@ PRIVATE
     features/screenshot/ag_screenshot.cpp
     features/screenshot/ag_screenshot.h
     features/screenshot/screenshot_names.h
+    features/streamer_mode/ag_streamer_mode.h
+    features/streamer_mode/ag_streamer_mode.cpp
 )
 
 target_include_directories(arcanegram PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
