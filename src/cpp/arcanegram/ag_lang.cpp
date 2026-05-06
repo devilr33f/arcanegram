@@ -59,7 +59,7 @@ constexpr auto kRuStrings = R"strings(
 "ag_streamer_anonymize_bots" = "Анонимизировать ботов";
 "ag_streamer_anonymize_bots_about" = "Боты открыты по умолчанию, так как обычно это намеренно. Включите, чтобы также давать им псевдонимы.";
 "ag_streamer_capture_lock" = "Блокировать захват экрана";
-"ag_streamer_capture_lock_about" = "Запрещает другим приложениям захватывать окно Telegram через скриншоты, запись экрана или трансляцию. Использует Windows API отображаемого приоритета окна (WDA_EXCLUDEFROMCAPTURE). Не работает на Windows младше 10 2004.";
+"ag_streamer_capture_lock_about" = "Запрещает другим приложениям захватывать окно Telegram через скриншоты, запись экрана или через стриминг. Использует Windows API отображаемого приоритета окна (WDA_EXCLUDEFROMCAPTURE). Не работает на Windows младше 10 2004.";
 "ag_streamer_preview" = "Пример: {name}";
 )strings";
 
