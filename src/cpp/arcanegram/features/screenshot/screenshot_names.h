@@ -8,7 +8,7 @@
 #include <array>
 #include <string_view>
 
-namespace Arcanegram::Streamer {
+namespace Arcanegram::Screenshot {
 
 constexpr std::array<std::string_view, 108> kAdjectives = {{
     "admiring", "adoring", "affectionate", "agitated", "amazing", "angry",
@@ -73,4 +73,4 @@ constexpr std::array<std::string_view, 238> kSurnames = {{
     "wright", "wu", "yalow", "yonath", "zhukovsky",
 }};
 
-} // namespace Arcanegram::Streamer
+} // namespace Arcanegram::Screenshot

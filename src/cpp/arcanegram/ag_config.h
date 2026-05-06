@@ -57,12 +57,12 @@ inline auto Disabled = BoolItem("ag_chat_wallpaper_disabled", false);
 
 } // namespace ChatWallpaper
 
-namespace StreamerMode {
+namespace ScreenshotMode {
 
 inline auto Enabled = BoolItem("ag_streamer_enabled", false);
 inline auto AnonymizeBots = BoolItem("ag_streamer_anonymize_bots", false);
 
-} // namespace StreamerMode
+} // namespace ScreenshotMode
 
 namespace Sync {
 

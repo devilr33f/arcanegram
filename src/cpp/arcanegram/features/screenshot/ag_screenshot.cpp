@@ -1,6 +1,6 @@
-#include "arcanegram/features/streamer/ag_streamer.h"
+#include "arcanegram/features/screenshot/ag_screenshot.h"
 
-#include "arcanegram/features/streamer/streamer_names.h"
+#include "arcanegram/features/screenshot/screenshot_names.h"
 #include "arcanegram/ag_config.h"
 #include "arcanegram/ag_refresh.h"
 #include "arcanegram/ui/ag_settings_main.h"
@@ -23,7 +23,7 @@
 
 #include <QtCore/QRandomGenerator>
 
-namespace Arcanegram::Streamer {
+namespace Arcanegram::Screenshot {
 namespace {
 
 quint64 &Seed() {
@@ -89,13 +89,13 @@ void RefreshAll() {
 void Init() {
 	Seed() = QRandomGenerator::global()->generate64();
 
-	Config::StreamerMode::Enabled.changes(
+	Config::ScreenshotMode::Enabled.changes(
 	) | rpl::on_next([](bool active) {
 		Stream().fire_copy(active);
 		RefreshAll();
 	}, Lifetime());
 
-	Config::StreamerMode::AnonymizeBots.changes(
+	Config::ScreenshotMode::AnonymizeBots.changes(
 	) | rpl::on_next([](bool) {
 		if (IsActive()) {
 			RefreshAll();
@@ -104,7 +104,7 @@ void Init() {
 }
 
 bool IsActive() {
-	return Config::StreamerMode::Enabled.value();
+	return Config::ScreenshotMode::Enabled.value();
 }
 
 bool ShouldAnonymize(not_null<const PeerData*> peer) {
@@ -115,7 +115,7 @@ bool ShouldAnonymize(not_null<const PeerData*> peer) {
 		return false;
 	}
 	if (const auto user = peer->asUser()) {
-		if (user->isBot() && !Config::StreamerMode::AnonymizeBots.value()) {
+		if (user->isBot() && !Config::ScreenshotMode::AnonymizeBots.value()) {
 			return false;
 		}
 		return true;
@@ -160,17 +160,17 @@ void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 
 	Arcanegram::Settings::AddBoolRow(
 		builder,
-		u"arcanegram/streamer/enabled"_q,
+		u"arcanegram/screenshot/enabled"_q,
 		tr::ag_streamer_enabled(),
 		tr::ag_streamer_enabled_about(),
-		Config::StreamerMode::Enabled);
+		Config::ScreenshotMode::Enabled);
 
 	Arcanegram::Settings::AddBoolRow(
 		builder,
-		u"arcanegram/streamer/anonymize_bots"_q,
+		u"arcanegram/screenshot/anonymize_bots"_q,
 		tr::ag_streamer_anonymize_bots(),
 		tr::ag_streamer_anonymize_bots_about(),
-		Config::StreamerMode::AnonymizeBots);
+		Config::ScreenshotMode::AnonymizeBots);
 
 	Ui::AddDividerText(
 		container,
@@ -227,4 +227,4 @@ void Setup(::Settings::Builder::SectionBuilder &builder) {
 	});
 }
 
-} // namespace Arcanegram::Streamer
+} // namespace Arcanegram::Screenshot
