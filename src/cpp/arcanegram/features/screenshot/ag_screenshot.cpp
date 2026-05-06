@@ -172,6 +172,13 @@ void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 		tr::ag_streamer_anonymize_bots_about(),
 		Config::ScreenshotMode::AnonymizeBots);
 
+	Arcanegram::Settings::AddBoolRow(
+		builder,
+		u"arcanegram/screenshot/capture_lock"_q,
+		tr::ag_streamer_capture_lock(),
+		tr::ag_streamer_capture_lock_about(),
+		Config::ScreenshotMode::CaptureLock);
+
 	Ui::AddDividerText(
 		container,
 		tr::ag_streamer_preview(

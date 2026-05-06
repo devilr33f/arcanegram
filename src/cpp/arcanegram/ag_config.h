@@ -61,6 +61,7 @@ namespace ScreenshotMode {
 
 inline auto Enabled = BoolItem("ag_streamer_enabled", false);
 inline auto AnonymizeBots = BoolItem("ag_streamer_anonymize_bots", false);
+inline auto CaptureLock = BoolItem("ag_streamer_capture_lock", false);
 
 } // namespace ScreenshotMode
 
