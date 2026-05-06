@@ -13,8 +13,8 @@
 "ag_hidden_users_empty" = "No hidden users.";
 "ag_hidden_users_menu_hide" = "Hide messages from this user";
 "ag_hidden_users_menu_unhide" = "Unhide messages";
-"ag_hidden_user_message" = "Message from hidden user";
-"ag_hidden_user_name" = "Hidden user";
+"ag_hidden_user_message" = "Hidden message";
+"ag_hidden_user_name" = "Hidden";
 "ag_hidden_users_remove" = "Remove";
 "ag_hidden_bots_section" = "Inline bots";
 "ag_hidden_bots_info" = "Right-click any message sent via an inline bot to hide it.";
