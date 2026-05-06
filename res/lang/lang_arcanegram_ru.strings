@@ -47,7 +47,7 @@
 "ag_streamer_anonymize_bots_about" = "Боты открыты по умолчанию, так как обычно это намеренно. Включите, чтобы также давать им псевдонимы.";
 "ag_streamer_mode_title" = "Режим стримера";
 "ag_streamer_mode_enabled" = "Блокировать захват экрана";
-"ag_streamer_mode_about" = "Запрещает другим приложениям захватывать окно Telegram через скриншоты, запись экрана или через стриминг. Использует Windows API отображаемого приоритета окна (WDA_EXCLUDEFROMCAPTURE). Не работает на Windows младше 10 2004.";
+"ag_streamer_mode_about" = "Запрещает другим приложениям захватывать окно Telegram через скриншоты, запись экрана или стриминг.";
 "ag_quick_access_streamer_mode" = "Режим стримера";
 "ag_quick_access_sidebar_streamer_mode_info" = "Добавить переключатель режима стримера в меню боковой панели.";
 "ag_streamer_preview" = "Пример: {name}";

@@ -46,7 +46,7 @@
 "ag_streamer_anonymize_bots_about" = "Bots are exposed by default since they are usually intentional. Enable to also pseudonymize them.";
 "ag_streamer_mode_title" = "Streamer Mode";
 "ag_streamer_mode_enabled" = "Block screen capture";
-"ag_streamer_mode_about" = "Prevents other applications from capturing the Telegram window via screenshots, screen recording, or screen sharing. Uses the Windows display affinity API (WDA_EXCLUDEFROMCAPTURE). Has no effect on Windows versions before 10 2004.";
+"ag_streamer_mode_about" = "Prevents other applications from capturing the Telegram window via screenshots, screen recording, or screen sharing.";
 "ag_quick_access_streamer_mode" = "Streamer Mode";
 "ag_quick_access_sidebar_streamer_mode_info" = "Add a Streamer Mode toggle to the sidebar menu.";
 "ag_streamer_preview" = "Sample: {name}";
