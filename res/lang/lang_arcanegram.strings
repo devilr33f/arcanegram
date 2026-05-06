@@ -34,6 +34,12 @@
 "ag_sync_status_offline" = "Offline";
 "ag_sync_status_offline_pending" = "Offline · {n} pending";
 "ag_sync_status_conflict" = "Resolving conflict…";
+"ag_quick_access_title" = "Quick Access";
+"ag_quick_access_tray" = "Tray";
+"ag_quick_access_sidebar" = "Sidebar";
+"ag_quick_access_screenshot_mode" = "Screenshot Mode";
+"ag_quick_access_tray_screenshot_info" = "Add a toggle for Screenshot Mode to the tray icon menu.";
+"ag_quick_access_sidebar_screenshot_info" = "Add a toggle for Screenshot Mode to the sidebar menu.";
 "ag_streamer_title" = "Screenshot Mode";
 "ag_streamer_subtitle" = "Hide names, avatars and identifiers when taking screenshots.";
 "ag_streamer_enabled" = "Anonymize other users";

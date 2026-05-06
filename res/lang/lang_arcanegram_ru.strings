@@ -35,6 +35,12 @@
 "ag_sync_status_offline" = "Не в сети";
 "ag_sync_status_offline_pending" = "Не в сети · {n} ожидают";
 "ag_sync_status_conflict" = "Разрешение конфликта…";
+"ag_quick_access_title" = "Быстрый доступ";
+"ag_quick_access_tray" = "Системный лоток";
+"ag_quick_access_sidebar" = "Боковая панель";
+"ag_quick_access_screenshot_mode" = "Режим скриншота";
+"ag_quick_access_tray_screenshot_info" = "Добавить переключатель режима скриншота в меню значка в лотке.";
+"ag_quick_access_sidebar_screenshot_info" = "Добавить переключатель режима скриншота в меню боковой панели.";
 "ag_streamer_title" = "Режим скриншота";
 "ag_streamer_subtitle" = "Скрывать имена, аватары и идентификаторы при создании скриншотов.";
 "ag_streamer_enabled" = "Анонимизировать других пользователей";

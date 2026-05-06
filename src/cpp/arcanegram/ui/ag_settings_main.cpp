@@ -5,6 +5,7 @@
 #include "arcanegram/features/ag_forwarded_header.h"
 #include "arcanegram/features/ag_show_seconds.h"
 #include "arcanegram/features/ag_sync_feature.h"
+#include "arcanegram/features/ag_quick_access.h"
 #include "arcanegram/features/screenshot/ag_screenshot.h"
 #include "arcanegram/ui/ag_hidden_users_settings.h"
 #include "lang/lang_keys.h"
@@ -86,6 +87,7 @@ void BuildContent(SectionBuilder &builder) {
     Arcanegram::Screenshot::Setup(builder);
     Arcanegram::FastMessages::Setup(builder);
     Arcanegram::CloudSync::Setup(builder);
+    Arcanegram::QuickAccess::Setup(builder);
 }
 
 const auto kMeta = BuildHelper({

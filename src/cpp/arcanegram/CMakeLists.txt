@@ -58,6 +58,8 @@ PRIVATE
     sync/ag_sync_keys.cpp
     sync/ag_sync_engine.h
     sync/ag_sync_engine.cpp
+    features/ag_quick_access.h
+    features/ag_quick_access.cpp
     features/screenshot/ag_screenshot.cpp
     features/screenshot/ag_screenshot.h
     features/screenshot/screenshot_names.h
