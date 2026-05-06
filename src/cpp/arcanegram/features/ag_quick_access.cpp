@@ -5,6 +5,7 @@
 #include "arcanegram/ui/ag_settings_widgets.h"
 #include "lang/lang_keys.h"
 #include "settings/settings_builder.h"
+#include "settings/settings_common_session.h"
 #include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
 #include "ui/vertical_list.h"
