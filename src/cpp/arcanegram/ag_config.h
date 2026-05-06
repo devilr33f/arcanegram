@@ -130,7 +130,6 @@ inline void RemoveSlot(int index) {
 
 namespace QuickAccess {
 
-inline auto TrayScreenshot = BoolItem("ag_quick_tray_screenshot", false);
 inline auto SidebarScreenshot = BoolItem("ag_quick_sidebar_screenshot", false);
 
 } // namespace QuickAccess

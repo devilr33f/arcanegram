@@ -18,14 +18,6 @@ namespace {
 void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 	const auto container = builder.container();
 
-	Ui::AddSubsectionTitle(container, tr::ag_quick_access_tray());
-	Arcanegram::Settings::AddBoolRow(
-		builder,
-		u"arcanegram/quick_access/tray_screenshot"_q,
-		tr::ag_quick_access_screenshot_mode(),
-		tr::ag_quick_access_tray_screenshot_info(),
-		Config::QuickAccess::TrayScreenshot);
-
 	Ui::AddSubsectionTitle(container, tr::ag_quick_access_sidebar());
 	Arcanegram::Settings::AddBoolRow(
 		builder,
