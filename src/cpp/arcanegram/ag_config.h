@@ -48,6 +48,8 @@ inline auto Enabled = BoolItem("ag_show_seconds", false);
 namespace HiddenUsers {
 
 inline auto Stored = Item<QString>("ag_hidden_users", QString());
+inline auto Bots = Item<QString>("ag_hidden_bots", QString());
+inline auto Regexes = Item<QString>("ag_hidden_regexes", QString());
 
 } // namespace HiddenUsers
 

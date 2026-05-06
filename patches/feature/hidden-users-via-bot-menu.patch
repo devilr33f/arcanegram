@@ -1,0 +1,40 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Thu, 7 May 2026 01:33:26 +0600
+Subject: [PATCH] append hide messages via inline bot to message context menu
+
+---
+ .../history/view/history_view_context_menu.cpp         | 10 ++++++++++
+ 1 file changed, 10 insertions(+)
+
+diff --git a/Telegram/SourceFiles/history/view/history_view_context_menu.cpp b/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "history/view/history_view_context_menu.h"
+ 
++#include "arcanegram/features/ag_hidden_users.h"
+ #include "api/api_attached_stickers.h"
+ #include "api/api_editing.h"
+ #include "api/api_global_privacy.h"
+@@ -1481,6 +1482,15 @@ void FillContextMenuItems(
+ 
+ 	AddCopyLinkAction(result, link);
+ 	AddMessageActions(result, request, list);
++	if (item) {
++		if (const auto bot = item->viaBot()) {
++			Arcanegram::HiddenUsers::FillBotMenu(
++				[menu = result.get()](const QString &t, Fn<void()> cb) {
++					menu->addAction(t, std::move(cb));
++				},
++				bot);
++		}
++	}
+ 
+ 	const auto wasAmount = result->actions().size();
+ 	if (const auto textItem = view ? view->textItem() : item) {
+-- 
+2.52.0.windows.1
+
