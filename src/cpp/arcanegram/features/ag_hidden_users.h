@@ -2,6 +2,7 @@
 
 #include "base/basic_types.h"
 #include "base/flat_set.h"
+#include "ui/style/style_core_types.h"
 #include <rpl/producer.h>
 #include <QtCore/QStringList>
 
@@ -36,7 +37,10 @@ void SetRegexList(QStringList patterns);
 [[nodiscard]] rpl::producer<> RegexChanges();
 
 // generic add-action sink so callers can plug in PopupMenu, PeerMenuCallback, etc.
-using AddActionCallback = Fn<void(const QString &label, Fn<void()> action)>;
+using AddActionCallback = Fn<void(
+	const QString &label,
+	Fn<void()> action,
+	const style::icon *icon)>;
 
 void FillMenu(AddActionCallback add, PeerId id);
 void FillBotMenu(AddActionCallback add, not_null<UserData*> bot);

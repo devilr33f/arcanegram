@@ -4,8 +4,8 @@ Date: Tue, 28 Apr 2026 03:03:18 +0600
 Subject: [PATCH] add hide/unhide entry to profile kebab menu for user peers
 
 ---
- Telegram/SourceFiles/window/window_peer_menu.cpp | 8 ++++++++
- 1 file changed, 8 insertions(+)
+ Telegram/SourceFiles/window/window_peer_menu.cpp | 11 +++++++++++
+ 1 file changed, 11 insertions(+)
 
 diff --git a/Telegram/SourceFiles/window/window_peer_menu.cpp b/Telegram/SourceFiles/window/window_peer_menu.cpp
 index 0000000..0000000 100644
@@ -19,14 +19,17 @@ index 0000000..0000000 100644
  #include "base/call_delayed.h"
  #include "menu/menu_check_item.h"
  #include "boxes/about_box.h"
-@@ -1805,6 +1806,13 @@ void Filler::fillProfileActions() {
+@@ -1805,6 +1806,16 @@ void Filler::fillProfileActions() {
  	addLeaveChat();
  	addDeleteContact();
  	addDeleteTopic();
 +	if (_peer && _peer->isUser()) {
 +		Arcanegram::HiddenUsers::FillMenu(
-+			[&](const QString &t, Fn<void()> cb) {
-+				_addAction(t, std::move(cb), nullptr);
++			[&](
++					const QString &t,
++					Fn<void()> cb,
++					const style::icon *icon) {
++				_addAction(t, std::move(cb), icon);
 +			},
 +			_peer->id);
 +	}

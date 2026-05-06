@@ -14,6 +14,7 @@
 #include "main/main_domain.h"
 #include "main/main_session.h"
 #include "core/application.h"
+#include "styles/style_menu_icons.h"
 
 #include <QtCore/QRegularExpression>
 #include <QtCore/QString>
@@ -358,7 +359,8 @@ void FillMenu(AddActionCallback add, PeerId id) {
 			} else {
 				Hide(id);
 			}
-		});
+		},
+		&st::menuIconStealth);
 }
 
 void FillBotMenu(AddActionCallback add, not_null<UserData*> bot) {
@@ -373,7 +375,8 @@ void FillBotMenu(AddActionCallback add, not_null<UserData*> bot) {
 			} else {
 				HideBot(id);
 			}
-		});
+		},
+		&st::menuIconStealth);
 }
 
 } // namespace Arcanegram::HiddenUsers

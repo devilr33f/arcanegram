@@ -4,31 +4,33 @@ Date: Thu, 7 May 2026 01:33:26 +0600
 Subject: [PATCH] append hide messages via inline bot to message context menu
 
 ---
- Telegram/SourceFiles/history/history_inner_widget.cpp  | 10 ++++++++++
- .../history/view/history_view_context_menu.cpp         | 10 ++++++++++
- 2 files changed, 20 insertions(+)
+ .../SourceFiles/history/history_inner_widget.cpp   | 12 ++++++++++++
+ .../history/view/history_view_context_menu.cpp     | 14 ++++++++++++++
+ 2 files changed, 26 insertions(+)
 
 diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/SourceFiles/history/history_inner_widget.cpp
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
 +++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
-@@ -3458,6 +3458,16 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -2626,6 +2626,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  		}
+ 		return;
  	}
- 
 +	if (_dragStateItem) {
 +		if (const auto bot = _dragStateItem->viaBot()) {
 +			Arcanegram::HiddenUsers::FillBotMenu(
-+				[menu = _menu.get()](const QString &t, Fn<void()> cb) {
-+					menu->addAction(t, std::move(cb));
++				[menu = _menu.get()](
++						const QString &t,
++						Fn<void()> cb,
++						const style::icon *icon) {
++					menu->addAction(t, std::move(cb), icon);
 +				},
 +				bot);
 +		}
 +	}
-+
- 	if (_menu->empty()) {
- 		_menu = nullptr;
- 		return;
+ 	const auto controller = _controller;
+ 	const auto addItemActions = [&](
+ 			HistoryItem *item,
 diff --git a/Telegram/SourceFiles/history/view/history_view_context_menu.cpp b/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
@@ -41,22 +43,26 @@ index 0000000..0000000 100644
  #include "api/api_attached_stickers.h"
  #include "api/api_editing.h"
  #include "api/api_global_privacy.h"
-@@ -1481,6 +1482,15 @@ void FillContextMenuItems(
+@@ -1357,6 +1358,19 @@ void FillContextMenuItems(
+ 	const auto hasWhoReactedItem = item
+ 		&& Api::WhoReactedExists(item, Api::WhoReactedList::All);
  
- 	AddCopyLinkAction(result, link);
- 	AddMessageActions(result, request, list);
 +	if (item) {
 +		if (const auto bot = item->viaBot()) {
 +			Arcanegram::HiddenUsers::FillBotMenu(
-+				[menu = result.get()](const QString &t, Fn<void()> cb) {
-+					menu->addAction(t, std::move(cb));
++				[menu = result.get()](
++						const QString &t,
++						Fn<void()> cb,
++						const style::icon *icon) {
++					menu->addAction(t, std::move(cb), icon);
 +				},
 +				bot);
 +		}
 +	}
- 
- 	const auto wasAmount = result->actions().size();
- 	if (const auto textItem = view ? view->textItem() : item) {
++
+ 	AddReplyToMessageAction(result, request, list);
+ 	if (item) {
+ 		const auto media = item->media();
 -- 
 2.52.0.windows.1
 
