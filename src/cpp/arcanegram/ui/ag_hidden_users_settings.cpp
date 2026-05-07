@@ -224,7 +224,18 @@ void RequestUnloaded(not_null<Main::Session*> session) {
 void BuildPage(SectionBuilder &builder) {
     const auto outer = builder.container();
 
-    Ui::AddSubsectionTitle(outer, tr::ag_hidden_users_section());
+    {
+        auto count = rpl::single(rpl::empty_value())
+            | rpl::then(Changes() | rpl::to_empty)
+            | rpl::map([] { return int(List().size()); });
+        auto title = rpl::combine(
+            tr::ag_hidden_users_section(),
+            std::move(count)
+        ) | rpl::map([](const QString &t, int n) {
+            return n > 0 ? t + u" · "_q + QString::number(n) : t;
+        });
+        Ui::AddSubsectionTitle(outer, std::move(title));
+    }
     const auto users = outer->add(
         object_ptr<Ui::VerticalLayout>(outer));
     RebuildUsers(users);
@@ -245,7 +256,18 @@ void BuildPage(SectionBuilder &builder) {
 
     Ui::AddDividerText(outer, tr::ag_hidden_users_info());
 
-    Ui::AddSubsectionTitle(outer, tr::ag_hidden_bots_section());
+    {
+        auto count = rpl::single(rpl::empty_value())
+            | rpl::then(BotChanges())
+            | rpl::map([] { return int(BotList().size()); });
+        auto title = rpl::combine(
+            tr::ag_hidden_bots_section(),
+            std::move(count)
+        ) | rpl::map([](const QString &t, int n) {
+            return n > 0 ? t + u" · "_q + QString::number(n) : t;
+        });
+        Ui::AddSubsectionTitle(outer, std::move(title));
+    }
     const auto bots = outer->add(
         object_ptr<Ui::VerticalLayout>(outer));
     RebuildBots(bots);
@@ -255,7 +277,18 @@ void BuildPage(SectionBuilder &builder) {
     }, bots->lifetime());
     Ui::AddDividerText(outer, tr::ag_hidden_bots_info());
 
-    Ui::AddSubsectionTitle(outer, tr::ag_hidden_regexes_section());
+    {
+        auto count = rpl::single(rpl::empty_value())
+            | rpl::then(RegexChanges())
+            | rpl::map([] { return int(RegexList().size()); });
+        auto title = rpl::combine(
+            tr::ag_hidden_regexes_section(),
+            std::move(count)
+        ) | rpl::map([](const QString &t, int n) {
+            return n > 0 ? t + u" · "_q + QString::number(n) : t;
+        });
+        Ui::AddSubsectionTitle(outer, std::move(title));
+    }
     const auto regexes = outer->add(
         object_ptr<Ui::VerticalLayout>(outer));
     RebuildRegexes(regexes);
