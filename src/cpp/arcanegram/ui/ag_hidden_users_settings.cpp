@@ -28,6 +28,7 @@
 #include "ui/widgets/buttons.h"
 #include "ui/widgets/fields/input_field.h"
 #include "ui/widgets/labels.h"
+#include "ui/wrap/slide_wrap.h"
 #include "ui/wrap/vertical_layout.h"
 #include "window/window_session_controller.h"
 
@@ -297,35 +298,29 @@ void BuildPage(SectionBuilder &builder) {
         RebuildRegexes(regexes);
     }, regexes->lifetime());
 
-    const auto field = outer->add(
-        object_ptr<Ui::InputField>(
+    const auto adderWrap = outer->add(
+        object_ptr<Ui::SlideWrap<Ui::InputField>>(
             outer,
-            st::agFastMessageField,
-            tr::ag_hidden_regexes_placeholder(),
-            QString()),
-        st::settingsBioMargins);
-    field->submits(
-    ) | rpl::on_next([field](auto) {
-        const auto text = field->getLastText().trimmed();
-        if (text.isEmpty()) {
-            return;
-        }
-        auto list = RegexList();
-        if (!list.contains(text)) {
-            list.append(text);
-            SetRegexList(std::move(list));
-        }
-        field->setText(QString());
-    }, field->lifetime());
+            object_ptr<Ui::InputField>(
+                outer,
+                st::agFastMessageField,
+                tr::ag_hidden_regexes_placeholder(),
+                QString()),
+            st::settingsBioMargins))->setDuration(150);
+    adderWrap->hide(anim::type::instant);
 
-    ::Settings::AddButtonWithIcon(
+    const auto field = adderWrap->entity();
+
+    const auto addButton = ::Settings::AddButtonWithIcon(
         outer,
         tr::ag_hidden_regexes_add(),
         st::settingsButton,
-        { &st::menuIconAdd }
-    )->setClickedCallback([field] {
+        { &st::menuIconAdd });
+
+    const auto submit = [=] {
         const auto text = field->getLastText().trimmed();
         if (text.isEmpty()) {
+            adderWrap->hide(anim::type::normal);
             return;
         }
         auto list = RegexList();
@@ -334,7 +329,27 @@ void BuildPage(SectionBuilder &builder) {
             SetRegexList(std::move(list));
         }
         field->setText(QString());
+        adderWrap->hide(anim::type::normal);
+    };
+
+    addButton->setClickedCallback([=] {
+        if (adderWrap->isHidden()) {
+            adderWrap->show(anim::type::normal);
+            field->setFocus();
+        } else {
+            submit();
+        }
     });
+
+    field->submits(
+    ) | rpl::on_next([=](auto) { submit(); }, field->lifetime());
+
+    field->focusedChanges(
+    ) | rpl::on_next([=](bool focused) {
+        if (!focused && field->getLastText().trimmed().isEmpty()) {
+            adderWrap->hide(anim::type::normal);
+        }
+    }, field->lifetime());
 
     Ui::AddSkip(outer);
     Ui::AddDividerText(outer, tr::ag_hidden_content_info());
