@@ -31,7 +31,7 @@ namespace {
 using namespace ::Settings;
 using namespace ::Settings::Builder;
 
-not_null<Ui::SettingsButton*> MakeRow(
+not_null<Ui::RpWidget*> MakeRow(
         not_null<Ui::VerticalLayout*> container,
         rpl::producer<QString> label,
         Fn<void()> remove) {
@@ -40,7 +40,15 @@ not_null<Ui::SettingsButton*> MakeRow(
             container,
             std::move(label),
             st::settingsButtonNoIcon));
-    row->setClickedCallback(std::move(remove));
+    const auto cross = Ui::CreateChild<Ui::IconButton>(
+        row,
+        st::sessionTerminate);
+    cross->setClickedCallback(std::move(remove));
+    row->sizeValue() | rpl::on_next([=](QSize size) {
+        cross->moveToRight(
+            st::settingsButton.padding.right(),
+            (size.height() - cross->height()) / 2);
+    }, cross->lifetime());
     return row;
 }
 
