@@ -47,10 +47,12 @@ using MakeLeading = Fn<object_ptr<Ui::RpWidget>(not_null<QWidget*>)>;
     const auto raw = widget.data();
     constexpr auto kSize = 32;
     raw->resize(kSize, kSize);
+    const auto userpic = raw->lifetime().make_state<Ui::EmptyUserpic>(
+        colors,
+        glyph);
     raw->paintRequest() | rpl::on_next([=](QRect) {
         auto p = QPainter(raw);
-        auto userpic = Ui::EmptyUserpic(colors, glyph);
-        userpic.paintCircle(p, 0, 0, kSize, kSize);
+        userpic->paintCircle(p, 0, 0, kSize, kSize);
     }, raw->lifetime());
     return widget;
 }
