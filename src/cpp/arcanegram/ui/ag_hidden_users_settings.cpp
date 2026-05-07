@@ -15,9 +15,13 @@
 #include "settings/settings_common.h"
 #include "settings/settings_common_session.h"
 #include "styles/style_arcanegram.h"
+#include "styles/style_boxes.h"
+#include "styles/style_color_indices.h"
 #include "styles/style_layers.h"
 #include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
+#include "ui/controls/userpic_button.h"
+#include "ui/empty_userpic.h"
 #include "ui/vertical_list.h"
 #include "ui/widgets/buttons.h"
 #include "ui/widgets/fields/input_field.h"
@@ -31,21 +35,51 @@ namespace {
 using namespace ::Settings;
 using namespace ::Settings::Builder;
 
+using MakeLeading = Fn<object_ptr<Ui::RpWidget>(not_null<QWidget*>)>;
+
+[[nodiscard]] object_ptr<Ui::RpWidget> MakePlaceholderCircle(
+        not_null<QWidget*> parent,
+        uint64 colorSeed,
+        const QString &glyph) {
+    const auto colorIndex = Ui::EmptyUserpic::ColorIndex(colorSeed);
+    const auto colors = Ui::EmptyUserpic::UserpicColor(colorIndex);
+    auto widget = object_ptr<Ui::RpWidget>(parent);
+    const auto raw = widget.data();
+    constexpr auto kSize = 32;
+    raw->resize(kSize, kSize);
+    raw->paintRequest() | rpl::on_next([=](QRect) {
+        auto p = QPainter(raw);
+        auto userpic = Ui::EmptyUserpic(colors, glyph);
+        userpic.paintCircle(p, 0, 0, kSize, kSize);
+    }, raw->lifetime());
+    return widget;
+}
+
 not_null<Ui::RpWidget*> MakeRow(
         not_null<Ui::VerticalLayout*> container,
+        MakeLeading makeLeading,
         rpl::producer<QString> label,
         Fn<void()> remove) {
     const auto row = container->add(
         object_ptr<Ui::SettingsButton>(
             container,
             std::move(label),
-            st::settingsButtonNoIcon));
+            st::settingsButton));
     row->setAttribute(Qt::WA_TransparentForMouseEvents);
+
+    const auto leading = makeLeading(row).release();
+    leading->setAttribute(Qt::WA_TransparentForMouseEvents);
+
     const auto cross = Ui::CreateChild<Ui::IconButton>(
         row,
         st::agHiddenRowRemove);
     cross->setClickedCallback(std::move(remove));
+
+    constexpr auto kLeadingSize = 32;
     row->sizeValue() | rpl::on_next([=](QSize size) {
+        const auto lx = (st::settingsButton.padding.left() - kLeadingSize) / 2;
+        const auto ly = (size.height() - kLeadingSize) / 2;
+        leading->move(lx, ly);
         cross->moveToRight(
             st::settingsButton.padding.right(),
             (size.height() - cross->height()) / 2);
@@ -53,13 +87,18 @@ not_null<Ui::RpWidget*> MakeRow(
     return row;
 }
 
-template <typename Range, typename MakeLabel, typename MakeRemove>
+template <
+    typename Range,
+    typename MakeLabel,
+    typename MakeRemove,
+    typename MakeLeadingForEntry>
 void RebuildSection(
         not_null<Ui::VerticalLayout*> container,
         const Range &items,
         rpl::producer<QString> emptyHint,
         MakeLabel makeLabel,
-        MakeRemove makeRemove) {
+        MakeRemove makeRemove,
+        MakeLeadingForEntry makeLeadingForEntry) {
     while (container->count()) {
         delete container->widgetAt(0);
     }
@@ -71,6 +110,7 @@ void RebuildSection(
     for (const auto &entry : items) {
         MakeRow(
             container,
+            makeLeadingForEntry(entry),
             rpl::single(makeLabel(entry)),
             makeRemove(entry, i));
         ++i;
@@ -100,6 +140,20 @@ void RebuildUsers(not_null<Ui::VerticalLayout*> container) {
         },
         [](PeerId id, int) -> Fn<void()> {
             return [id] { Unhide(id); };
+        },
+        [](PeerId id) -> MakeLeading {
+            if (const auto peer = AnyLoadedPeer(id)) {
+                return [peer](not_null<QWidget*> parent)
+                        -> object_ptr<Ui::RpWidget> {
+                    return object_ptr<Ui::UserpicButton>(
+                        parent,
+                        peer,
+                        st::uploadUserpicButton);
+                };
+            }
+            return [id](not_null<QWidget*> parent) {
+                return MakePlaceholderCircle(parent, id.value, u"?"_q);
+            };
         });
 }
 
@@ -112,6 +166,14 @@ void RebuildBots(not_null<Ui::VerticalLayout*> container) {
         [](UserId id) { return BotDisplay(id); },
         [](UserId id, int) -> Fn<void()> {
             return [id] { UnhideBot(id); };
+        },
+        [](UserId id) -> MakeLeading {
+            return [id](not_null<QWidget*> parent) {
+                return MakePlaceholderCircle(
+                    parent,
+                    id.bare,
+                    u"@"_q);
+            };
         });
 }
 
@@ -129,6 +191,12 @@ void RebuildRegexes(not_null<Ui::VerticalLayout*> container) {
                     list.removeAt(index);
                     SetRegexList(std::move(list));
                 }
+            };
+        },
+        [](const QString &pattern) -> MakeLeading {
+            const auto seed = uint64(qHash(pattern));
+            return [seed](not_null<QWidget*> parent) {
+                return MakePlaceholderCircle(parent, seed, u".*"_q);
             };
         });
 }

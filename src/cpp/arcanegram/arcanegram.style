@@ -29,3 +29,4 @@ agHiddenRowRemove: IconButton {
 	iconOver: smallCloseIconOver;
 	iconPosition: point(12px, 12px);
 }
+
