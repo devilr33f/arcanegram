@@ -189,13 +189,11 @@ void RebuildRegexes(not_null<Ui::VerticalLayout*> container) {
         patterns,
         tr::ag_hidden_regexes_info(),
         [](const QString &pattern) { return pattern; },
-        [](const QString &, int index) -> Fn<void()> {
-            return [index] {
+        [](const QString &pattern, int) -> Fn<void()> {
+            return [pattern] {
                 auto list = RegexList();
-                if (index >= 0 && index < list.size()) {
-                    list.removeAt(index);
-                    SetRegexList(std::move(list));
-                }
+                list.removeAll(pattern);
+                SetRegexList(std::move(list));
             };
         },
         [](const QString &pattern) -> MakeLeading {
@@ -246,14 +244,22 @@ void BuildPage(SectionBuilder &builder) {
     }, users->lifetime());
 
     const auto session = builder.session();
-    RequestUnloaded(session);
-    session->changes().peerUpdates(
-        Data::PeerUpdate::Flag::Name | Data::PeerUpdate::Flag::Photo
-    ) | rpl::on_next([=](const Data::PeerUpdate &update) {
-        if (List().contains(update.peer->id)) {
-            RebuildUsers(users);
+    auto unresolved = std::make_shared<base::flat_set<PeerId>>();
+    for (const auto &id : List()) {
+        if (peerIsUser(id) && !session->data().peerLoaded(id)) {
+            unresolved->emplace(id);
         }
-    }, users->lifetime());
+    }
+    if (!unresolved->empty()) {
+        RequestUnloaded(session);
+        session->changes().peerUpdates(
+            Data::PeerUpdate::Flag::Name | Data::PeerUpdate::Flag::Photo
+        ) | rpl::on_next([=](const Data::PeerUpdate &update) {
+            if (unresolved->remove(update.peer->id)) {
+                RebuildUsers(users);
+            }
+        }, users->lifetime());
+    }
 
     {
         auto count = rpl::single(rpl::empty_value())
