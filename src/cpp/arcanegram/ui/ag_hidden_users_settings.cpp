@@ -348,6 +348,12 @@ void BuildPage(SectionBuilder &builder) {
         }
     }, field->lifetime());
 
+    field->cancelled(
+    ) | rpl::on_next([=] {
+        field->setText(QString());
+        adderWrap->hide(anim::type::normal);
+    }, field->lifetime());
+
     Ui::AddSkip(outer);
     Ui::AddDividerText(outer, tr::ag_hidden_content_info());
 }
