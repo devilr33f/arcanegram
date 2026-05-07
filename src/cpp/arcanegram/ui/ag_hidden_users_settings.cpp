@@ -79,12 +79,14 @@ not_null<Ui::RpWidget*> MakeRow(
     if (withLeading) {
         leading = makeLeading(row).release();
         leading->setAttribute(Qt::WA_TransparentForMouseEvents);
+        leading->show();
     }
 
     const auto cross = Ui::CreateChild<Ui::IconButton>(
         row,
         st::agHiddenRowRemove);
     cross->setClickedCallback(std::move(remove));
+    cross->show();
 
     constexpr auto kLeadingSize = 32;
     const auto rightPadding = style.padding.right();
