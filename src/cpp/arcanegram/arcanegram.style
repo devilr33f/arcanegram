@@ -20,3 +20,12 @@ agFastMessageField: InputField(defaultInputField) {
 
 	style: defaultTextStyle;
 }
+
+agHiddenRowRemove: IconButton {
+	width: 34px;
+	height: 34px;
+
+	icon: smallCloseIcon;
+	iconOver: smallCloseIconOver;
+	iconPosition: point(12px, 12px);
+}

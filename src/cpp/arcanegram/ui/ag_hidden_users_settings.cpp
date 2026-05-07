@@ -40,9 +40,10 @@ not_null<Ui::RpWidget*> MakeRow(
             container,
             std::move(label),
             st::settingsButtonNoIcon));
+    row->setAttribute(Qt::WA_TransparentForMouseEvents);
     const auto cross = Ui::CreateChild<Ui::IconButton>(
         row,
-        st::sessionTerminate);
+        st::agHiddenRowRemove);
     cross->setClickedCallback(std::move(remove));
     row->sizeValue() | rpl::on_next([=](QSize size) {
         cross->moveToRight(
