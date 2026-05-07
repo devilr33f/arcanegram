@@ -1,8 +1,10 @@
 #include "arcanegram/ui/ag_hidden_users_settings.h"
 
+#include "apiwrap.h"
 #include "arcanegram/features/ag_hidden_users.h"
 #include "arcanegram/ui/ag_settings_main.h"
 #include "core/application.h"
+#include "data/data_changes.h"
 #include "data/data_peer.h"
 #include "data/data_peer_id.h"
 #include "data/data_session.h"
@@ -203,6 +205,22 @@ void RebuildRegexes(not_null<Ui::VerticalLayout*> container) {
         });
 }
 
+void RequestUnloaded(not_null<Main::Session*> session) {
+    QVector<MTPInputUser> inputs;
+    for (const auto &id : List()) {
+        if (!peerIsUser(id)) continue;
+        if (session->data().peerLoaded(id)) continue;
+        const auto bare = peerToBareMTPInt(peerToUser(id));
+        inputs.push_back(MTP_inputUser(bare, MTPlong()));
+    }
+    if (inputs.isEmpty()) return;
+    session->api().request(MTPusers_GetUsers(
+        MTP_vector<MTPInputUser>(std::move(inputs))
+    )).done([session](const MTPVector<MTPUser> &result) {
+        session->data().processUsers(result);
+    }).send();
+}
+
 void BuildPage(SectionBuilder &builder) {
     const auto outer = builder.container();
 
@@ -214,6 +232,17 @@ void BuildPage(SectionBuilder &builder) {
     ) | rpl::on_next([=](PeerId) {
         RebuildUsers(users);
     }, users->lifetime());
+
+    const auto session = builder.session();
+    RequestUnloaded(session);
+    session->changes().peerUpdates(
+        Data::PeerUpdate::Flag::Name | Data::PeerUpdate::Flag::Photo
+    ) | rpl::on_next([=](const Data::PeerUpdate &update) {
+        if (List().contains(update.peer->id)) {
+            RebuildUsers(users);
+        }
+    }, users->lifetime());
+
     Ui::AddDividerText(outer, tr::ag_hidden_users_info());
 
     Ui::AddSubsectionTitle(outer, tr::ag_hidden_bots_section());
