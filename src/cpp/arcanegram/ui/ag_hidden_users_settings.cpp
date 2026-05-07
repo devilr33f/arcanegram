@@ -65,15 +65,21 @@ not_null<Ui::RpWidget*> MakeRow(
         MakeLeading makeLeading,
         rpl::producer<QString> label,
         Fn<void()> remove) {
+    const auto withLeading = !!makeLeading;
+    const auto &style = withLeading
+        ? st::settingsButton
+        : st::settingsButtonNoIcon;
     const auto row = container->add(
         object_ptr<Ui::SettingsButton>(
             container,
             std::move(label),
-            st::settingsButton));
-    row->setAttribute(Qt::WA_TransparentForMouseEvents);
+            style));
 
-    const auto leading = makeLeading(row).release();
-    leading->setAttribute(Qt::WA_TransparentForMouseEvents);
+    Ui::RpWidget *leading = nullptr;
+    if (withLeading) {
+        leading = makeLeading(row).release();
+        leading->setAttribute(Qt::WA_TransparentForMouseEvents);
+    }
 
     const auto cross = Ui::CreateChild<Ui::IconButton>(
         row,
@@ -81,12 +87,16 @@ not_null<Ui::RpWidget*> MakeRow(
     cross->setClickedCallback(std::move(remove));
 
     constexpr auto kLeadingSize = 32;
+    const auto rightPadding = style.padding.right();
     row->sizeValue() | rpl::on_next([=](QSize size) {
-        const auto lx = (st::settingsButton.padding.left() - kLeadingSize) / 2;
-        const auto ly = (size.height() - kLeadingSize) / 2;
-        leading->move(lx, ly);
+        if (leading) {
+            const auto lx = (st::settingsButton.padding.left()
+                - kLeadingSize) / 2;
+            const auto ly = (size.height() - kLeadingSize) / 2;
+            leading->move(lx, ly);
+        }
         cross->moveToRight(
-            st::settingsButton.padding.right(),
+            rightPadding,
             (size.height() - cross->height()) / 2);
     }, cross->lifetime());
     return row;
@@ -173,6 +183,16 @@ void RebuildBots(not_null<Ui::VerticalLayout*> container) {
             return [id] { UnhideBot(id); };
         },
         [](UserId id) -> MakeLeading {
+            const auto peerId = peerFromUser(id);
+            if (const auto peer = AnyLoadedPeer(peerId)) {
+                return [peer](not_null<QWidget*> parent)
+                        -> object_ptr<Ui::RpWidget> {
+                    return object_ptr<Ui::UserpicButton>(
+                        parent,
+                        peer,
+                        st::uploadUserpicButton);
+                };
+            }
             return [id](not_null<QWidget*> parent) {
                 return MakePlaceholderCircle(
                     parent,
@@ -196,12 +216,7 @@ void RebuildRegexes(not_null<Ui::VerticalLayout*> container) {
                 SetRegexList(std::move(list));
             };
         },
-        [](const QString &pattern) -> MakeLeading {
-            const auto seed = uint64(qHash(pattern));
-            return [seed](not_null<QWidget*> parent) {
-                return MakePlaceholderCircle(parent, seed, u".*"_q);
-            };
-        });
+        [](const QString &) -> MakeLeading { return {}; });
 }
 
 void RequestUnloaded(not_null<Main::Session*> session) {
@@ -210,6 +225,11 @@ void RequestUnloaded(not_null<Main::Session*> session) {
         if (!peerIsUser(id)) continue;
         if (session->data().peerLoaded(id)) continue;
         const auto bare = peerToBareMTPInt(peerToUser(id));
+        inputs.push_back(MTP_inputUser(bare, MTPlong()));
+    }
+    for (const auto &userId : BotList()) {
+        if (session->data().peerLoaded(peerFromUser(userId))) continue;
+        const auto bare = peerToBareMTPInt(userId);
         inputs.push_back(MTP_inputUser(bare, MTPlong()));
     }
     if (inputs.isEmpty()) return;
@@ -243,23 +263,7 @@ void BuildPage(SectionBuilder &builder) {
         RebuildUsers(users);
     }, users->lifetime());
 
-    const auto session = builder.session();
-    auto unresolved = std::make_shared<base::flat_set<PeerId>>();
-    for (const auto &id : List()) {
-        if (peerIsUser(id) && !session->data().peerLoaded(id)) {
-            unresolved->emplace(id);
-        }
-    }
-    if (!unresolved->empty()) {
-        RequestUnloaded(session);
-        session->changes().peerUpdates(
-            Data::PeerUpdate::Flag::Name | Data::PeerUpdate::Flag::Photo
-        ) | rpl::on_next([=](const Data::PeerUpdate &update) {
-            if (unresolved->remove(update.peer->id)) {
-                RebuildUsers(users);
-            }
-        }, users->lifetime());
-    }
+    RequestUnloaded(builder.session());
 
     {
         auto count = rpl::single(rpl::empty_value())
