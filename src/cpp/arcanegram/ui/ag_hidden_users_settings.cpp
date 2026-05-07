@@ -31,6 +31,43 @@ namespace {
 using namespace ::Settings;
 using namespace ::Settings::Builder;
 
+not_null<Ui::SettingsButton*> MakeRow(
+        not_null<Ui::VerticalLayout*> container,
+        rpl::producer<QString> label,
+        Fn<void()> remove) {
+    const auto row = container->add(
+        object_ptr<Ui::SettingsButton>(
+            container,
+            std::move(label),
+            st::settingsButtonNoIcon));
+    row->setClickedCallback(std::move(remove));
+    return row;
+}
+
+template <typename Range, typename MakeLabel, typename MakeRemove>
+void RebuildSection(
+        not_null<Ui::VerticalLayout*> container,
+        const Range &items,
+        rpl::producer<QString> emptyHint,
+        MakeLabel makeLabel,
+        MakeRemove makeRemove) {
+    while (container->count()) {
+        delete container->widgetAt(0);
+    }
+    if (std::ranges::empty(items)) {
+        Ui::AddDividerText(container, std::move(emptyHint));
+        return;
+    }
+    auto i = 0;
+    for (const auto &entry : items) {
+        MakeRow(
+            container,
+            rpl::single(makeLabel(entry)),
+            makeRemove(entry, i));
+        ++i;
+    }
+}
+
 [[nodiscard]] PeerData *AnyLoadedPeer(PeerId id) {
     for (const auto &entry : Core::App().domain().accounts()) {
         if (const auto session = entry.account->maybeSession()) {
@@ -43,72 +80,48 @@ using namespace ::Settings::Builder;
 }
 
 void RebuildUsers(not_null<Ui::VerticalLayout*> container) {
-    while (container->count()) {
-        delete container->widgetAt(0);
-    }
     const auto &set = List();
-    if (set.empty()) {
-        Ui::AddDividerText(container, tr::ag_hidden_users_empty());
-        return;
-    }
-    for (const auto &id : set) {
-        const auto peer = AnyLoadedPeer(id);
-        const auto label = peer
-            ? peer->name()
-            : QString::number(id.value);
-        const auto row = container->add(
-            object_ptr<Ui::SettingsButton>(
-                container,
-                rpl::single(label),
-                st::settingsButtonNoIcon));
-        row->setClickedCallback([id] { Unhide(id); });
-    }
+    RebuildSection(
+        container,
+        set,
+        tr::ag_hidden_users_empty(),
+        [](PeerId id) {
+            const auto peer = AnyLoadedPeer(id);
+            return peer ? peer->name() : QString::number(id.value);
+        },
+        [](PeerId id, int) -> Fn<void()> {
+            return [id] { Unhide(id); };
+        });
 }
 
 void RebuildBots(not_null<Ui::VerticalLayout*> container) {
-    while (container->count()) {
-        delete container->widgetAt(0);
-    }
     const auto &set = BotList();
-    if (set.empty()) {
-        Ui::AddDividerText(container, tr::ag_hidden_bots_empty());
-        return;
-    }
-    for (const auto &id : set) {
-        const auto label = BotDisplay(id);
-        const auto row = container->add(
-            object_ptr<Ui::SettingsButton>(
-                container,
-                rpl::single(label),
-                st::settingsButtonNoIcon));
-        row->setClickedCallback([id] { UnhideBot(id); });
-    }
+    RebuildSection(
+        container,
+        set,
+        tr::ag_hidden_bots_empty(),
+        [](UserId id) { return BotDisplay(id); },
+        [](UserId id, int) -> Fn<void()> {
+            return [id] { UnhideBot(id); };
+        });
 }
 
 void RebuildRegexes(not_null<Ui::VerticalLayout*> container) {
-    while (container->count()) {
-        delete container->widgetAt(0);
-    }
     const auto patterns = RegexList();
-    if (patterns.isEmpty()) {
-        Ui::AddDividerText(container, tr::ag_hidden_regexes_info());
-        return;
-    }
-    for (auto i = 0; i != patterns.size(); ++i) {
-        const auto pattern = patterns[i];
-        const auto row = container->add(
-            object_ptr<Ui::SettingsButton>(
-                container,
-                rpl::single(pattern),
-                st::settingsButtonNoIcon));
-        row->setClickedCallback([i] {
-            auto list = RegexList();
-            if (i >= 0 && i < list.size()) {
-                list.removeAt(i);
-                SetRegexList(std::move(list));
-            }
+    RebuildSection(
+        container,
+        patterns,
+        tr::ag_hidden_regexes_info(),
+        [](const QString &pattern) { return pattern; },
+        [](const QString &, int index) -> Fn<void()> {
+            return [index] {
+                auto list = RegexList();
+                if (index >= 0 && index < list.size()) {
+                    list.removeAt(index);
+                    SetRegexList(std::move(list));
+                }
+            };
         });
-    }
 }
 
 void BuildPage(SectionBuilder &builder) {
