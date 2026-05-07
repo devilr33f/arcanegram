@@ -255,8 +255,6 @@ void BuildPage(SectionBuilder &builder) {
         }
     }, users->lifetime());
 
-    Ui::AddDividerText(outer, tr::ag_hidden_users_info());
-
     {
         auto count = rpl::single(rpl::empty_value())
             | rpl::then(BotChanges())
@@ -276,7 +274,6 @@ void BuildPage(SectionBuilder &builder) {
     ) | rpl::on_next([=] {
         RebuildBots(bots);
     }, bots->lifetime());
-    Ui::AddDividerText(outer, tr::ag_hidden_bots_info());
 
     {
         auto count = rpl::single(rpl::empty_value())
