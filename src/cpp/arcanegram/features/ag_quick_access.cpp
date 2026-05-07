@@ -5,9 +5,12 @@
 #include "arcanegram/ui/ag_settings_widgets.h"
 #include "lang/lang_keys.h"
 #include "settings/settings_builder.h"
+#include "settings/settings_common.h"
 #include "settings/settings_common_session.h"
 #include "styles/style_menu_icons.h"
 #include "styles/style_settings.h"
+#include "styles/style_window.h"
+#include "ui/widgets/buttons.h"
 #include "ui/vertical_list.h"
 #include "ui/wrap/vertical_layout.h"
 #include "window/window_session_controller.h"
@@ -77,6 +80,48 @@ void Setup(::Settings::Builder::SectionBuilder &builder) {
 		.targetSection = Page::Id(),
 		.icon = { &st::menuIconShowInFolder },
 	});
+}
+
+void SetupMainMenu(not_null<Ui::VerticalLayout*> menu) {
+	const auto add = [&](
+			rpl::producer<QString> text,
+			::Settings::IconDescriptor &&descriptor) {
+		return ::Settings::AddButtonWithIcon(
+			menu,
+			std::move(text),
+			st::mainMenuButton,
+			std::move(descriptor));
+	};
+
+	if (Config::QuickAccess::SidebarScreenshot.value()) {
+		const auto toggle = add(
+			tr::ag_quick_access_screenshot_mode(),
+			{ &st::menuIconStealthLocked });
+		toggle->toggleOn(rpl::single(
+			Config::ScreenshotMode::Enabled.value()
+		) | rpl::then(Config::ScreenshotMode::Enabled.changes()));
+		toggle->toggledChanges(
+		) | rpl::filter([](bool v) {
+			return v != Config::ScreenshotMode::Enabled.value();
+		}) | rpl::on_next([](bool v) {
+			Config::ScreenshotMode::Enabled.setValue(v);
+		}, toggle->lifetime());
+	}
+
+	if (Config::QuickAccess::SidebarStreamerMode.value()) {
+		const auto toggle = add(
+			tr::ag_quick_access_streamer_mode(),
+			{ &st::menuIconStealth });
+		toggle->toggleOn(rpl::single(
+			Config::StreamerMode::Enabled.value()
+		) | rpl::then(Config::StreamerMode::Enabled.changes()));
+		toggle->toggledChanges(
+		) | rpl::filter([](bool v) {
+			return v != Config::StreamerMode::Enabled.value();
+		}) | rpl::on_next([](bool v) {
+			Config::StreamerMode::Enabled.setValue(v);
+		}, toggle->lifetime());
+	}
 }
 
 } // namespace Arcanegram::QuickAccess

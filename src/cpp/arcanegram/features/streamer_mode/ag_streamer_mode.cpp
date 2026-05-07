@@ -1,6 +1,7 @@
 #include "arcanegram/features/streamer_mode/ag_streamer_mode.h"
 
 #include "arcanegram/ag_config.h"
+#include "arcanegram/features/streamer_mode/platform/ag_streamer_mode_impl.h"
 #include "arcanegram/ui/ag_settings_main.h"
 #include "arcanegram/ui/ag_settings_widgets.h"
 #include "lang/lang_keys.h"
@@ -14,6 +15,11 @@
 
 namespace Arcanegram::StreamerMode {
 namespace {
+
+rpl::lifetime &Lifetime() {
+	static rpl::lifetime value;
+	return value;
+}
 
 void BuildPage(::Settings::Builder::SectionBuilder &builder) {
 	const auto container = builder.container();
@@ -66,6 +72,30 @@ void Page::setupContent() {
 } // namespace
 
 void Init() {
+	Config::StreamerMode::Enabled.changes(
+	) | rpl::on_next([](bool active) {
+		if (active) {
+			Impl::EnableHook();
+		} else {
+			Impl::DisableHook();
+		}
+	}, Lifetime());
+
+	if (Config::StreamerMode::Enabled.value()) {
+		Impl::EnableHook();
+	}
+}
+
+bool IsActive() {
+	return Config::StreamerMode::Enabled.value();
+}
+
+void ApplyTo(QWidget *widget) {
+	if (IsActive()) {
+		Impl::HideWidget(widget);
+	} else {
+		Impl::ShowWidget(widget);
+	}
 }
 
 void Setup(::Settings::Builder::SectionBuilder &builder) {

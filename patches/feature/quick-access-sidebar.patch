@@ -1,0 +1,33 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Thu, 7 May 2026 16:19:24 +0600
+Subject: [PATCH] Inject Arcanegram quick-access sidebar toggles into main menu
+
+---
+ Telegram/SourceFiles/window/window_main_menu.cpp | 3 +++
+ 1 file changed, 3 insertions(+)
+
+diff --git a/Telegram/SourceFiles/window/window_main_menu.cpp b/Telegram/SourceFiles/window/window_main_menu.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/window/window_main_menu.cpp
++++ b/Telegram/SourceFiles/window/window_main_menu.cpp
+@@ -7,6 +7,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+ */
+ #include "window/window_main_menu.h"
+ 
++#include "arcanegram/features/ag_quick_access.h"
+ #include "apiwrap.h"
+ #include "base/event_filter.h"
+ #include "base/qt_signal_producer.h"
+@@ -782,6 +783,8 @@ void MainMenu::setupMenu() {
+ 			_nightThemeSwitches.fire_copy(*darkMode);
+ 		}
+ 	}, _nightThemeToggle->lifetime());
++
++	Arcanegram::QuickAccess::SetupMainMenu(_menu);
+ }
+ 
+ void MainMenu::resizeEvent(QResizeEvent *e) {
+-- 
+2.52.0.windows.1
+

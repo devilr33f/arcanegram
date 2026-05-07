@@ -65,7 +65,25 @@ PRIVATE
     features/screenshot/screenshot_names.h
     features/streamer_mode/ag_streamer_mode.h
     features/streamer_mode/ag_streamer_mode.cpp
+    features/streamer_mode/platform/ag_streamer_mode_impl.h
 )
+
+if (WIN32)
+    nice_target_sources(arcanegram ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE
+        features/streamer_mode/platform/ag_streamer_mode_win.cpp
+    )
+elseif (APPLE)
+    nice_target_sources(arcanegram ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE
+        features/streamer_mode/platform/ag_streamer_mode_mac.mm
+    )
+else()
+    nice_target_sources(arcanegram ${CMAKE_CURRENT_SOURCE_DIR}
+    PRIVATE
+        features/streamer_mode/platform/ag_streamer_mode_linux.cpp
+    )
+endif()
 
 target_include_directories(arcanegram PUBLIC ${CMAKE_CURRENT_SOURCE_DIR}/..)
 

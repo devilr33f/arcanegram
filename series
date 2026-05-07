@@ -42,4 +42,7 @@ misc/lang-ag-load-content.patch
 feature/streamer-mode-rating.patch
 feature/hidden-users-via-bot-menu.patch
 feature/hidden-users-date-skip.patch
+feature/streamer-mode-display-affinity.patch
+feature/quick-access-sidebar.patch
+feature/streamer-mode-skip-notifications.patch
 misc/branding.patch
