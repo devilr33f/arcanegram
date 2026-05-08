@@ -65,7 +65,7 @@ diff --git a/Telegram/SourceFiles/data/data_peer.h b/Telegram/SourceFiles/data/d
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/data/data_peer.h
 +++ b/Telegram/SourceFiles/data/data_peer.h
-@@ -365,6 +365,7 @@ public:
+@@ -367,6 +367,7 @@ public:
  	}
  
  	[[nodiscard]] int nameVersion() const;

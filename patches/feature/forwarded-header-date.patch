@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "history/view/history_view_message.h" // FromNameFg.
  #include "history/view/history_view_service_message.h"
  #include "history/view/media/history_view_document.h"
-@@ -337,6 +338,7 @@ void HistoryMessageForwarded::create(
+@@ -373,6 +374,7 @@ void HistoryMessageForwarded::create(
  				tr::marked);
  		}
  	}

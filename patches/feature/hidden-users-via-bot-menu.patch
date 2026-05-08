@@ -12,7 +12,7 @@ diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/So
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
 +++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
-@@ -2626,6 +2626,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -2628,6 +2628,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  		}
  		return;
  	}
@@ -43,7 +43,7 @@ index 0000000..0000000 100644
  #include "api/api_attached_stickers.h"
  #include "api/api_editing.h"
  #include "api/api_global_privacy.h"
-@@ -1357,6 +1358,19 @@ void FillContextMenuItems(
+@@ -1421,6 +1422,19 @@ void FillContextMenuItems(
  	const auto hasWhoReactedItem = item
  		&& Api::WhoReactedExists(item, Api::WhoReactedList::All);
  

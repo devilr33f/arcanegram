@@ -23,7 +23,7 @@ index 0000000..0000000 100644
  
  namespace Api {
  namespace {
-@@ -656,19 +657,19 @@ QString FormatReadDate(TimeId date, const QDateTime &now) {
+@@ -711,19 +712,19 @@ QString FormatReadDate(TimeId date, const QDateTime &now) {
  		return tr::lng_mediaview_today(
  			tr::now,
  			lt_time,

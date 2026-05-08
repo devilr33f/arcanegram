@@ -3,6 +3,7 @@
 #include "arcanegram/features/ag_chat_wallpaper.h"
 #include "arcanegram/features/ag_fast_messages.h"
 #include "arcanegram/features/ag_forwarded_header.h"
+#include "arcanegram/features/ag_inline_callback.h"
 #include "arcanegram/features/ag_show_seconds.h"
 #include "arcanegram/features/ag_sync_feature.h"
 #include "arcanegram/features/ag_quick_access.h"
@@ -52,6 +53,7 @@ void BuildAppearance(SectionBuilder &builder) {
     Arcanegram::ForwardedHeader::Setup(builder);
     Arcanegram::Time::Setup(builder);
     Arcanegram::ChatWallpaper::Setup(builder);
+    Arcanegram::InlineCallback::Setup(builder);
 }
 
 const auto kAppearanceMeta = BuildHelper({

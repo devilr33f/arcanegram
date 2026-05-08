@@ -63,7 +63,7 @@ index 0000000..0000000 100644
  	_hasPreview = hasPreview ? 1 : 0;
  	_displaying = data->displaying() ? 1 : 0;
  	_multiline = data->multiline() ? 1 : 0;
-@@ -402,7 +408,7 @@ void Reply::update(
+@@ -400,7 +406,7 @@ void Reply::update(
  		.session = &view->history()->session(),
  		.repaint = repaint,
  	}));
@@ -72,7 +72,7 @@ index 0000000..0000000 100644
  		? TextWithEntities()
  		: task
  		? Ui::Text::Colorized(task->completionDate
-@@ -437,6 +443,9 @@ void Reply::update(
+@@ -439,6 +445,9 @@ void Reply::update(
  			.ignoreTopic = true,
  		}).text
  		: TextWithEntities();
@@ -82,7 +82,7 @@ index 0000000..0000000 100644
  	_text.setMarkedText(
  		st::defaultTextStyle,
  		text,
-@@ -447,7 +456,9 @@ void Reply::update(
+@@ -449,7 +458,9 @@ void Reply::update(
  
  	if (_displaying) {
  		setLinkFrom(view, data);
@@ -93,7 +93,7 @@ index 0000000..0000000 100644
  		if (!media || !media->hasReplyPreview() || !media->hasSpoiler()) {
  			_spoiler = nullptr;
  		} else if (!_spoiler) {
-@@ -521,6 +532,10 @@ void Reply::setLinkFrom(
+@@ -523,6 +534,10 @@ void Reply::setLinkFrom(
  		}
  	};
  	const auto message = data->resolvedMessage.get();
@@ -104,7 +104,7 @@ index 0000000..0000000 100644
  	const auto story = data->resolvedStory.get();
  	_link = isAdminLogEntry
  		? std::make_shared<LambdaClickHandler>(externalLink)
-@@ -539,6 +554,9 @@ PeerData *Reply::sender(
+@@ -541,6 +556,9 @@ PeerData *Reply::sender(
  		not_null<const Element*> view,
  		not_null<HistoryMessageReply*> data) const {
  	const auto message = data->resolvedMessage.get();
@@ -114,7 +114,7 @@ index 0000000..0000000 100644
  	if (const auto story = data->resolvedStory.get()) {
  		return story->peer();
  	} else if (!message) {
-@@ -560,6 +578,10 @@ QString Reply::senderName(
+@@ -562,6 +580,10 @@ QString Reply::senderName(
  		not_null<const Element*> view,
  		not_null<HistoryMessageReply*> data,
  		bool shorten) const {
@@ -125,7 +125,7 @@ index 0000000..0000000 100644
  	if (const auto peer = sender(view, data)) {
  		return senderName(peer, shorten);
  	} else if (!data->resolvedMessage) {
-@@ -661,6 +683,9 @@ void Reply::updateName(
+@@ -663,6 +685,9 @@ void Reply::updateName(
  		.session = &history->session(),
  		.customEmojiLoopLimit = 1,
  	});
@@ -135,7 +135,7 @@ index 0000000..0000000 100644
  	_name.setMarkedText(
  		st::fwdTextStyle,
  		nameFull,
-@@ -1112,6 +1137,13 @@ TextWithEntities Reply::ComposePreviewName(
+@@ -1089,6 +1114,13 @@ TextWithEntities Reply::ComposePreviewName(
  		not_null<History*> history,
  		not_null<HistoryItem*> to,
  		const FullReplyTo &replyTo) {

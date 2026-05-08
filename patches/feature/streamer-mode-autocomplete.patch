@@ -11,7 +11,7 @@ diff --git a/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp b/Telegram
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp
 +++ b/Telegram/SourceFiles/chat_helpers/field_autocomplete.cpp
-@@ -52,12 +52,17 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -54,12 +54,17 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "styles/style_chat_helpers.h"
  #include "styles/style_menu_icons.h"
  

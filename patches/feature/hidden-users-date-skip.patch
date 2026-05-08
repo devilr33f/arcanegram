@@ -12,7 +12,7 @@ diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/So
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
 +++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
-@@ -987,6 +987,9 @@ void HistoryInner::enumerateDates(Method method) {
+@@ -989,6 +989,9 @@ void HistoryInner::enumerateDates(Method method) {
  
  	auto dateCallback = [&](not_null<Element*> view, int itemtop, int itembottom) {
  		const auto item = view->data();

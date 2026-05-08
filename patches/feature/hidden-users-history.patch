@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "base/unixtime.h"
  #include "base/qt/qt_key_modifiers.h"
  #include "base/qt/qt_common_adapters.h"
-@@ -672,6 +673,9 @@ void ListWidget::refreshRows(const Data::MessagesSlice &old) {
+@@ -673,6 +674,9 @@ void ListWidget::refreshRows(const Data::MessagesSlice &old) {
  	auto nearestIndex = -1;
  	for (const auto &fullId : _slice.ids) {
  		if (const auto item = session().data().message(fullId)) {

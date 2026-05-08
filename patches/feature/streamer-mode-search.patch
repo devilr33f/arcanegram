@@ -11,7 +11,7 @@ diff --git a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp b/Telegram/So
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
 +++ b/Telegram/SourceFiles/dialogs/dialogs_inner_widget.cpp
-@@ -68,6 +68,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -69,6 +69,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "window/notifications_manager.h"
  #include "window/window_controller.h"
  #include "window/window_session_controller.h"
@@ -20,7 +20,7 @@ index 0000000..0000000 100644
  #include "window/window_peer_menu.h"
  #include "ui/chat/chats_filter_tag.h"
  #include "ui/effects/ripple_animation.h"
-@@ -1610,7 +1612,9 @@ void InnerWidget::paintPeerSearchResult(
+@@ -1612,7 +1614,9 @@ void InnerWidget::paintPeerSearchResult(
  
  	QRect tr(context.st->textLeft, context.st->textTop, namewidth, st::dialogsTextFont->height);
  	p.setFont(st::dialogsTextFont);
@@ -31,7 +31,7 @@ index 0000000..0000000 100644
  	if (!context.active && username.startsWith(_peerSearchQuery, Qt::CaseInsensitive)) {
  		auto first = '@' + username.mid(0, _peerSearchQuery.size());
  		auto second = username.mid(_peerSearchQuery.size());
-@@ -1755,11 +1759,13 @@ void InnerWidget::performDrag() {
+@@ -1757,11 +1761,13 @@ void InnerWidget::performDrag() {
  		u"application/x-telegram-dialog"_q,
  		std::move(byteArray));
  

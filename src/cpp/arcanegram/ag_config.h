@@ -143,4 +143,10 @@ inline auto SidebarStreamerMode = BoolItem("ag_quick_sidebar_streamer_mode", fal
 
 } // namespace QuickAccess
 
+namespace InlineCallback {
+
+inline auto Show = BoolItem("ag_inline_callback_show", false);
+
+} // namespace InlineCallback
+
 } // namespace Arcanegram::Config

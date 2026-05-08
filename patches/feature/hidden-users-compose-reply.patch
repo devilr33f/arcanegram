@@ -21,7 +21,7 @@ index 0000000..0000000 100644
  #include "api/api_editing.h"
  #include "api/api_bot.h"
  #include "api/api_chat_participants.h"
-@@ -9744,6 +9745,12 @@ void HistoryWidget::updateReplyEditText(not_null<HistoryItem*> item) {
+@@ -9769,6 +9770,12 @@ void HistoryWidget::updateReplyEditText(not_null<HistoryItem*> item) {
  		.repaint = [=] { updateField(); },
  	});
  	const auto text = [&] {

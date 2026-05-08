@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "api/api_blocked_peers.h"
  #include "api/api_chat_participants.h"
  #include "api/api_credits.h"
-@@ -173,6 +174,9 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -175,6 +176,9 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  		const QString &addToLink) {
  	const auto weak = base::make_weak(controller);
  	return [=](QString link) {
@@ -29,7 +29,7 @@ index 0000000..0000000 100644
  		if (link.startsWith(u"internal:"_q)) {
  			Core::App().openInternalUrl(link,
  				QVariant::fromValue(ClickHandlerContext{
-@@ -213,7 +217,8 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -215,7 +219,8 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  	return AboutValue(
  		peer
  	) | rpl::map([=](TextWithEntities &&value) {
@@ -39,7 +39,7 @@ index 0000000..0000000 100644
  			using namespace Ui::Text;
  			if (!value.empty()) {
  				value.append("\n\n");
-@@ -226,11 +231,11 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -228,11 +233,11 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  				"internal:~peer_id~:copy:" + botApi
  					+ ":mtproto:" + mtproto));
  		}
@@ -53,7 +53,7 @@ index 0000000..0000000 100644
  							value.append("\n");
  						} else {
  							value.append("\n\n");
-@@ -898,9 +903,13 @@ void DeleteContactNote(
+@@ -900,9 +905,13 @@ void DeleteContactNote(
  	const auto layout = outer->entity();
  	layout->setAttribute(Qt::WA_TransparentForMouseEvents);
  

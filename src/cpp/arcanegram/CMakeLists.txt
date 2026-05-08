@@ -40,6 +40,8 @@ PRIVATE
     features/ag_fast_messages.cpp
     features/ag_peer_ids.h
     features/ag_peer_ids.cpp
+    features/ag_inline_callback.h
+    features/ag_inline_callback.cpp
     ui/ag_settings_widgets.h
     ui/ag_settings_widgets.cpp
     ui/ag_settings_main.h

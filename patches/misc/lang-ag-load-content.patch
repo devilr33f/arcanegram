@@ -1,9 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: m3trika <x@iamsofuckinginsane.ru>
 Date: Mon, 4 May 2026 16:21:17 +0400
-Subject: [PATCH] Expose ag_loadContent on Lang::Instance for fork string
- injection
+Subject: [PATCH] [PATCH] Expose ag_loadContent on Lang::Instance for fork
+ string
 
+injection
 ---
  Telegram/SourceFiles/lang/lang_instance.cpp | 5 +++++
  Telegram/SourceFiles/lang/lang_instance.h   | 1 +

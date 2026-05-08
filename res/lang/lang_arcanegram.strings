@@ -61,3 +61,7 @@
 "ag_quick_access_streamer_mode" = "Streamer Mode";
 "ag_quick_access_sidebar_streamer_mode_info" = "Add a Streamer Mode toggle to the sidebar menu.";
 "ag_streamer_preview" = "Sample: {name}";
+"ag_inline_callback_setting" = "Show inline button callback data";
+"ag_inline_callback_info" = "Hover an inline keyboard button to see the callback payload it would send to the bot.";
+"ag_inline_callback_label" = "Callback";
+"ag_inline_callback_copy" = "Copy callback";

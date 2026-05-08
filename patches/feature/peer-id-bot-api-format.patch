@@ -20,7 +20,7 @@ index 0000000..0000000 100644
  #include "api/api_blocked_peers.h"
  #include "api/api_chat_participants.h"
  #include "api/api_credits.h"
-@@ -218,10 +219,12 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -220,10 +221,12 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  				value.append("\n\n");
  			}
  			value.append(Italic(u"id: "_q));
@@ -36,7 +36,7 @@ index 0000000..0000000 100644
  		}
  		if (ShowChannelJoinedBelowAbout.value()) {
  			if (const auto channel = peer->asChannel()) {
-@@ -1474,13 +1477,27 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupInfo() {
+@@ -1478,13 +1481,27 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupInfo() {
  				const auto &url = request.link->url();
  				if (url.startsWith(u"internal:~peer_id~:"_q)) {
  					const auto weak = base::make_weak(controller);
