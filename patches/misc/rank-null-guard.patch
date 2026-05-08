@@ -1,0 +1,28 @@
+From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
+From: devilreef <devilreef@femboy.page>
+Date: Fri, 8 May 2026 15:43:57 +0600
+Subject: [PATCH] Null-guard HistoryMessageSigned lookup in attach-to-previous
+ rank lambda
+
+---
+ Telegram/SourceFiles/history/view/history_view_element.cpp | 4 +++-
+ 1 file changed, 3 insertions(+), 1 deletion(-)
+
+diff --git a/Telegram/SourceFiles/history/view/history_view_element.cpp b/Telegram/SourceFiles/history/view/history_view_element.cpp
+index 0000000..0000000 100644
+--- a/Telegram/SourceFiles/history/view/history_view_element.cpp
++++ b/Telegram/SourceFiles/history/view/history_view_element.cpp
+@@ -2015,7 +2015,9 @@ bool Element::computeIsAttachToPrevious(not_null<Element*> previous) {
+ 			}
+ 			const auto rank = [&](not_null<HistoryItem*> item) {
+ 			    const auto msgsigned = item->Get<HistoryMessageSigned>();
+-				return msgsigned->isAnonymousRank ? msgsigned->author : QString();
++				return (msgsigned && msgsigned->isAnonymousRank)
++					? msgsigned->author
++					: QString();
+ 			};
+ 			return rank(item) == rank(prev);
+ 		}
+-- 
+2.52.0.windows.1
+

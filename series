@@ -46,4 +46,5 @@ feature/streamer-mode-display-affinity.patch
 feature/quick-access-sidebar.patch
 feature/streamer-mode-skip-notifications.patch
 feature/inline-callback-tooltip.patch
+misc/rank-null-guard.patch
 misc/branding.patch
