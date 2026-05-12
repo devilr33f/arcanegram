@@ -53,7 +53,7 @@ index 0000000..0000000 100644
  	auto g = countGeometry();
  	if (g.width() < 1) {
  		return;
-@@ -5182,7 +5186,9 @@ Ui::BubbleRounding Message::countBubbleRounding() const {
+@@ -5177,7 +5181,9 @@ Ui::BubbleRounding Message::countBubbleRounding() const {
  }
  
  int Message::resizeContentGetHeight(int newWidth) {

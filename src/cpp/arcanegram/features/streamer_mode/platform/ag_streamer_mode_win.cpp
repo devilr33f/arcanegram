@@ -9,10 +9,13 @@ namespace {
 
 void ApplyAllTopLevels(DWORD affinity) {
 	for (auto *widget : QApplication::topLevelWidgets()) {
-		if (!widget || !widget->isWindow() || !widget->testAttribute(Qt::WA_WState_Created)) {
+		if (!widget
+			|| !widget->isWindow()
+			|| !widget->isVisible()
+			|| widget->testAttribute(Qt::WA_DontShowOnScreen)) {
 			continue;
 		}
-		const auto handle = reinterpret_cast<HWND>(widget->winId());
+		const auto handle = reinterpret_cast<HWND>(widget->internalWinId());
 		if (handle) {
 			SetWindowDisplayAffinity(handle, affinity);
 		}
@@ -29,20 +32,26 @@ void DisableHook() {
 	ApplyAllTopLevels(WDA_NONE);
 }
 
-void HideWidget(QWidget *widget) {
+void ApplyToWidget(QWidget *widget, DWORD affinity) {
 	if (!widget) {
 		return;
 	}
-	const auto handle = reinterpret_cast<HWND>(widget->window()->winId());
-	SetWindowDisplayAffinity(handle, WDA_EXCLUDEFROMCAPTURE);
+	const auto top = widget->window();
+	if (!top || !top->testAttribute(Qt::WA_WState_Created)) {
+		return;
+	}
+	const auto handle = reinterpret_cast<HWND>(top->internalWinId());
+	if (handle) {
+		SetWindowDisplayAffinity(handle, affinity);
+	}
+}
+
+void HideWidget(QWidget *widget) {
+	ApplyToWidget(widget, WDA_EXCLUDEFROMCAPTURE);
 }
 
 void ShowWidget(QWidget *widget) {
-	if (!widget) {
-		return;
-	}
-	const auto handle = reinterpret_cast<HWND>(widget->window()->winId());
-	SetWindowDisplayAffinity(handle, WDA_NONE);
+	ApplyToWidget(widget, WDA_NONE);
 }
 
 } // namespace Arcanegram::StreamerMode::Impl
