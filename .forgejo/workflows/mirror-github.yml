@@ -1,0 +1,48 @@
+name: mirror to github
+
+on:
+  push:
+    branches: ['**']
+    tags: ['**']
+  delete:
+  workflow_dispatch:
+
+concurrency:
+  group: mirror-github
+  cancel-in-progress: false
+
+jobs:
+  mirror:
+    runs-on: docker
+    container:
+      image: alpine:latest
+    steps:
+      - name: install git
+        run: apk add --no-cache git
+
+      - name: clone source (mirror)
+        env:
+          SRC_URL: ${{ github.server_url }}/${{ github.repository }}.git
+          SRC_TOKEN: ${{ secrets.FORGEJO_TOKEN }}
+        run: |
+          set -eu
+          if [ -n "${SRC_TOKEN:-}" ]; then
+            auth_url="$(printf '%s' "$SRC_URL" | sed -E "s#^(https?://)#\1x-access-token:${SRC_TOKEN}@#")"
+          else
+            auth_url="$SRC_URL"
+          fi
+          git clone --mirror "$auth_url" repo.git
+
+      - name: push to github mirror
+        env:
+          GH_USERNAME: ${{ secrets.GH_MIRROR_USERNAME }}
+          GH_TOKEN: ${{ secrets.GH_MIRROR_TOKEN }}
+          GH_REPO: ${{ vars.GH_MIRROR_REPO }}
+        run: |
+          set -eu
+          : "${GH_USERNAME:?GH_MIRROR_USERNAME secret missing}"
+          : "${GH_TOKEN:?GH_MIRROR_TOKEN secret missing}"
+          : "${GH_REPO:?GH_MIRROR_REPO variable missing (e.g. owner/repo)}"
+          cd repo.git
+          git remote set-url --push origin "https://${GH_USERNAME}:${GH_TOKEN}@github.com/${GH_REPO}.git"
+          git push --mirror
