@@ -59,6 +59,8 @@ async function exportPatchFile(repoDir: string, patchName: string) {
   // zero index hashes for stable diffs, but skip binary file blocks — `git apply`
   // needs real source-blob hashes to locate the blob being patched.
   const stable = patch.stdout
+    .replace(/^(Subject: (?:\[PATCH\] )+)/m, (_, prefix) =>
+      prefix.replace(/(\[PATCH\] )+/, '[PATCH] '))
     .split(/(?=^diff --git )/m)
     .map(block => block.includes('GIT binary patch')
       ? block
