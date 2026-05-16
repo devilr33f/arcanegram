@@ -68,9 +68,7 @@ pnpm run export
 
 ## Known issues
 
-- **Windows debug binary crashes on launch (stack overflow, `0xc00000fd`).** libavif v1.3.0 and tg_owt (WebRTC) both statically bundle their own copies of `libyuv`. With `AVIF_LIBYUV=OFF` (what `prepare.py` sets), libavif's CMake explicitly compiles its bundled libyuv source files as a fallback (line ~441 of libavif's `CMakeLists.txt`). At Telegram's final link, both `avif.lib` and `tg_owt.lib` define the same libyuv symbols — `LNK2005` for ~50 symbols including `ScalePlane`, `CopyPlane`, etc. `misc/build-support.patch` adds `/FORCE:MULTIPLE` so the link succeeds, but the resulting binary crashes early due to libyuv version/ABI mismatch.
-
-  Stock tdesktop CI hides this on every successful run because libavif is loaded from the GitHub Actions cache (built fresh long before the conflict appeared). On any cache miss they would hit the same crash. So this is a real upstream issue, not something patches in this repo can solve cleanly. Real fix would require deduplicating libyuv at the dep-build level — modifying `prepare.py` to build libavif against an external libyuv binary, or refactoring `tg_owt` to not bundle its copy.
+- **libyuv duplicate symbols (`LNK2005`) on Windows Debug.** libavif and tg_owt both statically bundle `libyuv`, causing `LNK2005` for ~50 symbols (`ScalePlane`, `CopyPlane`, etc.) when linking with PDB (`/Zi`). Worked around by passing `-DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT=` (empty) in `build-telegram.bat`, which disables debug info and avoids the conflict. The binary builds and runs correctly. If you re-enable `/Zi`, expect duplicate-symbol link errors.
 
 ## License
 
