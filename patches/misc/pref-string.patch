@@ -1,7 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 02:31:05 +0600
-Subject: [PATCH] add QString specialization for Settings::readPref/writePref
+Subject: [PATCH] add QString specialization for
+ Settings::readPref/writePref
 
 ---
  Telegram/SourceFiles/core/core_settings.cpp | 14 ++++++++++++++

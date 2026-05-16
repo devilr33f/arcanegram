@@ -1,9 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:50:34 +0600
-Subject: [PATCH] [PATCH] streamer mode: pseudonym in shortened reply sender
- name
+Subject: [PATCH] streamer mode: pseudonym in shortened reply
+ sender
 
+name
 ---
  Telegram/SourceFiles/history/view/history_view_reply.cpp | 9 ++++++++-
  1 file changed, 8 insertions(+), 1 deletion(-)

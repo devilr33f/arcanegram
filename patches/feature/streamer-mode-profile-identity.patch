@@ -1,9 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:08:54 +0600
-Subject: [PATCH] [PATCH] streamer mode: hide profile
- phone/username/bio/common-chats
+Subject: [PATCH] streamer mode: hide profile
 
+phone/username/bio/common-chats
 ---
  .../info/profile/info_profile_values.cpp      | 56 +++++++++++--------
  1 file changed, 34 insertions(+), 22 deletions(-)

@@ -1,7 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Mon, 27 Apr 2026 20:20:33 +0600
-Subject: [PATCH] [PATCH] append lang_arcanegram.strings to lang codegen input
+Subject: [PATCH] append lang_arcanegram.strings to lang
+ codegen input
 
 ---
  Telegram/cmake/td_lang.cmake | 11 ++++++++++-

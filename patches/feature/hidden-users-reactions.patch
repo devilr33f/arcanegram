@@ -1,9 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 03:58:30 +0600
-Subject: [PATCH] filter reactions from hidden users (avatars + counts on
- reaction chips)
+Subject: [PATCH] filter reactions from hidden users (avatars + counts
+ on
 
+reaction chips)
 ---
  .../view/reactions/history_view_reactions.cpp | 28 +++++++++++++++++++
  1 file changed, 28 insertions(+)

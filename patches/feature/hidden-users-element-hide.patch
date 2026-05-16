@@ -1,9 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 03:37:45 +0600
-Subject: [PATCH] override Element::isHidden() so HistoryInner and other views
- shrink hidden users
+Subject: [PATCH] override Element::isHidden() so HistoryInner and
+ other views
 
+shrink hidden users
 ---
  .../SourceFiles/history/view/history_view_element.cpp     | 4 +++-
  .../SourceFiles/history/view/history_view_message.cpp     | 8 +++++++-

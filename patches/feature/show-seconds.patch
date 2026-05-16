@@ -1,9 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 02:36:32 +0600
-Subject: [PATCH] show seconds in user-facing timestamps when ag_show_seconds
- is on
+Subject: [PATCH] show seconds in user-facing timestamps when
+ ag_show_seconds
 
+is on
 ---
  Telegram/SourceFiles/api/api_who_reacted.cpp             | 7 ++++---
  .../history/view/history_view_bottom_info.cpp            | 3 ++-

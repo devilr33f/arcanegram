@@ -1,9 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:57:28 +0600
-Subject: [PATCH] [PATCH] streamer mode: force empty userpic in
- PeerData::paintUserpic
+Subject: [PATCH] streamer mode: force empty userpic in
 
+PeerData::paintUserpic
 ---
  Telegram/SourceFiles/data/data_peer.cpp | 4 +++-
  Telegram/SourceFiles/data/data_peer.h   | 2 +-

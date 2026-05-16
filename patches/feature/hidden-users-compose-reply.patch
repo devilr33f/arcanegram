@@ -1,9 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 21:42:11 +0600
-Subject: [PATCH] replace reply preview text when composing a reply to a hidden
- user
+Subject: [PATCH] replace reply preview text when composing a reply to
+ a hidden
 
+user
 ---
  Telegram/SourceFiles/history/history_widget.cpp            | 7 +++++++
  .../view/controls/history_view_compose_controls.cpp        | 7 ++++++-

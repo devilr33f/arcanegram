@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Mon, 27 Apr 2026 20:27:20 +0600
-Subject: [PATCH] [PATCH] add Arcanegram entry to main settings list
+Subject: [PATCH] add Arcanegram entry to main settings list
 
 ---
  Telegram/SourceFiles/settings/sections/settings_main.cpp | 9 +++++++++

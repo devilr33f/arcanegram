@@ -1,7 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 17:22:26 +0600
-Subject: [PATCH] [PATCH] streamer mode: hide profile rating
+Subject: [PATCH] streamer mode: hide profile rating
 
 ---
  Telegram/SourceFiles/data/data_peer_values.cpp | 16 ++++++++++++----

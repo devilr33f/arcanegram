@@ -44,6 +44,5 @@ feature/hidden-users-via-bot-menu.patch
 feature/hidden-users-date-skip.patch
 feature/streamer-mode-display-affinity.patch
 feature/quick-access-sidebar.patch
-feature/streamer-mode-skip-notifications.patch
 feature/inline-callback-tooltip.patch
 misc/branding.patch

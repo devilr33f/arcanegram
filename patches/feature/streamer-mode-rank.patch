@@ -1,8 +1,10 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 17:12:52 +0600
-Subject: [PATCH] [PATCH] streamer mode: drop admin custom title and rank badge
- for
+Subject: [PATCH] streamer mode: drop admin custom title and
+ rank badge
+
+for
 
 anonymized senders
 ---

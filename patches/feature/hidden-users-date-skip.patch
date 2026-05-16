@@ -2,8 +2,8 @@ From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Thu, 7 May 2026 02:23:33 +0600
 Subject: [PATCH] skip date painting on hidden views to avoid duplicate
- day-dividers
 
+day-dividers
 ---
  Telegram/SourceFiles/history/history_inner_widget.cpp | 3 +++
  1 file changed, 3 insertions(+)
