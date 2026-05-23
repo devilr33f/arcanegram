@@ -1,10 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 03:01:57 +0600
-Subject: [PATCH] replace last-message preview text for hidden users in
- dialogs
+Subject: [PATCH] replace last-message preview text for hidden users in dialogs
+ list
 
-list
 ---
  Telegram/SourceFiles/dialogs/ui/dialogs_message_view.cpp | 8 ++++++++
  1 file changed, 8 insertions(+)

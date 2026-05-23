@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 15:57:40 +0600
-Subject: [PATCH] streamer mode: empty userpic in fullscreen
- call
+Subject: [PATCH] streamer mode: empty userpic in fullscreen call
 
 ---
  Telegram/SourceFiles/calls/calls_userpic.cpp | 13 +++++++++----

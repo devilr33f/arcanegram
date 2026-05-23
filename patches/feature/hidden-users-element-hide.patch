@@ -1,10 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 03:37:45 +0600
-Subject: [PATCH] override Element::isHidden() so HistoryInner and
- other views
+Subject: [PATCH] override Element::isHidden() so HistoryInner and other views
+ shrink hidden users
 
-shrink hidden users
 ---
  .../SourceFiles/history/view/history_view_element.cpp     | 4 +++-
  .../SourceFiles/history/view/history_view_message.cpp     | 8 +++++++-
@@ -36,15 +35,15 @@ diff --git a/Telegram/SourceFiles/history/view/history_view_message.cpp b/Telegr
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/view/history_view_message.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_message.cpp
-@@ -9,6 +9,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
- 
+@@ -10,6 +10,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "api/api_suggest_post.h"
  #include "api/api_transcribes.h"
+ #include "base/options.h"
 +#include "arcanegram/features/ag_hidden_users.h"
  #include "base/qt/qt_key_modifiers.h"
  #include "base/unixtime.h"
  #include "core/click_handler_types.h" // ClickHandlerContext
-@@ -1064,6 +1065,9 @@ int Message::marginBottom() const {
+@@ -1081,6 +1082,9 @@ int Message::marginBottom() const {
  }
  
  void Message::draw(Painter &p, const PaintContext &context) const {
@@ -54,7 +53,7 @@ index 0000000..0000000 100644
  	auto g = countGeometry();
  	if (g.width() < 1) {
  		return;
-@@ -5177,7 +5181,9 @@ Ui::BubbleRounding Message::countBubbleRounding() const {
+@@ -5203,7 +5207,9 @@ Ui::BubbleRounding Message::countBubbleRounding() const {
  }
  
  int Message::resizeContentGetHeight(int newWidth) {

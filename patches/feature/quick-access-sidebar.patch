@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Thu, 7 May 2026 16:19:24 +0600
-Subject: [PATCH] Inject Arcanegram quick-access sidebar toggles into
- main menu
+Subject: [PATCH] Inject Arcanegram quick-access sidebar toggles into main menu
 
 ---
  Telegram/SourceFiles/window/window_main_menu.cpp | 3 +++

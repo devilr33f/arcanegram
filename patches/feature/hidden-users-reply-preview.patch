@@ -1,10 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 03:02:27 +0600
-Subject: [PATCH] replace reply quote and sender name when target
- message is
+Subject: [PATCH] replace reply quote and sender name when target message is
+ from a hidden user
 
-from a hidden user
 ---
  .../history/view/history_view_reply.cpp       | 54 +++++++++++++++----
  1 file changed, 43 insertions(+), 11 deletions(-)

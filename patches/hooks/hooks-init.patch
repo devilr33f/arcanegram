@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Mon, 27 Apr 2026 20:21:07 +0600
-Subject: [PATCH] call Arcanegram::Hooks::init at application
- start
+Subject: [PATCH] call Arcanegram::Hooks::init at application start
 
 ---
  Telegram/SourceFiles/core/application.cpp | 3 +++

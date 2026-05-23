@@ -1,10 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 21:42:11 +0600
-Subject: [PATCH] replace reply preview text when composing a reply to
- a hidden
+Subject: [PATCH] replace reply preview text when composing a reply to a hidden
+ user
 
-user
 ---
  Telegram/SourceFiles/history/history_widget.cpp            | 7 +++++++
  .../view/controls/history_view_compose_controls.cpp        | 7 ++++++-
@@ -22,7 +21,7 @@ index 0000000..0000000 100644
  #include "api/api_editing.h"
  #include "api/api_bot.h"
  #include "api/api_chat_participants.h"
-@@ -9769,6 +9770,12 @@ void HistoryWidget::updateReplyEditText(not_null<HistoryItem*> item) {
+@@ -9792,6 +9793,12 @@ void HistoryWidget::updateReplyEditText(not_null<HistoryItem*> item) {
  		.repaint = [=] { updateField(); },
  	});
  	const auto text = [&] {

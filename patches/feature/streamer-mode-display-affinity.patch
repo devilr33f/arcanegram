@@ -1,10 +1,9 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Thu, 7 May 2026 16:03:00 +0600
-Subject: [PATCH] Apply Windows display-affinity / NSWindowSharing flag
- from
+Subject: [PATCH] Apply Windows display-affinity / NSWindowSharing flag from
+ Arcanegram streamer mode to top-level widgets
 
-Arcanegram streamer mode to top-level widgets
 ---
  Telegram/SourceFiles/core/application.cpp                    | 3 +++
  Telegram/SourceFiles/iv/iv_controller.cpp                    | 3 +++
@@ -46,7 +45,7 @@ index 0000000..0000000 100644
  #include "base/event_filter.h"
  #include "base/platform/base_platform_info.h"
  #include "base/qt/qt_key_modifiers.h"
-@@ -638,6 +639,8 @@ void Controller::createWindow() {
+@@ -470,6 +471,8 @@ void Controller::createWindow() {
  
  	_container->show();
  	window->show();
@@ -67,7 +66,7 @@ index 0000000..0000000 100644
  #include "apiwrap.h"
  #include "api/api_attached_stickers.h"
  #include "api/api_peer_photo.h"
-@@ -4125,6 +4126,8 @@ void OverlayWidget::activate() {
+@@ -4128,6 +4129,8 @@ void OverlayWidget::activate() {
  	setFocus();
  	QApplication::setActiveWindow(_window);
  	setFocus();
@@ -88,7 +87,7 @@ index 0000000..0000000 100644
  #include "media/streaming/media_streaming_player.h"
  #include "media/streaming/media_streaming_document.h"
  #include "media/streaming/media_streaming_utility.h"
-@@ -970,6 +971,8 @@ void Pip::setupPanel() {
+@@ -983,6 +984,8 @@ void Pip::setupPanel() {
  	_panel.setPosition(Deserialize(_delegate->pipLoadGeometry()));
  	_panel.widget()->show();
  

@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:10:29 +0600
-Subject: [PATCH] streamer mode: hide peer id, birthday,
- username link
+Subject: [PATCH] streamer mode: hide peer id, birthday, username link
 
 ---
  .../info/profile/info_profile_actions.cpp     | 21 +++++++++++++------
@@ -20,7 +19,7 @@ index 0000000..0000000 100644
  #include "api/api_blocked_peers.h"
  #include "api/api_chat_participants.h"
  #include "api/api_credits.h"
-@@ -175,6 +176,9 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -192,6 +193,9 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  		const QString &addToLink) {
  	const auto weak = base::make_weak(controller);
  	return [=](QString link) {
@@ -30,7 +29,7 @@ index 0000000..0000000 100644
  		if (link.startsWith(u"internal:"_q)) {
  			Core::App().openInternalUrl(link,
  				QVariant::fromValue(ClickHandlerContext{
-@@ -215,7 +219,8 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -232,7 +236,8 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  	return AboutValue(
  		peer
  	) | rpl::map([=](TextWithEntities &&value) {
@@ -40,7 +39,7 @@ index 0000000..0000000 100644
  			using namespace Ui::Text;
  			if (!value.empty()) {
  				value.append("\n\n");
-@@ -228,11 +233,11 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -245,11 +250,11 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  				"internal:~peer_id~:copy:" + botApi
  					+ ":mtproto:" + mtproto));
  		}
@@ -54,7 +53,7 @@ index 0000000..0000000 100644
  							value.append("\n");
  						} else {
  							value.append("\n\n");
-@@ -900,9 +905,13 @@ void DeleteContactNote(
+@@ -917,9 +922,13 @@ void DeleteContactNote(
  	const auto layout = outer->entity();
  	layout->setAttribute(Qt::WA_TransparentForMouseEvents);
  

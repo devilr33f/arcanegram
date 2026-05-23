@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Thu, 7 May 2026 01:33:26 +0600
-Subject: [PATCH] append hide messages via inline bot to message
- context menu
+Subject: [PATCH] append hide messages via inline bot to message context menu
 
 ---
  .../SourceFiles/history/history_inner_widget.cpp   | 12 ++++++++++++
@@ -13,7 +12,7 @@ diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/So
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
 +++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
-@@ -2628,6 +2628,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -2733,6 +2733,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  		}
  		return;
  	}

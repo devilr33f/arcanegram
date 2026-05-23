@@ -50,7 +50,7 @@ index 0000000..0000000 100644
  #include "history/view/controls/history_view_compose_controls.h"
  #include "history/view/controls/history_view_compose_search.h"
  #include "history/view/controls/history_view_draft_options.h"
-@@ -3508,6 +3509,17 @@ void ChatWidget::setupShortcuts() {
+@@ -3521,6 +3522,17 @@ void ChatWidget::setupShortcuts() {
  			searchRequested();
  			return true;
  		});

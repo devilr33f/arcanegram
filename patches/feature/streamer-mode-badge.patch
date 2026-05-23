@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 16:03:37 +0600
-Subject: [PATCH] streamer mode: hide verified/scam/premium
- badges
+Subject: [PATCH] streamer mode: hide verified/scam/premium badges
 
 ---
  Telegram/SourceFiles/info/profile/info_profile_badge.cpp  | 5 +++++

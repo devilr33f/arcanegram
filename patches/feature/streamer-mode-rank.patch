@@ -1,10 +1,8 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@femboy.page>
 Date: Fri, 1 May 2026 17:12:52 +0600
-Subject: [PATCH] streamer mode: drop admin custom title and
- rank badge
-
-for
+Subject: [PATCH] streamer mode: drop admin custom title and rank badge
+ for
 
 anonymized senders
 ---
@@ -15,15 +13,15 @@ diff --git a/Telegram/SourceFiles/history/view/history_view_message.cpp b/Telegr
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/view/history_view_message.cpp
 +++ b/Telegram/SourceFiles/history/view/history_view_message.cpp
-@@ -10,6 +10,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
- #include "api/api_suggest_post.h"
+@@ -11,6 +11,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "api/api_transcribes.h"
+ #include "base/options.h"
  #include "arcanegram/features/ag_hidden_users.h"
 +#include "arcanegram/features/screenshot/ag_screenshot.h"
  #include "base/qt/qt_key_modifiers.h"
  #include "base/unixtime.h"
  #include "core/click_handler_types.h" // ClickHandlerContext
-@@ -393,6 +394,9 @@ void Message::refreshRightBadge() {
+@@ -410,6 +411,9 @@ void Message::refreshRightBadge() {
  	}
  	const auto item = data();
  	const auto [text, role, special] = [&]() -> std::tuple<QString, BadgeRole, bool> {

@@ -1,8 +1,7 @@
 From 0000000000000000000000000000000000000000 Mon Sep 17 00:00:00 2001
 From: devilreef <devilreef@shino.boo>
 Date: Tue, 28 Apr 2026 03:02:58 +0600
-Subject: [PATCH] add hide/unhide entry to chat history avatar context
- menu
+Subject: [PATCH] add hide/unhide entry to chat history avatar context menu
 
 ---
  .../SourceFiles/history/history_inner_widget.cpp     | 12 ++++++++++++
@@ -20,7 +19,7 @@ index 0000000..0000000 100644
  #include "api/api_polls.h"
  #include "chat_helpers/stickers_emoji_pack.h"
  #include "core/application.h"
-@@ -2607,6 +2608,17 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -2712,6 +2713,17 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  				return moderateItem;
  			}(),
  			Ui::Menu::CreateAddActionCallback(_menu.get()));
