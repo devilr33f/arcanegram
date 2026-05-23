@@ -20,11 +20,18 @@ if "%TDESKTOP_API_TEST%"=="1" (set "EXTRA_FLAGS=-DTDESKTOP_API_TEST=ON") else (s
 :: pin generator/toolset to vs 2026 (v145). matches vcvars-resolved msvc 14.50 used by prepare-deps;
 :: prevents v143 (vs 2022 buildtools) cmake auto-pick that ships an older libcpmt missing __std_rotate.
 set "GENERATOR_FLAGS=-G "Visual Studio 18 2026" -Ax64 -Tv145"
+:: upstream Telegram/shaders needs qsb (qt shader baker). qrhi_shaders.cmake's
+:: find_program hints all key off ${QT_DIR}, which tdesktop never defines, so they
+:: resolve to dead paths. put the qsb we built into the prefix on PATH (find_program
+:: searches PATHS ENV PATH) and also pass it explicitly.
+set "QSB_BIN=%~dp0Libraries\win64\Qt-6.11.0\bin"
+set "QSB_EXE=%QSB_BIN%\qsb.exe"
+set "PATH=%QSB_BIN%;%PATH%"
 echo [arcanegram] platform=%Platform% config=%BUILD_CONFIG% api_id=%TDESKTOP_API_ID%
 cd /d "%~dp0worktree"
 
 echo [arcanegram] === configure ===
-call Telegram\configure.bat qt6 %GENERATOR_FLAGS% -DTDESKTOP_API_ID=%TDESKTOP_API_ID% -DTDESKTOP_API_HASH=%TDESKTOP_API_HASH% -DDESKTOP_APP_DISABLE_CRASH_REPORTS=OFF -DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT= %EXTRA_FLAGS%
+call Telegram\configure.bat qt6 %GENERATOR_FLAGS% -DTDESKTOP_API_ID=%TDESKTOP_API_ID% -DTDESKTOP_API_HASH=%TDESKTOP_API_HASH% -DDESKTOP_APP_DISABLE_CRASH_REPORTS=OFF -DCMAKE_MSVC_DEBUG_INFORMATION_FORMAT= -DQSB_EXECUTABLE="%QSB_EXE%" %EXTRA_FLAGS%
 if errorlevel 1 exit /b 1
 
 if /I "%BUILD_CONFIG%"=="configure" exit /b 0
