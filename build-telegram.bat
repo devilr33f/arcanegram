@@ -22,9 +22,9 @@ if "%TDESKTOP_API_TEST%"=="1" (set "EXTRA_FLAGS=-DTDESKTOP_API_TEST=ON") else (s
 set "GENERATOR_FLAGS=-G "Visual Studio 18 2026" -Ax64 -Tv145"
 :: upstream Telegram/shaders needs qsb (qt shader baker). qrhi_shaders.cmake's
 :: find_program hints all key off ${QT_DIR}, which tdesktop never defines, so they
-:: resolve to dead paths. put the qsb we built into the prefix on PATH (find_program
-:: searches PATHS ENV PATH) and also pass it explicitly.
-set "QSB_BIN=%~dp0Libraries\win64\Qt-6.11.0\bin"
+:: resolve to dead paths. put the prefix's qsb on PATH (find_program searches
+:: PATHS ENV PATH) and also pass it explicitly.
+set "QSB_BIN=%~dp0Libraries\win64\Qt-6.11.1\bin"
 set "QSB_EXE=%QSB_BIN%\qsb.exe"
 set "PATH=%QSB_BIN%;%PATH%"
 echo [arcanegram] platform=%Platform% config=%BUILD_CONFIG% api_id=%TDESKTOP_API_ID%
