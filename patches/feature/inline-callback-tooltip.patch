@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "history/view/history_view_message.h" // FromNameFg.
  #include "history/view/history_view_service_message.h"
  #include "history/view/media/history_view_document.h"
-@@ -716,13 +717,17 @@ QString ReplyMarkupClickHandler::dragText() const {
+@@ -733,13 +734,17 @@ QString ReplyMarkupClickHandler::dragText() const {
  
  // Copy to clipboard support.
  QString ReplyMarkupClickHandler::copyToClipboardText() const {
@@ -41,7 +41,7 @@ index 0000000..0000000 100644
  }
  
  // Finds the corresponding button in the items markup struct.
-@@ -769,6 +774,11 @@ QString ReplyMarkupClickHandler::tooltip() const {
+@@ -786,6 +791,11 @@ QString ReplyMarkupClickHandler::tooltip() const {
  				lt_text,
  				st::wrap_rtl(QString::fromUtf8(button->data)));
  		}

@@ -21,7 +21,7 @@ index 0000000..0000000 100644
  #include "history/view/history_view_service_message.h"
  #include "history/view/history_view_message.h"
  #include "history/view/media/history_view_media_generic.h"
-@@ -1421,7 +1422,8 @@ bool Element::isHiddenByGroup() const {
+@@ -1449,7 +1450,8 @@ bool Element::isHiddenByGroup() const {
  }
  
  bool Element::isHidden() const {
@@ -42,8 +42,8 @@ index 0000000..0000000 100644
 +#include "arcanegram/features/ag_hidden_users.h"
  #include "base/qt/qt_key_modifiers.h"
  #include "base/unixtime.h"
- #include "core/click_handler_types.h" // ClickHandlerContext
-@@ -1081,6 +1082,9 @@ int Message::marginBottom() const {
+ #include "core/application.h"
+@@ -1650,6 +1651,9 @@ int Message::marginBottom() const {
  }
  
  void Message::draw(Painter &p, const PaintContext &context) const {
@@ -53,7 +53,7 @@ index 0000000..0000000 100644
  	auto g = countGeometry();
  	if (g.width() < 1) {
  		return;
-@@ -5203,7 +5207,9 @@ Ui::BubbleRounding Message::countBubbleRounding() const {
+@@ -6250,7 +6254,9 @@ Ui::BubbleRounding Message::countBubbleRounding() const {
  }
  
  int Message::resizeContentGetHeight(int newWidth) {

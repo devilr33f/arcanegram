@@ -12,7 +12,7 @@ diff --git a/Telegram/SourceFiles/core/local_url_handlers.cpp b/Telegram/SourceF
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/core/local_url_handlers.cpp
 +++ b/Telegram/SourceFiles/core/local_url_handlers.cpp
-@@ -1818,7 +1818,7 @@ const std::vector<LocalUrlHandler> &InternalUrlHandlers() {
+@@ -1819,7 +1819,7 @@ const std::vector<LocalUrlHandler> &InternalUrlHandlers() {
  			OpenExternalLink
  		},
  		{

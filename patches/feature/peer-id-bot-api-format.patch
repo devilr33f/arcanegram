@@ -20,7 +20,7 @@ index 0000000..0000000 100644
  #include "api/api_blocked_peers.h"
  #include "api/api_chat_participants.h"
  #include "api/api_credits.h"
-@@ -237,10 +238,12 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -230,10 +231,12 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  				value.append("\n\n");
  			}
  			value.append(Italic(u"id: "_q));
@@ -29,14 +29,14 @@ index 0000000..0000000 100644
 +			const auto mtproto = Arcanegram::PeerIds::FormatMtproto(peer);
  			value.append(Link(
 -				Italic(Lang::FormatCountDecimal(raw)),
--				"internal:~peer_id~:copy:" + QString::number(raw)));
+-				kPeerIdLinkIndex));
 +				Italic(botApi),
 +				"internal:~peer_id~:copy:" + botApi
 +					+ ":mtproto:" + mtproto));
  		}
  		if (ShowChannelJoinedBelowAbout.value()) {
  			if (const auto channel = peer->asChannel()) {
-@@ -1496,13 +1499,27 @@ object_ptr<Ui::RpWidget> DetailsFiller::setupInfo() {
+@@ -1462,13 +1465,27 @@ Section DetailsFiller::makeInfo() {
  				const auto &url = request.link->url();
  				if (url.startsWith(u"internal:~peer_id~:"_q)) {
  					const auto weak = base::make_weak(controller);

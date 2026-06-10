@@ -18,10 +18,10 @@ index 0000000..0000000 100644
  #include "history/history_widget.h"
  
 +#include "arcanegram/features/ag_hidden_users.h"
+ #include "api/api_compose_with_ai.h"
  #include "api/api_editing.h"
  #include "api/api_bot.h"
- #include "api/api_chat_participants.h"
-@@ -9792,6 +9793,12 @@ void HistoryWidget::updateReplyEditText(not_null<HistoryItem*> item) {
+@@ -9831,6 +9832,12 @@ void HistoryWidget::updateReplyEditText(not_null<HistoryItem*> item) {
  		.repaint = [=] { updateField(); },
  	});
  	const auto text = [&] {
@@ -46,7 +46,7 @@ index 0000000..0000000 100644
  #include "base/call_delayed.h"
  #include "base/event_filter.h"
  #include "base/platform/base_platform_info.h"
-@@ -484,9 +485,13 @@ void FieldHeader::updateShownMessageText() {
+@@ -489,9 +490,13 @@ void FieldHeader::updateShownMessageText() {
  		.repaint = [=] { customEmojiRepaint(); },
  	});
  	const auto reply = replyingToMessage();

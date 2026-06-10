@@ -11,7 +11,7 @@ diff --git a/Telegram/SourceFiles/settings/sections/settings_main.cpp b/Telegram
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_main.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_main.cpp
-@@ -58,6 +58,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -59,6 +59,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "settings/sections/settings_premium.h"
  #include "settings/sections/settings_privacy_security.h"
  #include "settings/settings_scale_preview.h"
@@ -20,7 +20,7 @@ index 0000000..0000000 100644
  #include "storage/localstorage.h"
  #include "ui/basic_click_handlers.h"
  #include "ui/boxes/confirm_box.h"
-@@ -443,6 +445,13 @@ void BuildSectionButtons(SectionBuilder &builder) {
+@@ -435,6 +437,13 @@ void BuildSectionButtons(SectionBuilder &builder) {
  		.keywords = { u"sessions"_q, u"calls"_q },
  	});
  

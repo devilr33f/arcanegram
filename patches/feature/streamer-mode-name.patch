@@ -20,7 +20,7 @@ index 0000000..0000000 100644
  #include "api/api_sensitive_content.h"
  #include "data/data_user.h"
  #include "data/data_chat.h"
-@@ -1313,6 +1314,11 @@ ChannelData *PeerData::broadcastMonoforum() const {
+@@ -1314,6 +1315,11 @@ ChannelData *PeerData::broadcastMonoforum() const {
  }
  
  const QString &PeerData::topBarNameText() const {
@@ -32,7 +32,7 @@ index 0000000..0000000 100644
  	if (const auto to = migrateTo()) {
  		return to->topBarNameText();
  	} else if (const auto user = asUser()) {
-@@ -1327,7 +1333,16 @@ int PeerData::nameVersion() const {
+@@ -1328,7 +1334,16 @@ int PeerData::nameVersion() const {
  	return _nameVersion;
  }
  
@@ -49,7 +49,7 @@ index 0000000..0000000 100644
  	if (const auto to = migrateTo()) {
  		return to->name();
  	} else if (const auto broadcast = monoforumBroadcast()) {
-@@ -1337,6 +1352,11 @@ const QString &PeerData::name() const {
+@@ -1338,6 +1353,11 @@ const QString &PeerData::name() const {
  }
  
  const QString &PeerData::shortName() const {
