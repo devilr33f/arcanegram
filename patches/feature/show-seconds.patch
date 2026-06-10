@@ -58,7 +58,7 @@ index 0000000..0000000 100644
  #include "history/history_item.h"
  #include "history/history.h"
  #include "history/view/media/history_view_media.h"
-@@ -457,7 +458,7 @@ void BottomInfo::layoutDateText() {
+@@ -469,7 +470,7 @@ void BottomInfo::layoutDateText() {
  	const auto prefix = !author.isEmpty() ? u", "_q : QString();
  	const auto date = edited + ((_data.flags & Data::Flag::ForwardedDate)
  		? Ui::FormatDateTimeSavedFrom(_data.date)

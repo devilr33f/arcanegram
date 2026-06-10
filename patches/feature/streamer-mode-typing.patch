@@ -33,7 +33,7 @@ index 0000000..0000000 100644
  } // namespace
  
  SendActionPainter::SendActionPainter(
-@@ -243,16 +251,16 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
+@@ -245,16 +253,16 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
  			newTypingString = tr::lng_users_typing(
  				tr::now,
  				lt_user,
@@ -53,7 +53,7 @@ index 0000000..0000000 100644
  		} else if (!_sendActions.empty()) {
  			// Handles all actions except game playing.
  			using Type = Api::SendProgressType;
-@@ -299,7 +307,7 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
+@@ -301,7 +309,7 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
  				const auto isNamed = !_history->peer->isUser();
  				newTypingString = sendActionString(
  					action.type,
@@ -62,7 +62,7 @@ index 0000000..0000000 100644
  				if (!newTypingString.isEmpty()) {
  					_sendActionAnimation.start(action.type);
  
-@@ -345,16 +353,16 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
+@@ -347,16 +355,16 @@ bool SendActionPainter::updateNeedsAnimating(crl::time now, bool force) {
  					newTypingString = tr::lng_users_playing_game(
  						tr::now,
  						lt_user,

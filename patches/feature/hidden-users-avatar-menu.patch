@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "api/api_polls.h"
  #include "chat_helpers/stickers_emoji_pack.h"
  #include "core/application.h"
-@@ -2712,6 +2713,17 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -2812,6 +2813,17 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  				return moderateItem;
  			}(),
  			Ui::Menu::CreateAddActionCallback(_menu.get()));

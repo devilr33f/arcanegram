@@ -12,7 +12,7 @@ diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegra
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
-@@ -45,11 +45,14 @@ namespace {
+@@ -46,11 +46,14 @@ namespace {
  using UpdateFlag = Data::PeerUpdate::Flag;
  
  auto PlainAboutValue(not_null<PeerData*> peer) {
@@ -32,7 +32,7 @@ index 0000000..0000000 100644
  	});
  }
  
-@@ -126,13 +129,16 @@ rpl::producer<int32> ColorIdValue(not_null<Data::ForumTopic*> topic) {
+@@ -127,13 +130,16 @@ rpl::producer<int32> ColorIdValue(not_null<Data::ForumTopic*> topic) {
  }
  
  rpl::producer<TextWithEntities> PhoneValue(not_null<UserData*> user) {
@@ -56,7 +56,7 @@ index 0000000..0000000 100644
  	});
  }
  
-@@ -161,11 +167,14 @@ rpl::producer<TextWithEntities> PhoneOrHiddenValue(not_null<UserData*> user) {
+@@ -185,11 +191,14 @@ void CopyPhoneToClipboard(rpl::producer<TextWithEntities> phone) {
  rpl::producer<TextWithEntities> UsernameValue(
  		not_null<PeerData*> peer,
  		bool primary) {
@@ -76,7 +76,7 @@ index 0000000..0000000 100644
  			? tr::marked()
  			: tr::marked('@' + username);
  	});
-@@ -600,11 +609,14 @@ rpl::producer<int> SharedMediaCountValue(
+@@ -624,11 +633,14 @@ rpl::producer<int> SharedMediaCountValue(
  }
  
  rpl::producer<int> CommonGroupsCountValue(not_null<UserData*> user) {

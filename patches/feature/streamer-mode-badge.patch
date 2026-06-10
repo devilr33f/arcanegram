@@ -12,7 +12,7 @@ diff --git a/Telegram/SourceFiles/info/profile/info_profile_badge.cpp b/Telegram
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_badge.cpp
-@@ -22,6 +22,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -23,6 +23,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "main/main_session.h"
  #include "styles/style_info.h"
  
@@ -21,7 +21,7 @@ index 0000000..0000000 100644
  namespace Info::Profile {
  namespace {
  
-@@ -306,6 +308,9 @@ rpl::producer<Badge::Content> VerifiedContentForPeer(
+@@ -307,6 +309,9 @@ rpl::producer<Badge::Content> VerifiedContentForPeer(
  
  rpl::producer<Badge::Content> BotVerifyBadgeForPeer(
  		not_null<PeerData*> peer) {
@@ -35,7 +35,7 @@ diff --git a/Telegram/SourceFiles/info/profile/info_profile_values.cpp b/Telegra
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/info/profile/info_profile_values.cpp
 +++ b/Telegram/SourceFiles/info/profile/info_profile_values.cpp
-@@ -36,6 +36,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -37,6 +37,8 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "boxes/peers/edit_peer_permissions_box.h"
  #include "base/unixtime.h"
  
@@ -44,7 +44,7 @@ index 0000000..0000000 100644
  namespace Info {
  namespace Profile {
  namespace {
-@@ -706,6 +708,9 @@ rpl::producer<BadgeType> BadgeValueFromFlags(Peer peer) {
+@@ -730,6 +732,9 @@ rpl::producer<BadgeType> BadgeValueFromFlags(Peer peer) {
  }
  
  rpl::producer<BadgeType> BadgeValue(not_null<PeerData*> peer) {

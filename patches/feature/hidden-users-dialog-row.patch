@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "history/view/history_view_element.h"
  #include "history/view/history_view_item_preview.h"
  #include "history/view/history_view_translate_tracker.h"
-@@ -3203,6 +3204,8 @@ bool History::trackUnreadMessages() const {
+@@ -3212,6 +3213,8 @@ bool History::trackUnreadMessages() const {
  bool History::shouldBeInChatList() const {
  	if (peer->migrateTo() || !folderKnown()) {
  		return false;
