@@ -21,7 +21,7 @@ index 0000000..0000000 100644
  #include "base/qt/qt_key_modifiers.h"
  #include "base/unixtime.h"
  #include "core/application.h"
-@@ -973,6 +974,9 @@ void Message::refreshRightBadge() {
+@@ -961,6 +962,9 @@ void Message::refreshRightBadge() {
  	}
  	const auto item = data();
  	const auto [text, role, special] = [&]() -> std::tuple<QString, BadgeRole, bool> {

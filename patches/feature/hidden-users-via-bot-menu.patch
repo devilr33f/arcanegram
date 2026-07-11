@@ -12,10 +12,10 @@ diff --git a/Telegram/SourceFiles/history/history_inner_widget.cpp b/Telegram/So
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/history_inner_widget.cpp
 +++ b/Telegram/SourceFiles/history/history_inner_widget.cpp
-@@ -2833,6 +2833,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
+@@ -3741,6 +3741,18 @@ void HistoryInner::showContextMenu(QContextMenuEvent *e, bool showFromTouch) {
  		}
- 		return;
  	}
+ 
 +	if (_dragStateItem) {
 +		if (const auto bot = _dragStateItem->viaBot()) {
 +			Arcanegram::HiddenUsers::FillBotMenu(
@@ -28,9 +28,9 @@ index 0000000..0000000 100644
 +				bot);
 +		}
 +	}
- 	const auto controller = _controller;
- 	const auto canViewMessageStats = [&](HistoryItem *item) {
- 		if (!item
+ 	if (_menu->empty()) {
+ 		_menu = nullptr;
+ 		return;
 diff --git a/Telegram/SourceFiles/history/view/history_view_context_menu.cpp b/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/view/history_view_context_menu.cpp
@@ -43,10 +43,11 @@ index 0000000..0000000 100644
  #include "api/api_attached_stickers.h"
  #include "api/api_editing.h"
  #include "api/api_global_privacy.h"
-@@ -1420,6 +1421,19 @@ void FillContextMenuItems(
- 	const auto hasWhoReactedItem = item
- 		&& Api::WhoReactedExists(item, Api::WhoReactedList::All);
- 
+@@ -1572,6 +1573,19 @@ void FillContextMenuItems(
+ 				list->controller());
+ 		}
+ 	}
++
 +	if (item) {
 +		if (const auto bot = item->viaBot()) {
 +			Arcanegram::HiddenUsers::FillBotMenu(
@@ -59,10 +60,9 @@ index 0000000..0000000 100644
 +				bot);
 +		}
 +	}
-+
- 	AddReplyToMessageAction(result, request, list);
- 	if (item) {
- 		const auto media = item->media();
+ }
+ 
+ base::unique_qptr<Ui::PopupMenu> FillContextMenu(
 -- 
 2.52.0.windows.1
 

@@ -58,9 +58,9 @@ index 0000000..0000000 100644
  #include "history/history_item.h"
  #include "history/history.h"
  #include "history/view/media/history_view_media.h"
-@@ -469,7 +470,7 @@ void BottomInfo::layoutDateText() {
- 	const auto prefix = !author.isEmpty() ? u", "_q : QString();
- 	const auto date = edited + ((_data.flags & Data::Flag::ForwardedDate)
+@@ -489,7 +490,7 @@ void BottomInfo::layoutDateText() {
+ 		? FormatEditedDate(_data.date, _data.editedDate)
+ 		: edited + ((_data.flags & Data::Flag::ForwardedDate)
  		? Ui::FormatDateTimeSavedFrom(_data.date)
 -		: QLocale().toString(_data.date.time(), QLocale::ShortFormat));
 +		: Arcanegram::Time::FormatShort(_data.date.time()));

@@ -23,8 +23,8 @@ index 0000000..0000000 100644
 +#include "arcanegram/features/streamer_mode/ag_streamer_mode.h"
  #include "core/proxy_rotation_manager.h"
  #include "core/ui_integration.h"
- #include "chat_helpers/emoji_keywords.h"
-@@ -534,6 +535,8 @@ void Application::processCreatedWindow(
+ #include "core/version.h"
+@@ -536,6 +537,8 @@ void Application::processCreatedWindow(
  		not_null<Window::Controller*> window) {
  	window->openInMediaViewRequests(
  	) | rpl::start_to_stream(_openInMediaViewRequests, window->lifetime());
@@ -66,7 +66,7 @@ index 0000000..0000000 100644
  #include "apiwrap.h"
  #include "api/api_attached_stickers.h"
  #include "api/api_peer_photo.h"
-@@ -4274,6 +4275,8 @@ void OverlayWidget::activate() {
+@@ -4331,6 +4332,8 @@ void OverlayWidget::activate() {
  	setFocus();
  	QApplication::setActiveWindow(_window);
  	setFocus();

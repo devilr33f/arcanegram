@@ -14,7 +14,7 @@ diff --git a/Telegram/Resources/langs/lang.strings b/Telegram/Resources/langs/la
 index 0000000..0000000 100644
 --- a/Telegram/Resources/langs/lang.strings
 +++ b/Telegram/Resources/langs/lang.strings
-@@ -747,6 +747,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -751,6 +751,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  "lng_shortcuts_record_voice_message" = "Record Voice Message";
  "lng_shortcuts_record_round_message" = "Record Round Message";
  "lng_shortcuts_admin_log" = "Group/Channel Recent Actions";
@@ -26,7 +26,7 @@ diff --git a/Telegram/SourceFiles/core/shortcuts.cpp b/Telegram/SourceFiles/core
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/core/shortcuts.cpp
 +++ b/Telegram/SourceFiles/core/shortcuts.cpp
-@@ -138,6 +138,16 @@ const auto CommandByName = base::flat_map<QString, Command>{
+@@ -140,6 +140,16 @@ const auto CommandByName = base::flat_map<QString, Command>{
  	{ u"archive_chat"_q                  , Command::ArchiveChat },
  	{ u"record_round"_q                  , Command::RecordRound },
  	{ u"show_admin_log"_q                , Command::ShowAdminLog },
@@ -43,7 +43,7 @@ index 0000000..0000000 100644
  	//
  };
  
-@@ -161,6 +171,16 @@ const base::flat_map<Command, QString> &CommandNames() {
+@@ -164,6 +174,16 @@ const base::flat_map<Command, QString> &CommandNames() {
  	Command::ShowScheduled,
  	Command::ArchiveChat,
  	Command::RecordRound,
@@ -64,7 +64,7 @@ diff --git a/Telegram/SourceFiles/core/shortcuts.h b/Telegram/SourceFiles/core/s
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/core/shortcuts.h
 +++ b/Telegram/SourceFiles/core/shortcuts.h
-@@ -88,6 +88,17 @@ enum class Command {
+@@ -89,6 +89,17 @@ enum class Command {
  	SupportScrollToCurrent,
  	SupportHistoryBack,
  	SupportHistoryForward,
@@ -82,7 +82,7 @@ index 0000000..0000000 100644
  };
  
  [[maybe_unused]] constexpr auto kShowFolder = {
-@@ -110,6 +121,19 @@ enum class Command {
+@@ -111,6 +122,19 @@ enum class Command {
  	Command::ShowAccount6,
  };
  
@@ -106,7 +106,7 @@ diff --git a/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp b/Tel
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp
 +++ b/Telegram/SourceFiles/settings/sections/settings_shortcuts.cpp
-@@ -125,6 +125,17 @@ struct Labeled {
+@@ -126,6 +126,17 @@ struct Labeled {
  		{ C::MediaStop, tr::lng_shortcuts_media_stop() },
  		{ C::MediaPrevious, tr::lng_shortcuts_media_previous() },
  		{ C::MediaNext, tr::lng_shortcuts_media_next() },

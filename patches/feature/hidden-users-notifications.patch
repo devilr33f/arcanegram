@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "base/options.h"
  #include "base/platform/base_platform_info.h"
  #include "base/qt/qt_key_modifiers.h"
-@@ -303,7 +304,8 @@ System::SkipState System::skipNotification(
+@@ -308,7 +309,8 @@ System::SkipState System::skipNotification(
  		|| (type == Data::ItemNotificationType::Reaction
  			&& skipSentNotification(item, _sentReactionNotifications))
  		|| (type == Data::ItemNotificationType::PollVote

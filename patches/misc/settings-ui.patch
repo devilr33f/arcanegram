@@ -20,7 +20,7 @@ index 0000000..0000000 100644
  #include "storage/localstorage.h"
  #include "ui/basic_click_handlers.h"
  #include "ui/boxes/confirm_box.h"
-@@ -435,6 +437,13 @@ void BuildSectionButtons(SectionBuilder &builder) {
+@@ -441,6 +443,13 @@ void BuildSectionButtons(SectionBuilder &builder) {
  		.keywords = { u"sessions"_q, u"calls"_q },
  	});
  

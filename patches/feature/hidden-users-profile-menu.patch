@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "base/call_delayed.h"
  #include "menu/menu_check_item.h"
  #include "boxes/about_box.h"
-@@ -1814,6 +1815,16 @@ void Filler::fillProfileActions() {
+@@ -1823,6 +1824,16 @@ void Filler::fillProfileActions() {
  	addLeaveChat();
  	addDeleteContact();
  	addDeleteTopic();

@@ -25,7 +25,7 @@ diff --git a/Telegram/SourceFiles/window/main_window.cpp b/Telegram/SourceFiles/
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/window/main_window.cpp
 +++ b/Telegram/SourceFiles/window/main_window.cpp
-@@ -847,7 +847,7 @@ void MainWindow::updateTitle() {
+@@ -852,7 +852,7 @@ void MainWindow::updateTitle() {
  		: Dialogs::Key();
  	const auto thread = key ? key.thread() : nullptr;
  	if (!thread) {
@@ -34,7 +34,7 @@ index 0000000..0000000 100644
  		return;
  	}
  	const auto history = thread->owningHistory();
-@@ -867,7 +867,7 @@ void MainWindow::updateTitle() {
+@@ -872,7 +872,7 @@ void MainWindow::updateTitle() {
  		: !added.isEmpty()
  		? u" \u2013"_q
  		: QString();

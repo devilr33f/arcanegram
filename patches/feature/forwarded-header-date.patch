@@ -11,7 +11,7 @@ diff --git a/Telegram/SourceFiles/history/history_item_components.cpp b/Telegram
 index 0000000..0000000 100644
 --- a/Telegram/SourceFiles/history/history_item_components.cpp
 +++ b/Telegram/SourceFiles/history/history_item_components.cpp
-@@ -26,6 +26,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
+@@ -27,6 +27,7 @@ https://github.com/telegramdesktop/tdesktop/blob/master/LEGAL
  #include "history/history.h"
  #include "history/history_item.h"
  #include "history/history_item_helpers.h"
@@ -19,7 +19,7 @@ index 0000000..0000000 100644
  #include "history/view/history_view_message.h" // FromNameFg.
  #include "history/view/history_view_service_message.h"
  #include "history/view/media/history_view_document.h"
-@@ -374,6 +375,7 @@ void HistoryMessageForwarded::create(
+@@ -380,6 +381,7 @@ void HistoryMessageForwarded::create(
  				tr::marked);
  		}
  	}

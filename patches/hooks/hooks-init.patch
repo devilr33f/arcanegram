@@ -18,8 +18,8 @@ index 0000000..0000000 100644
 +#include "arcanegram/ag_hooks.h"
  #include "core/proxy_rotation_manager.h"
  #include "core/ui_integration.h"
- #include "chat_helpers/emoji_keywords.h"
-@@ -267,6 +268,8 @@ void Application::run() {
+ #include "core/version.h"
+@@ -269,6 +270,8 @@ void Application::run() {
  
  	startLocalStorage();
  

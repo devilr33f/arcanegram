@@ -5,8 +5,8 @@ Subject: [PATCH] show peer ids in bot api format by default; rmb to copy
  mtproto
 
 ---
- .../info/profile/info_profile_actions.cpp     | 37 ++++++++++++++-----
- 1 file changed, 27 insertions(+), 10 deletions(-)
+ .../info/profile/info_profile_actions.cpp     | 43 +++++++++++++------
+ 1 file changed, 29 insertions(+), 14 deletions(-)
 
 diff --git a/Telegram/SourceFiles/info/profile/info_profile_actions.cpp b/Telegram/SourceFiles/info/profile/info_profile_actions.cpp
 index 0000000..0000000 100644
@@ -20,23 +20,41 @@ index 0000000..0000000 100644
  #include "api/api_blocked_peers.h"
  #include "api/api_chat_participants.h"
  #include "api/api_credits.h"
-@@ -230,10 +231,12 @@ base::options::toggle ShowChannelJoinedBelowAbout({
+@@ -236,10 +237,8 @@ base::options::toggle ShowChannelJoinedBelowAbout({
  				value.append("\n\n");
  			}
  			value.append(Italic(u"id: "_q));
 -			const auto raw = peer->id.value & PeerId::kChatTypeMask;
-+			const auto botApi = Arcanegram::PeerIds::FormatBotApi(peer);
-+			const auto mtproto = Arcanegram::PeerIds::FormatMtproto(peer);
- 			value.append(Link(
+-			value.append(Link(
 -				Italic(Lang::FormatCountDecimal(raw)),
 -				kPeerIdLinkIndex));
-+				Italic(botApi),
-+				"internal:~peer_id~:copy:" + botApi
-+					+ ":mtproto:" + mtproto));
++			const auto botApi = Arcanegram::PeerIds::FormatBotApi(peer);
++			value.append(Link(Italic(botApi), kPeerIdLinkIndex));
  		}
  		if (ShowChannelJoinedBelowAbout.value()) {
  			if (const auto channel = peer->asChannel()) {
-@@ -1462,13 +1465,27 @@ Section DetailsFiller::makeInfo() {
+@@ -275,15 +274,17 @@ void SetupAboutPeerIdDrag(
+ 	if (!ShowPeerIdBelowAbout.value()) {
+ 		return;
+ 	}
+-	const auto id = QString::number(peer->id.value & PeerId::kChatTypeMask);
++	const auto botApi = Arcanegram::PeerIds::FormatBotApi(peer);
++	const auto mtproto = Arcanegram::PeerIds::FormatMtproto(peer);
+ 	AboutValue(
+ 		peer
+ 	) | rpl::on_next([=] {
+ 		label->setLink(
+ 			kPeerIdLinkIndex,
+ 			std::make_shared<DraggableUrlClickHandler>(
+-				u"internal:~peer_id~:copy:"_q + id,
+-				id));
++				"internal:~peer_id~:copy:" + botApi
++					+ ":mtproto:" + mtproto,
++				botApi));
+ 	}, label->lifetime());
+ }
+ 
+@@ -1468,13 +1469,27 @@ Section DetailsFiller::makeInfo() {
  				const auto &url = request.link->url();
  				if (url.startsWith(u"internal:~peer_id~:"_q)) {
  					const auto weak = base::make_weak(controller);
